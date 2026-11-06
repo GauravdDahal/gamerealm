@@ -45,9 +45,14 @@ const Login = () => {
     }
 
     return (
-        <>
+        <div className="auth-content">
+            <div className="auth-heading">
+                <span className="auth-eyebrow">WELCOME BACK</span>
+                <h2>Good to see you<span>.</span></h2>
+                <p>Sign in to pick up where the excitement left off.</p>
+            </div>
             <AuthSessionStatus className="mb-4" status={status} />
-            <form onSubmit={submitForm}>
+            <form className="auth-form" onSubmit={submitForm}>
                 {/* Email Address */}
                 <div>
                     <Label htmlFor="email">Email</Label>
@@ -116,7 +121,8 @@ const Login = () => {
                     <Button className="ml-3">Login</Button>
                 </div>
             </form>
-        </>
+            <div className="auth-switch">New to Casino Play? <Link href="/register">Create an account <span>→</span></Link></div>
+        </div>
     )
 }
 

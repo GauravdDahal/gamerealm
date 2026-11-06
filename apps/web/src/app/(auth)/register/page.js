@@ -58,8 +58,14 @@ const Page = () => {
     }
 
     return (
-        <form onSubmit={submitForm}>
-            <p className="mb-5 text-sm text-gray-600">
+        <div className="auth-content auth-register-content">
+        <div className="auth-heading">
+            <span className="auth-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
+            <h2>Join the <em>play.</em></h2>
+            <p>Create your account and get ready to take your seat.</p>
+        </div>
+        <form className="auth-form auth-register-form" onSubmit={submitForm}>
+            <p className="auth-notice">
                 Every account is checked by our team before it goes live. You&rsquo;ll
                 get access once it&rsquo;s approved.
             </p>
@@ -179,16 +185,13 @@ const Page = () => {
             </div>
 
             <div className="flex items-center justify-end mt-5">
-                <Link
-                    href="/users"
-                    className="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already have an account?
-                </Link>
-                <Button className="ml-4" disabled={submitting}>
+                <Button disabled={submitting}>
                     {submitting ? 'Creating…' : 'Create account'}
                 </Button>
             </div>
         </form>
+        <div className="auth-switch">Already have an account? <Link href="/login">Sign in <span>→</span></Link></div>
+        </div>
     )
 }
 
