@@ -1,24 +1,10 @@
 'use client'
 import { useEffect } from 'react'
-import spinAnimation from '/public/Lottie/spin.json'
+import LazyLottie from '@/components/common/LazyLottie'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import dynamic from 'next/dynamic'
-const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 export default function AboutUs() {
-    useEffect(() => {
-        AOS.refresh()
-        AOS.init({
-            duration: 1000,
-            once: false,
-            easing: 'ease-out',
-            mirror: true,
-        })
-
-        return () => {
-            AOS.refresh()
-        }
-    }, [])
 
     return (
         <section id='about' className="min-h-[600px] bg-[#151C28] relative overflow-hidden">
@@ -58,11 +44,7 @@ export default function AboutUs() {
                         className="relative h-[400px] sm:h-[500px] lg:h-[600px] flex justify-center items-center order-2 sm:order-2 lg:order-2"
                         data-aos="fade-left"
                         data-aos-delay="200">
-                        <Lottie
-                            animationData={spinAnimation}
-                            loop={true}
-                            className="w-full h-full"
-                        />
+                        <LazyLottie src="/Lottie/spin.json" className="w-full h-full" />
                     </div>
                 </div>
             </div>

@@ -21,7 +21,6 @@ export default function Testimonial() {
     ]
 
     useEffect(() => {
-        AOS.init({ duration: 1000, once: true }) // Initialize AOS for scrolling effects
         const checkScreenSize = () => setIsMobile(window.innerWidth < 768)
         checkScreenSize()
         window.addEventListener('resize', checkScreenSize)

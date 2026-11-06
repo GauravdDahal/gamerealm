@@ -4,29 +4,12 @@ import { ChevronDown, ChevronUp } from 'lucide-react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic';
 
-const Lottie = dynamic(() => import('lottie-react'), {
-  ssr: false,
-});
 
 export default function GamesSection() {
     const [showAll, setShowAll] = useState(false)
     const [screenWidth, setScreenWidth] = useState(
         typeof window !== 'undefined' ? window.innerWidth : 0,
     );
-    const [fireAnimation, setFireAnimation] = useState(null);
-
-    useEffect(() => {
-    if (typeof window !== 'undefined') {
-        fetch('/Lottie/fire.json')
-          .then((response) => response.json())
-          .then((data) => {
-            setFireAnimation(data);
-          })
-          .catch((error) => {
-            console.error('Error loading Lottie animation:', error);
-          });
-      }
-    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -167,7 +150,7 @@ export default function GamesSection() {
                                 {game.hot && (
                                     <div className="absolute top-2 right-1 z-30">
                                         <Image
-                                            src="/assets/images/gameSectionImg/hotIcon.gif"
+                                            src="/assets/images/gameSectionImg/hotIcon.webp"
                                             alt="Hot Icon"
                                             width={164}
                                             height={164}

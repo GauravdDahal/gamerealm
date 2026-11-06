@@ -64,14 +64,6 @@ export default function HeroSection() {
         fetchBanners()
     }, [])
 
-    useEffect(() => {
-        AOS.init({
-            duration: 1000,
-            once: false,
-            easing: 'ease-in-out',
-        })
-    }, [])
-
     const handleJoinClick = () => {
         router.push('/users')
     }

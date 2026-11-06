@@ -2,10 +2,7 @@
 import { useState, useEffect } from "react";
 import dynamic from 'next/dynamic';
 
-const LottieComponent = dynamic(() => import('lottie-react'), {
-  loading: () => <div className="w-20 h-20"></div>,
-  ssr: false
-});
+import LazyLottie from '@/components/common/LazyLottie';
 
 const features = [
   { 
@@ -35,33 +32,11 @@ const features = [
 ];
 
 export default function WhyChooseUs() {
-  const [animationData, setAnimationData] = useState({});
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
 
-    const loadAnimations = async () => {
-      const data = {};
-      
-      // Use Promise.all for parallel loading
-      const animationPromises = features.map(async (feature) => {
-        try {
-          const response = await fetch(feature.animation);
-          if (!response.ok) throw new Error(`Failed to load ${feature.animation}`);
-          data[feature.animation] = await response.json();
-        } catch (error) {
-          console.error(`Error loading animation ${feature.animation}:`, error);
-          // Fallback to a default or skip
-          data[feature.animation] = null;
-        }
-      });
-
-      await Promise.all(animationPromises);
-      setAnimationData(data);
-    };
-
-    loadAnimations();
   }, []);
 
   return (
@@ -118,9 +93,6 @@ export default function WhyChooseUs() {
                                   { animation, title, description, aos },
                                   index,
                               ) => {
-                                  const currentAnimationData =
-                                      animationData[animation]
-
                                   return (
                                       <div
                                           key={index}
@@ -128,17 +100,7 @@ export default function WhyChooseUs() {
                                           data-aos={aos}
                                           data-aos-delay={index * 200}>
                                           <div className="w-20 h-20 flex  items-center justify-center">
-                                              {currentAnimationData ? (
-                                                  <LottieComponent
-                                                      animationData={
-                                                          currentAnimationData
-                                                      }
-                                                      loop={true}
-                                                      aria-label={`${title} animation`}
-                                                  />
-                                              ) : (
-                                                  <div className="w-20 h-20 bg-gray-800 rounded-full font-godofwar animate-pulse"></div>
-                                              )}
+                                              <LazyLottie src={animation} className="w-20 h-20" />
                                           </div>
                                           <h3 className="text-xl font-glance">
                                               {title}

@@ -6,11 +6,7 @@ import 'aos/dist/aos.css';
 
 const AOSProvider = () => {
     useEffect(() => {
-        AOS.init({ 
-            once: false,
-            easing: 'ease-out-back', // Bouncy easing function
-            duration: 800,
-        });
+        AOS.init({ once: true, easing: 'ease-out', duration: 800 });
     }, []);
 
     return null;
