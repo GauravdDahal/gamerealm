@@ -1,0 +1,14 @@
+{
+  "name": "gamerealm",
+  "private": true,
+  "description": "GameRealm / Casino Play monorepo: Next.js web + admin (Supabase backend), Expo mobile",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "web:dev": "pnpm --filter breeze-next dev",
+    "web:build": "pnpm --filter breeze-next build",
+    "mobile:start": "pnpm --filter the-novel-front start"
+  }
+}

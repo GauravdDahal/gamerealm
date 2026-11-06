@@ -1,0 +1,186 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+
+
+@font-face {
+  font-family: 'FontMarquee';
+  src: url('../../public/assets/fonts/CoffeetinInitials-YXJ2.ttf')
+  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GodOfWar';
+  src: url('../../public/assets/fonts/GODOFWAR.TTF')
+  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PlayFairlDisplay';
+  src: url('../../public/assets/fonts/PlayfairDisplay-Regular.ttf')
+  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Glance';
+  src: url('../../public/assets/fonts/GLANCE.ttf')
+  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Aldo';
+  src: url('../../public/assets/fonts/Aldo.ttf')
+  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nowharehouse';
+  src: url('../../public/assets/fonts/Nowharehouse.ttf')
+  format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-nowharehouse {
+  font-family: 'Nowharehouse', sans-serif;
+}
+
+.font-aldos {
+  font-family: 'Aldo', sans-serif;
+}
+
+.font-glance {
+  font-family: 'Glance', sans-serif;
+}
+
+.font-payfairldisplay {
+  font-family: 'playfairldisplay', sans-serif;
+}
+
+.font-godofwar {
+  font-family: 'GodOfWar', sans-serif;
+}
+.font-retro-signed {
+    font-family: 'CasinoFont', sans-serif;
+}
+.font-marquee-text{
+    font-family: 'FontMarquee', sans-serif;
+}
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.glass-effect {
+    backdrop-filter: blur(12px);
+    background: rgba(17, 24, 39, 0.85);
+}
+
+.gradient-border {
+    position: relative;
+    border: double 1px transparent;
+    border-radius: 1rem;
+    background-image: linear-gradient(rgb(17, 24, 39), rgb(17, 24, 39)),
+        linear-gradient(to right, #4f46e5, #7c3aed, #db2777);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+}
+
+.hero-gradient {
+    background: linear-gradient(
+        135deg,
+        rgba(79, 70, 229, 0.1) 0%,
+        rgba(124, 58, 237, 0.1) 50%,
+        rgba(219, 39, 119, 0.1) 100%
+    );
+}
+
+@keyframes fadeScaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-scale-up {
+    animation: fadeScaleUp 0.2s ease-out forwards;
+}
+
+@keyframes slowZoom {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
+.animate-slow-zoom {
+    animation: slowZoom 10s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-word-slide-up {
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-fade-slide-up {
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+    animation-delay: 0.3s;
+}
+
+.animate-fade-slide-up-late {
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+    animation-delay: 0.6s;
+}

@@ -1,0 +1,71 @@
+{
+  "folders": [
+    {
+      "name": "🌐 Web (Next.js)",
+      "path": "apps/web"
+    },
+    {
+      "name": "📱 Mobile (Expo)",
+      "path": "apps/mobile"
+    },
+    {
+      "name": "🗄️ Supabase (SQL)",
+      "path": "supabase"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.next": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/package-lock.json": true,
+      "**/pnpm-lock.yaml": true
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+    },
+    "javascript.preferences.importModuleSpecifier": "non-relative"
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss",
+      "dsznajder.es7-react-js-snippets",
+      "expo.vscode-expo-tools",
+      "mikestead.dotenv"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "▶ Start Web",
+        "type": "shell",
+        "command": "pnpm dev",
+        "options": { "cwd": "${workspaceFolder:🌐 Web (Next.js)}" },
+        "isBackground": true,
+        "problemMatcher": [],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": { "group": "dev", "panel": "dedicated" }
+      },
+      {
+        "label": "Mobile: start",
+        "type": "shell",
+        "command": "npx expo start",
+        "options": { "cwd": "${workspaceFolder:📱 Mobile (Expo)}" },
+        "isBackground": true,
+        "problemMatcher": [],
+        "presentation": { "group": "dev", "panel": "dedicated" }
+      }
+    ]
+  }
+}
