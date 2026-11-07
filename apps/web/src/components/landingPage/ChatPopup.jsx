@@ -11,6 +11,15 @@ import { createClient } from '@/lib/supabase/client'
  * version aren't wired up yet — they need a Supabase Storage bucket and
  * policies that don't exist yet, so this is text-only for now.
  */
+/** Combine message lists by id, oldest first. */
+const mergeMessages = (current, incoming) => {
+    const byId = new Map(current.map(m => [m.id, m]))
+    incoming.forEach(m => byId.set(m.id, m))
+    return [...byId.values()].sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at) || a.id - b.id,
+    )
+}
+
 function ChatPopup() {
     const { user } = useAuth()
     const supabase = useMemo(() => createClient(), [])
@@ -21,6 +30,10 @@ function ChatPopup() {
     const [chat, setChat] = useState(null)
     const [loading, setLoading] = useState(true)
     const messagesEndRef = useRef(null)
+    const isOpenRef = useRef(false)
+    useEffect(() => {
+        isOpenRef.current = isOpen
+    }, [isOpen])
 
     // Only approved players (and staff bypass is handled elsewhere) get a
     // chat — pending/rejected/suspended accounts can't open one (RLS would
@@ -74,6 +87,8 @@ function ChatPopup() {
         if (!chat) return
         let cancelled = false
 
+        // Merge by id so a message can never appear twice or be dropped,
+        // whichever of (history load, live event, our own send) arrives first.
         const load = async () => {
             const { data } = await supabase
                 .from('messages')
@@ -81,7 +96,17 @@ function ChatPopup() {
                 .eq('chat_id', chat.id)
                 .is('deleted_at', null)
                 .order('created_at', { ascending: true })
-            if (!cancelled) setMessages(data ?? [])
+            if (cancelled) return
+            const history = data ?? []
+            setMessages(prev => mergeMessages(prev, history))
+            // Badge = replies from the team that haven't been read yet. Counted
+            // from history, so it is right even for messages that arrived while
+            // the page was closed or the phone was asleep.
+            if (!isOpenRef.current) {
+                setUnreadCount(
+                    history.filter(m => m.sender_id !== user.id && !m.is_read).length,
+                )
+            }
         }
         load()
 
@@ -91,17 +116,35 @@ function ChatPopup() {
                 'postgres_changes',
                 { event: 'INSERT', schema: 'public', table: 'messages', filter: `chat_id=eq.${chat.id}` },
                 payload => {
-                    setMessages(prev => [...prev, payload.new])
-                    if (!isOpen && payload.new.sender_id !== user.id) {
+                    setMessages(prev => mergeMessages(prev, [payload.new]))
+                    if (!isOpenRef.current && payload.new.sender_id !== user.id) {
                         setUnreadCount(c => c + 1)
                     }
                 },
             )
-            .subscribe()
+            .subscribe(status => {
+                // The live connection takes a moment to open on a brand-new
+                // chat. Anything sent before it was ready would be missed, so
+                // reload the history once it is.
+                if (status === 'SUBSCRIBED') load()
+            })
+
+        // A phone suspends a tab's live connection when the screen locks or you
+        // switch apps, and messages sent meanwhile are never replayed. So also
+        // reload when the tab comes back, the network returns, and every 20s.
+        const onVisible = () => {
+            if (document.visibilityState === 'visible') load()
+        }
+        document.addEventListener('visibilitychange', onVisible)
+        window.addEventListener('online', load)
+        const poll = setInterval(onVisible, 20000)
 
         return () => {
             cancelled = true
             supabase.removeChannel(channel)
+            document.removeEventListener('visibilitychange', onVisible)
+            window.removeEventListener('online', load)
+            clearInterval(poll)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chat?.id])
@@ -124,19 +167,29 @@ function ChatPopup() {
             .insert({ client_id: user.id, is_active: true })
             .select()
             .single()
-        if (!error) setChat(data)
+        if (error) {
+            console.error('Failed to start chat:', error)
+            return
+        }
+        setChat(data)
     }
 
     const handleSendMessage = useCallback(async () => {
         if (!newMessage.trim() || !chat) return
         const text = newMessage.trim()
         setNewMessage('')
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('messages')
             .insert({ chat_id: chat.id, sender_id: user.id, message: text })
+            .select()
+            .single()
         if (error) {
             console.error('Failed to send message:', error)
+            setNewMessage(text) // give the text back so it isn't lost
+            return
         }
+        // Show our own message straight away instead of waiting for the live event.
+        setMessages(prev => mergeMessages(prev, [data]))
     }, [newMessage, chat, user, supabase])
 
     const handleKeyPress = e => {

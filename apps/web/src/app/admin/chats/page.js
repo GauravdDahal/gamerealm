@@ -24,6 +24,15 @@ const formatWhen = iso => {
         : d.toLocaleDateString(undefined, { dateStyle: 'short' })
 }
 
+/** Combine message lists by id, oldest first. */
+const mergeMessages = (current, incoming) => {
+    const byId = new Map(current.map(m => [m.id, m]))
+    incoming.forEach(m => byId.set(m.id, m))
+    return [...byId.values()].sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at) || a.id - b.id,
+    )
+}
+
 const Inbox = () => {
     const supabase = useMemo(() => createClient(), [])
     const [chats, setChats] = useState([])
@@ -34,6 +43,7 @@ const Inbox = () => {
     const [staffId, setStaffId] = useState(null)
     const [draft, setDraft] = useState('')
     const messagesEndRef = useRef(null)
+    const activeIdRef = useRef(null)
 
     const loadChats = useCallback(async () => {
         setError(null)
@@ -51,8 +61,33 @@ const Inbox = () => {
         loadChats()
     }, [loadChats, supabase])
 
-    // Any new message anywhere refreshes the chat list (order + unread badges),
-    // and is appended live if it belongs to the open thread.
+    // Reload the open thread. Merges by id, so it can only add or update.
+    const refreshThread = useCallback(
+        async id => {
+            if (!id) return
+            const { data } = await supabase
+                .from('messages')
+                .select('*')
+                .eq('chat_id', id)
+                .is('deleted_at', null)
+                .order('created_at', { ascending: true })
+            if (activeIdRef.current === id) {
+                setMessages(prev => mergeMessages(prev, data ?? []))
+            }
+        },
+        [supabase],
+    )
+
+    const resync = useCallback(() => {
+        loadChats()
+        refreshThread(activeIdRef.current)
+    }, [loadChats, refreshThread])
+
+    // One live connection for the whole page (it is not torn down when you
+    // switch chats, so nothing is lost in between). Live events are a fast
+    // path; reloading when the connection opens, the tab becomes visible,
+    // the network returns, and every 20s is what guarantees nothing is
+    // missed after a sleep or dropped connection.
     useEffect(() => {
         const channel = supabase
             .channel('staff-inbox')
@@ -61,29 +96,39 @@ const Inbox = () => {
                 { event: 'INSERT', schema: 'public', table: 'messages' },
                 payload => {
                     loadChats()
-                    if (payload.new.chat_id === activeId) {
-                        setMessages(prev => [...prev, payload.new])
+                    if (payload.new.chat_id === activeIdRef.current) {
+                        setMessages(prev => mergeMessages(prev, [payload.new]))
                     }
                 },
             )
-            .subscribe()
-        return () => supabase.removeChannel(channel)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeId])
+            .subscribe(status => {
+                if (status === 'SUBSCRIBED') resync()
+            })
+
+        const onVisible = () => {
+            if (document.visibilityState === 'visible') resync()
+        }
+        document.addEventListener('visibilitychange', onVisible)
+        window.addEventListener('online', resync)
+        const poll = setInterval(onVisible, 20000)
+
+        return () => {
+            supabase.removeChannel(channel)
+            document.removeEventListener('visibilitychange', onVisible)
+            window.removeEventListener('online', resync)
+            clearInterval(poll)
+        }
+    }, [supabase, loadChats, resync])
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
     const openChat = async chat => {
+        activeIdRef.current = chat.id
         setActiveId(chat.id)
-        const { data } = await supabase
-            .from('messages')
-            .select('*')
-            .eq('chat_id', chat.id)
-            .is('deleted_at', null)
-            .order('created_at', { ascending: true })
-        setMessages(data ?? [])
+        setMessages([]) // never show the previous thread under the new header
+        await refreshThread(chat.id)
 
         await supabase
             .from('messages')
@@ -98,10 +143,17 @@ const Inbox = () => {
         if (!draft.trim() || !activeId || !staffId) return
         const text = draft.trim()
         setDraft('')
-        const { error: err } = await supabase
+        const { data, error: err } = await supabase
             .from('messages')
             .insert({ chat_id: activeId, sender_id: staffId, message: text })
-        if (err) console.error('Failed to send:', err)
+            .select()
+            .single()
+        if (err) {
+            console.error('Failed to send:', err)
+            setDraft(text) // give the text back so it isn't lost
+            return
+        }
+        setMessages(prev => mergeMessages(prev, [data]))
     }
 
     const activeChat = chats.find(c => c.id === activeId)
