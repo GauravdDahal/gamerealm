@@ -232,7 +232,7 @@ const Inbox = () => {
     const activeChat = chats.find(c => c.id === activeId)
 
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6 lg:h-[calc(100dvh-4rem)]">
             <div>
                 <h1
                     className="text-2xl text-[#EFE9DA]"
@@ -255,9 +255,9 @@ const Inbox = () => {
                     <EmptyState message="No conversations yet." />
                 </Panel>
             ) : (
-                <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
-                    <Panel title={`${chats.length} conversation${chats.length === 1 ? '' : 's'}`} className="h-[600px] overflow-y-auto">
-                        <ul className="divide-y divide-[#1E322C]/60">
+                <div className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[280px_1fr] lg:grid-rows-[minmax(0,1fr)]">
+                    <Panel title={`${chats.length} conversation${chats.length === 1 ? '' : 's'}`} className="flex h-[70dvh] min-h-0 flex-col overflow-hidden lg:h-full">
+                        <ul className="flex-1 divide-y divide-[#1E322C]/60 overflow-y-auto">
                             {chats.map(c => (
                                 <li key={c.id}>
                                     <button
@@ -292,10 +292,10 @@ const Inbox = () => {
 
                     <Panel
                         title={activeChat ? activeChat.client_name : 'Select a conversation'}
-                        className="flex h-[600px] flex-col">
+                        className="flex h-[80dvh] min-h-0 flex-col overflow-hidden lg:h-full">
                         {activeChat ? (
                             <>
-                                <div className="flex-1 space-y-3 overflow-y-auto p-4">
+                                <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4">
                                     {messages.map(m => {
                                         const mine = m.sender_id === staffId
                                         const hl = m.style ? HIGHLIGHT_STYLES[m.style] : null

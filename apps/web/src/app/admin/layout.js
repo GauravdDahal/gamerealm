@@ -259,10 +259,21 @@ const Shell = ({ children }) => {
     )
 }
 
+const scrollbarCss = `
+    html:has(.admin-root) { scrollbar-width: thin; scrollbar-color: #35503f #0C1714; }
+    .admin-root * { scrollbar-width: thin; scrollbar-color: #35503f transparent; }
+    html:has(.admin-root)::-webkit-scrollbar, .admin-root *::-webkit-scrollbar { width: 8px; height: 8px; }
+    html:has(.admin-root)::-webkit-scrollbar-track { background: #0C1714; }
+    .admin-root *::-webkit-scrollbar-track { background: transparent; }
+    html:has(.admin-root)::-webkit-scrollbar-thumb, .admin-root *::-webkit-scrollbar-thumb { background: #35503f; border-radius: 8px; border: 2px solid #0C1714; }
+    html:has(.admin-root)::-webkit-scrollbar-thumb:hover, .admin-root *::-webkit-scrollbar-thumb:hover { background: #D4AF57; }
+`
+
 const AdminLayout = ({ children }) => (
     <ToastProvider>
+        <style>{scrollbarCss}</style>
         <div
-            className={`${fraunces.variable} ${inter.variable} min-h-screen bg-[#0C1714] text-[#EFE9DA]`}
+            className={`admin-root ${fraunces.variable} ${inter.variable} min-h-screen bg-[#0C1714] text-[#EFE9DA]`}
             style={{ fontFamily: 'var(--font-ui), system-ui, sans-serif' }}>
             <Shell>{children}</Shell>
         </div>

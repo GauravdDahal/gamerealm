@@ -6,10 +6,10 @@ import { formatSize, isImage } from '@/lib/chatMedia'
 
 /** Colours for highlighted (staff) messages. */
 export const HIGHLIGHT_STYLES = {
-    info: { label: 'Info', icon: Info, bar: '#6366f1', tint: 'rgba(99,102,241,0.14)', text: '#c7d2fe' },
-    promo: { label: 'Promo', icon: Sparkles, bar: '#ec4899', tint: 'rgba(236,72,153,0.14)', text: '#fbcfe8' },
+    info: { label: 'Info', icon: Info, bar: '#d8c47b', tint: 'rgba(216,196,123,0.12)', text: '#f4e5a5' },
+    promo: { label: 'Promo', icon: Sparkles, bar: '#e5484d', tint: 'rgba(229,72,77,0.14)', text: '#fbcfe8' },
     success: { label: 'Good news', icon: CheckCircle2, bar: '#10b981', tint: 'rgba(16,185,129,0.14)', text: '#a7f3d0' },
-    warning: { label: 'Important', icon: AlertTriangle, bar: '#f59e0b', tint: 'rgba(245,158,11,0.16)', text: '#fde68a' },
+    warning: { label: 'Important', icon: AlertTriangle, bar: '#f97316', tint: 'rgba(249,115,22,0.15)', text: '#fed7aa' },
 }
 
 /**
