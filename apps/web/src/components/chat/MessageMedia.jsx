@@ -4,6 +4,22 @@ import { useEffect, useState } from 'react'
 import { FileText, Download, Info, Sparkles, CheckCircle2, AlertTriangle } from 'lucide-react'
 import { formatSize, isImage } from '@/lib/chatMedia'
 
+const isOwnGameImage = url => {
+    if (typeof url !== 'string') return false
+    if (url.startsWith('/assets/') && !url.startsWith('//')) return true
+    try {
+        const own = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL)
+        const u = new URL(url)
+        return (
+            u.protocol === 'https:' &&
+            u.host === own.host &&
+            u.pathname.startsWith('/storage/v1/object/public/game-images/')
+        )
+    } catch {
+        return false
+    }
+}
+
 /** Colours for highlighted (staff) messages. */
 export const HIGHLIGHT_STYLES = {
     info: { label: 'Info', icon: Info, bar: '#d8c47b', tint: 'rgba(216,196,123,0.12)', text: '#f4e5a5' },
@@ -18,9 +34,10 @@ export const HIGHLIGHT_STYLES = {
  */
 export const MessageMedia = ({ message, urls, mine }) => {
     const files = message.attachments ?? []
-    // Game request cards use banners that ship with the site. Only our own
-    // /assets images are drawn, so nobody can point one at an outside address.
-    const games = files.filter(f => f.kind === 'game' && f.url?.startsWith('/assets/'))
+    // Game request cards use banners from the site itself (its own /assets or
+    // our own game-images bucket). Anything else is not drawn, so nobody can
+    // point a message at an outside address.
+    const games = files.filter(f => f.kind === 'game' && isOwnGameImage(f.url))
     const uploads = files.filter(f => f.kind !== 'game')
     const images = uploads.filter(f => isImage(f.type))
     const docs = uploads.filter(f => !isImage(f.type))

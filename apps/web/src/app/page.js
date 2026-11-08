@@ -9,6 +9,7 @@ import EventsSection from '@/components/landingPage/EventsSection'
 import RulesSection from '@/components/landingPage/RulesSection'
 import WhyChooseUs from '@/components/landingPage/WhyChooseUs'
 import FAQSection from '@/components/landingPage/FAQSection'
+import GamesMarquee from '@/components/landingPage/GamesMarquee'
 import MarqueeText from '@/components/landingPage/MarqueeText'
 import AboutUs from '@/components/landingPage/AboutUs'
 import Testimonial from '@/components/landingPage/Testomonials'
@@ -45,6 +46,7 @@ function Home() {
                 <EventsSection />
             </Suspense>
             <GamesSection />
+            <GamesMarquee />
             <MarqueeText />
             <AboutUs />
             <CatSection />

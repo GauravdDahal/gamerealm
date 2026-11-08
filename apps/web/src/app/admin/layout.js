@@ -14,6 +14,7 @@ import {
     UserCheck,
     MessageCircle,
     Zap,
+    Gamepad2,
     Bell,
     BellOff,
     LogOut,
@@ -45,6 +46,7 @@ const nav = [
     { href: '/admin/roles', label: 'Roles', icon: KeyRound },
     { href: '/admin/activity', label: 'Activity', icon: ScrollText },
     { href: '/admin/banners', label: 'Banners', icon: Images },
+    { href: '/admin/games', label: 'Games', icon: Gamepad2 },
 ]
 
 /* Deliberately not using useAuth({ middleware: 'auth' }).

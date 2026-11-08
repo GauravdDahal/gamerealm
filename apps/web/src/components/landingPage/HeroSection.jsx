@@ -33,7 +33,7 @@ const fallbackSlides = [
 
 export default function HeroSection() {
     const router = useRouter()
-    const [banners, setBanners] = useState([])
+    const [banners, setBanners] = useState(fallbackSlides)
 
     useEffect(() => {
         const fetchBanners = async () => {
@@ -71,7 +71,7 @@ export default function HeroSection() {
     return (
         <section
             id="home"
-            className="relative h-screen md:h-[90vh] flex flex-col overflow-hidden bg-gray-900">
+            className="relative h-[100svh] min-h-[600px] md:h-[90vh] md:min-h-[600px] flex flex-col overflow-hidden bg-gray-900">
             <div className="relative h-full">
                 <Swiper
                     modules={[Autoplay, Navigation, Pagination]}

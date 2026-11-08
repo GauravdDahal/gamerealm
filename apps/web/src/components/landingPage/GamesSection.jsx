@@ -2,14 +2,16 @@
 import React, { useState, useEffect } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import Image from 'next/image'
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
+import { useGames } from '@/lib/useGames'
+import { playGame } from '@/lib/playGame'
 
 
 export default function GamesSection() {
     const router = useRouter()
     const { user, loading: authLoading } = useAuth()
+    const games = useGames()
     const [showAll, setShowAll] = useState(false)
     const [screenWidth, setScreenWidth] = useState(
         typeof window !== 'undefined' ? window.innerWidth : 0,
@@ -24,94 +26,7 @@ export default function GamesSection() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    const games = [
-        {
-            title: 'Apex Legends',
-            image: '/assets/images/gameSectionImg/img1.jpg',
-            players: '50K+',
-            hot:true
-        },
-        {
-            title: 'Valorant',
-            image: '/assets/images/gameSectionImg/img2.jpg',
-            players: '45K+',
-            hot:true
-        },
-        {
-            title: 'League of Legends',
-            image: '/assets/images/gameSectionImg/img3.jpg',
-            players: '10K+',
-            hot:false
-        },
-        {
-            title: 'Hot Deco',
-            image: '/assets/images/gameSectionImg/img4.jpg',
-            players: '80K+',
-            hot:true
-        },
-        {
-            title: 'Game Time',
-            image: '/assets/images/gameSectionImg/img5.jpg',
-            players: '80K+',
-            hot:false
-        },
-        {
-            title: 'Poker',
-            image: '/assets/images/gameSectionImg/img6.jpg',
-            players: '80K+',
-            hot:false
-        },
-        {
-            title: 'Casino Night',
-            image: '/assets/images/gameSectionImg/img7.jpg',
-            players: '80K+',
-            hot:true
-        },
-        {
-            title: 'Hot Deco',
-            image: '/assets/images/gameSectionImg/img8.jpg',
-            players: '80K+',
-            hot:true
-        },
-        {
-            title: 'Hot Deco',
-            image: '/assets/images/gameSectionImg/img9.jpeg',
-            players: '80K+',
-            hot:false
-        },
-        {
-            title: 'Hot Deco',
-            image: '/assets/images/gameSectionImg/img10.jpg',
-            players: '80K+',
-            hot: true
-        },
-        {
-            title: 'Hot Deco',
-            image: '/assets/images/gameSectionImg/img11.jpeg',
-            players: '80K+',
-            hot:false
-        },
-        {
-            title: 'Hot Deco',
-            image: '/assets/images/gameSectionImg/img12.jpeg',
-            players: '80K+',
-            hot:false
-        },
-    ]
-
-    // Play Game: signed-out players go to sign in, approved players get the
-    // support chat opened with a ready-made request for this game.
-    const handleJoinGameClick = game => {
-        if (authLoading) return
-        if (!user) return router.push('/users')
-        if (user.is_admin) return
-        if (user.is_approved === false) return router.push('/account-pending')
-        window.dispatchEvent(
-            new CustomEvent('open-game-chat', {
-                detail: { title: game.title, image: game.image },
-            }),
-        )
-    }
+    const handleJoinGameClick = game => playGame({ game, user, authLoading, router })
 
     const getDisplayedGames = () => {
         if (screenWidth >= 1536) {
@@ -144,16 +59,16 @@ export default function GamesSection() {
                     Dive into our selection of popular competitive games and
                     start your journey to the top.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 gap-y-10 mx-4 sm:mx-20 sm:gap-50 sm:gap-y-16 lg:gap-25 lg:gap-y-20 place-items-center">
+                <div className="grid grid-cols-1 min-[560px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-14 mx-auto max-w-7xl place-items-center">
                     {displayedGames.map((game, index) => (
                         <div
-                            key={index}
+                            key={game.id}
                             data-aos="fade-up"
                             data-aos-duration="1000"
                             data-aos-delay={100 * (index + 1)}
-                            className="group relative w-full sm:w-[300px] lg:max-w-[280px] overflow-hidden rounded-lg gradient-border">
+                            className="group relative w-full max-w-[340px] overflow-hidden rounded-lg gradient-border">
                             <div className="absolute inset-0 bg-gradient-to-r from-game-primary/20 via-game-secondary/20 to-game-accent/20 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
-                            <div className="w-full h-[300px] sm:h-[200px] md:h-[350px] relative">
+                            <div className="w-full aspect-[4/5] relative">
                                 <Image
                                     src={game.image}
                                     alt={game.title}
@@ -180,9 +95,11 @@ export default function GamesSection() {
                                         <h3 className="text-lg sm:text-xl font-aldo mb-1 sm:mb-2">
                                             {game.title}
                                         </h3>
-                                        <p className="text-gray-400 text-sm sm:text-base">
-                                            {game.players} Active Players
-                                        </p>
+                                        {game.players && (
+                                            <p className="text-gray-400 text-sm sm:text-base">
+                                                {game.players} Active Players
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                                 {screenWidth < 768 && (
@@ -200,7 +117,7 @@ export default function GamesSection() {
                                     onClick={() =>
                                         handleJoinGameClick(game)
                                     }
-                                    className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition">
+                                    className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition">
                                     <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">
                                         Play Game
                                     </span>

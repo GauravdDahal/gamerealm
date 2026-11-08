@@ -64,7 +64,7 @@ export default function Testimonial() {
                         <>
                             <button
                                 onClick={() => swiperRef.current?.slidePrev()}
-                                className="absolute left-[-33px] sm:left-[-40px] top-1/2 -translate-y-1/2 z-10 bg-gray-300 p-3 sm:p-4 rounded-full shadow-lg hover:bg-gray-400 transition-all duration-300"
+                                className="absolute left-1 sm:left-2 xl:left-[-40px] top-1/2 -translate-y-1/2 z-10 bg-gray-300 p-3 sm:p-4 rounded-full shadow-lg hover:bg-gray-400 transition-all duration-300"
                                 aria-label="Previous">
                                 <svg
                                     className="w-5 h-5 sm:w-6 sm:h-6 text-black"
@@ -82,7 +82,7 @@ export default function Testimonial() {
 
                             <button
                                 onClick={() => swiperRef.current?.slideNext()}
-                                className="absolute right-[-20px] sm:right-[-56px] top-1/2 -translate-y-1/2 z-10 bg-gray-300 p-3 sm:p-4 rounded-full shadow-lg hover:bg-gray-400 transition-all duration-300"
+                                className="absolute right-1 sm:right-2 xl:right-[-56px] top-1/2 -translate-y-1/2 z-10 bg-gray-300 p-3 sm:p-4 rounded-full shadow-lg hover:bg-gray-400 transition-all duration-300"
                                 aria-label="Next">
                                 <svg
                                     className="w-5 h-5 sm:w-6 sm:h-6 text-black"

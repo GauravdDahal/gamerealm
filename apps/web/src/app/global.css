@@ -260,3 +260,19 @@
 @media (max-width:900px) { .auth-experience { padding:0 24px; }.auth-stage { grid-template-columns:1fr;max-width:520px;gap:18px;padding:32px 0 42px; }.auth-showcase { min-height:0;padding:12px 0 0; }.auth-showcase h1 { font-size:58px;margin:16px 0 12px; }.auth-showcase-copy { max-width:460px;font-size:12px; }.auth-showcase-art { position:absolute;right:-25px;top:4px;width:220px;height:160px;opacity:.55;transform:scale(.72);transform-origin:top right; }.auth-trust,.auth-suits { display:none; }.auth-panel-wrap { justify-self:center; }.auth-footer { padding-bottom:18px; } }
 @media (max-width:560px) { .auth-experience { padding:0 17px; }.auth-topbar { height:72px; }.auth-brand { font-size:15px; }.auth-brand-mark { width:36px;height:36px; }.auth-back-link { font-size:9px;letter-spacing:.6px; }.auth-stage { padding-top:25px; }.auth-showcase h1 { font-size:49px; }.auth-showcase-copy { max-width:290px; }.auth-showcase-art { right:-50px;top:-8px;transform:scale(.56); }.auth-panel { padding:25px 20px;border-radius:18px; }.auth-register-form { grid-template-columns:1fr;gap:12px; }.auth-register-form>p,.auth-register-form>div:last-child { grid-column:auto; }.auth-form>div:last-child { align-items:stretch; }.auth-form>div:last-child button { width:100%; }.auth-form>div:last-child a { text-align:left; }.auth-footer { font-size:8px; } }
 @media (prefers-reduced-motion:reduce) { .auth-experience *, .auth-experience *::before,.auth-experience *::after { animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important; } }
+
+
+/* ------------------------------------------------------------ marquees */
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+/* Big gradient words (MarqueeText): the content is repeated twice, so
+   sliding half-way and restarting looks seamless. */
+.marquee-track { animation: marquee-scroll 30s linear infinite; will-change: transform; }
+/* Moving game logos (GamesMarquee). Duration is set per list in the component. */
+.games-marquee-track { animation: marquee-scroll 40s linear infinite; will-change: transform; }
+.games-marquee:hover .games-marquee-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track, .games-marquee-track { animation: none; }
+}
