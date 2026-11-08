@@ -18,12 +18,31 @@ export const HIGHLIGHT_STYLES = {
  */
 export const MessageMedia = ({ message, urls, mine }) => {
     const files = message.attachments ?? []
-    const images = files.filter(f => isImage(f.type))
-    const docs = files.filter(f => !isImage(f.type))
+    // Game request cards use banners that ship with the site. Only our own
+    // /assets images are drawn, so nobody can point one at an outside address.
+    const games = files.filter(f => f.kind === 'game' && f.url?.startsWith('/assets/'))
+    const uploads = files.filter(f => f.kind !== 'game')
+    const images = uploads.filter(f => isImage(f.type))
+    const docs = uploads.filter(f => !isImage(f.type))
     const border = mine ? 'border-white/20' : 'border-white/10'
 
     return (
         <>
+            {games.map(g => (
+                <div key={g.path} className="overflow-hidden rounded-xl border border-white/15">
+                    <div className="relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={g.url} alt={g.name} className="h-32 w-full object-cover" />
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-3 pb-2 pt-8">
+                            <span className="block text-[10px] font-bold uppercase tracking-[2px] text-[#e2ce86]">
+                                Game request
+                            </span>
+                            <span className="block text-base font-semibold text-white">{g.name}</span>
+                        </div>
+                    </div>
+                </div>
+            ))}
+
             {message.voice_path &&
                 (urls[message.voice_path] ? (
                     <audio

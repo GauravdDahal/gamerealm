@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/auth'
 
 
 export default function GamesSection() {
+    const router = useRouter()
+    const { user, loading: authLoading } = useAuth()
     const [showAll, setShowAll] = useState(false)
     const [screenWidth, setScreenWidth] = useState(
         typeof window !== 'undefined' ? window.innerWidth : 0,
@@ -95,8 +99,18 @@ export default function GamesSection() {
         },
     ]
 
-    const handleJoinGameClick = gameTitle => {
-        console.log(`Joining game: ${gameTitle}`)
+    // Play Game: signed-out players go to sign in, approved players get the
+    // support chat opened with a ready-made request for this game.
+    const handleJoinGameClick = game => {
+        if (authLoading) return
+        if (!user) return router.push('/users')
+        if (user.is_admin) return
+        if (user.is_approved === false) return router.push('/account-pending')
+        window.dispatchEvent(
+            new CustomEvent('open-game-chat', {
+                detail: { title: game.title, image: game.image },
+            }),
+        )
     }
 
     const getDisplayedGames = () => {
@@ -174,7 +188,7 @@ export default function GamesSection() {
                                 {screenWidth < 768 && (
                                     <button
                                         onClick={() =>
-                                            handleJoinGameClick(game.title)
+                                            handleJoinGameClick(game)
                                         }
                                         className="absolute inset-0 items-center rounded-lg text-sm font-medium">
                                         <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">
@@ -184,7 +198,7 @@ export default function GamesSection() {
                                 )}
                                 <button
                                     onClick={() =>
-                                        handleJoinGameClick(game.title)
+                                        handleJoinGameClick(game)
                                     }
                                     className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 transition">
                                     <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">

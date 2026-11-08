@@ -55,7 +55,7 @@ const upload = async (supabase, bucket, chatId, file, name, contentType) => {
  */
 export const sendChatMessage = async (
     supabase,
-    { chatId, senderId, text = '', files = [], voice = null, style = null, title = null },
+    { chatId, senderId, text = '', files = [], voice = null, style = null, title = null, extraAttachments = [] },
 ) => {
     const attachments = await Promise.all(
         files.map(async f => ({
@@ -86,7 +86,12 @@ export const sendChatMessage = async (
         )
     }
 
-    const row = { chat_id: chatId, sender_id: senderId, message: text, attachments }
+    const row = {
+        chat_id: chatId,
+        sender_id: senderId,
+        message: text,
+        attachments: [...attachments, ...extraAttachments],
+    }
     if (voice_path) row.voice_path = voice_path
     if (style) row.style = style
     if (title) row.title = title
@@ -108,6 +113,7 @@ export const useSignedUrls = (supabase, messages) => {
         const wanted = { 'chat-attachments': [], 'chat-voice': [] }
         for (const m of messages) {
             for (const a of m.attachments ?? []) {
+                if (a.kind === 'game') continue // site images, not private uploads
                 if (!asked.current.has(a.path)) wanted['chat-attachments'].push(a.path)
             }
             if (m.voice_path && !asked.current.has(m.voice_path)) {

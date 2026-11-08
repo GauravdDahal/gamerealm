@@ -256,9 +256,10 @@ function ChatPopup() {
             .single()
         if (error) {
             console.error('Failed to start chat:', error)
-            return
+            return null
         }
         setChat(data)
+        return data
     }
 
     const pickFiles = e => {
@@ -272,16 +273,17 @@ function ChatPopup() {
     }
 
     const deliver = useCallback(
-        async ({ text = '', files: toSend = [], voice: note = null }) => {
+        async ({ text = '', files: toSend = [], voice: note = null, chatId, extraAttachments = [] }) => {
             setSending(true)
             setNotice('')
             try {
                 const saved = await sendChatMessage(supabase, {
-                    chatId: chat.id,
+                    chatId: chatId ?? chat.id,
                     senderId: user.id,
                     text,
                     files: toSend,
                     voice: note,
+                    extraAttachments,
                 })
                 // Show our own message straight away instead of waiting for the live event.
                 setMessages(prev => mergeMessages(prev, [saved]))
@@ -321,6 +323,45 @@ function ChatPopup() {
         if (!note || note.seconds < 1) return setNotice('That was too short. Hold on a little longer.')
         await deliver({ voice: note })
     }
+
+    // "Play Game" on a game card: open this chat and send a request with the
+    // game's banner. Waits until the chat has finished loading if needed.
+    const [gameRequest, setGameRequest] = useState(null)
+    const lastGameSent = useRef({})
+    useEffect(() => {
+        const onRequest = e => setGameRequest({ ...e.detail, at: Date.now() })
+        window.addEventListener('open-game-chat', onRequest)
+        return () => window.removeEventListener('open-game-chat', onRequest)
+    }, [])
+
+    useEffect(() => {
+        if (!gameRequest || !canChat || loading) return
+        const req = gameRequest
+        setGameRequest(null)
+        if (Date.now() - req.at > 30000) return // stale
+        setIsOpen(true)
+        ;(async () => {
+            const current = chat ?? (await handleCreateChat())
+            if (!current) return
+            // Don't send the same request twice if they tap Play repeatedly.
+            if (Date.now() - (lastGameSent.current[req.title] ?? 0) < 30000) return
+            lastGameSent.current[req.title] = Date.now()
+            await deliver({
+                chatId: current.id,
+                text: `Hi! I would like to play ${req.title}.`,
+                extraAttachments: [
+                    {
+                        kind: 'game',
+                        path: `game:${req.title}`,
+                        name: req.title,
+                        type: 'image/jpeg',
+                        url: req.image,
+                    },
+                ],
+            })
+        })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gameRequest, canChat, loading, chat])
 
     const handleKeyPress = e => {
         if (e.key === 'Enter' && !e.shiftKey) {
