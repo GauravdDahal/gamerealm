@@ -1,9 +1,20 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Send } from 'lucide-react'
+import Link from 'next/link'
+import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
+import {
+    ATTACH_ACCEPT,
+    checkFiles,
+    formatClock,
+    formatSize,
+    sendChatMessage,
+    useSignedUrls,
+    useVoiceRecorder,
+} from '@/lib/chatMedia'
+import { FileThumb, HIGHLIGHT_STYLES, MessageMedia, hasMedia } from '@/components/chat/MessageMedia'
 import { Badge, EmptyState, ErrorState, Panel, Skeleton } from '@/components/admin/ui'
 
 const initials = name =>
@@ -42,6 +53,15 @@ const Inbox = () => {
     const [messages, setMessages] = useState([])
     const [staffId, setStaffId] = useState(null)
     const [draft, setDraft] = useState('')
+    const [files, setFiles] = useState([])
+    const [sending, setSending] = useState(false)
+    const [notice, setNotice] = useState('')
+    const [style, setStyle] = useState('')
+    const [quick, setQuick] = useState([])
+    const [quickOpen, setQuickOpen] = useState(false)
+    const fileInputRef = useRef(null)
+    const voice = useVoiceRecorder()
+    const urls = useSignedUrls(supabase, messages)
     const messagesEndRef = useRef(null)
     const activeIdRef = useRef(null)
 
@@ -59,6 +79,11 @@ const Inbox = () => {
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => setStaffId(session?.user?.id ?? null))
         loadChats()
+        supabase
+            .from('quick_replies')
+            .select('*')
+            .order('created_at', { ascending: true })
+            .then(({ data }) => setQuick(data ?? []))
     }, [loadChats, supabase])
 
     // Reload the open thread. Merges by id, so it can only add or update.
@@ -128,6 +153,8 @@ const Inbox = () => {
         activeIdRef.current = chat.id
         setActiveId(chat.id)
         setMessages([]) // never show the previous thread under the new header
+        setFiles([])
+        setNotice('')
         await refreshThread(chat.id)
 
         await supabase
@@ -137,23 +164,69 @@ const Inbox = () => {
             .eq('sender_id', chat.client_id)
             .eq('is_read', false)
         loadChats()
+        window.dispatchEvent(new Event('chats-changed'))
+    }
+
+    const deliver = async payload => {
+        setSending(true)
+        setNotice('')
+        try {
+            const saved = await sendChatMessage(supabase, {
+                chatId: activeId,
+                senderId: staffId,
+                ...payload,
+            })
+            setMessages(prev => mergeMessages(prev, [saved]))
+            return true
+        } catch (err) {
+            console.error('Failed to send:', err)
+            setNotice('Could not send. Check your connection and try again.')
+            return false
+        } finally {
+            setSending(false)
+        }
     }
 
     const send = async () => {
-        if (!draft.trim() || !activeId || !staffId) return
         const text = draft.trim()
+        if ((!text && !files.length) || !activeId || !staffId || sending) return
+        const toSend = files
         setDraft('')
-        const { data, error: err } = await supabase
-            .from('messages')
-            .insert({ chat_id: activeId, sender_id: staffId, message: text })
-            .select()
-            .single()
-        if (err) {
-            console.error('Failed to send:', err)
-            setDraft(text) // give the text back so it isn't lost
-            return
+        setFiles([])
+        const ok = await deliver({ text, files: toSend, style: style || null })
+        if (!ok) {
+            setDraft(text) // give everything back so nothing is lost
+            setFiles(toSend)
+        } else {
+            setStyle('')
         }
-        setMessages(prev => mergeMessages(prev, [data]))
+    }
+
+    const sendQuick = async q => {
+        setQuickOpen(false)
+        if (!activeId || !staffId || sending) return
+        await deliver({ text: q.body, title: q.title, style: q.style })
+    }
+
+    const pickFiles = e => {
+        const picked = Array.from(e.target.files ?? [])
+        e.target.value = ''
+        if (!picked.length) return
+        const problem = checkFiles(picked, files.length)
+        if (problem) return setNotice(problem)
+        setNotice('')
+        setFiles(prev => [...prev, ...picked])
+    }
+
+    const startVoice = async () => {
+        const problem = await voice.start()
+        setNotice(problem || '')
+    }
+
+    const sendVoice = async () => {
+        const note = await voice.stop()
+        if (!note || note.seconds < 1) return setNotice('That was too short.')
+        await deliver({ voice: note })
     }
 
     const activeChat = chats.find(c => c.id === activeId)
@@ -223,49 +296,180 @@ const Inbox = () => {
                         {activeChat ? (
                             <>
                                 <div className="flex-1 space-y-3 overflow-y-auto p-4">
-                                    {messages.map(m => (
-                                        <div
-                                            key={m.id}
-                                            className={`flex ${m.sender_id === staffId ? 'justify-end' : 'justify-start'}`}>
+                                    {messages.map(m => {
+                                        const mine = m.sender_id === staffId
+                                        const hl = m.style ? HIGHLIGHT_STYLES[m.style] : null
+                                        const HlIcon = hl?.icon
+                                        const hasText = !!m.message?.trim()
+                                        return (
                                             <div
-                                                className={`max-w-[75%] rounded-lg px-3 py-2 text-sm ${
-                                                    m.sender_id === staffId
-                                                        ? 'bg-[#D4AF57] text-[#0C1714]'
-                                                        : 'bg-[#0C1714] text-[#EFE9DA]'
-                                                }`}>
-                                                <p className="whitespace-pre-wrap">{m.message}</p>
-                                                <p
-                                                    className={`mt-1 text-[10px] ${
-                                                        m.sender_id === staffId
-                                                            ? 'text-[#0C1714]/60'
-                                                            : 'text-[#7E938B]'
-                                                    }`}>
-                                                    {formatWhen(m.created_at)}
-                                                </p>
+                                                key={m.id}
+                                                className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
+                                                {hl ? (
+                                                    <div
+                                                        style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
+                                                        className="max-w-[80%] space-y-2 rounded-lg border border-[#1E322C] px-3 py-2 text-sm text-[#EFE9DA]">
+                                                        <p
+                                                            style={{ color: hl.bar }}
+                                                            className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide">
+                                                            <HlIcon size={14} />
+                                                            {m.title || hl.label}
+                                                        </p>
+                                                        {hasText && <p className="whitespace-pre-wrap break-words">{m.message}</p>}
+                                                        <p className="text-[10px] text-[#7E938B]">{formatWhen(m.created_at)}</p>
+                                                    </div>
+                                                ) : (
+                                                    <div
+                                                        className={`max-w-[80%] space-y-2 rounded-lg px-3 py-2 text-sm ${
+                                                            mine ? 'bg-[#D4AF57] text-[#0C1714]' : 'bg-[#0C1714] text-[#EFE9DA]'
+                                                        }`}>
+                                                        {hasText && <p className="whitespace-pre-wrap break-words">{m.message}</p>}
+                                                        {hasMedia(m) && <MessageMedia message={m} urls={urls} mine={mine} />}
+                                                        <p
+                                                            className={`text-[10px] ${
+                                                                mine ? 'text-[#0C1714]/60' : 'text-[#7E938B]'
+                                                            }`}>
+                                                            {formatWhen(m.created_at)}
+                                                            {mine && m.is_read ? ' · seen' : ''}
+                                                        </p>
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                    ))}
+                                        )
+                                    })}
                                     <div ref={messagesEndRef} />
                                 </div>
-                                <div className="flex items-center gap-2 border-t border-[#1E322C] p-3">
-                                    <textarea
-                                        value={draft}
-                                        onChange={e => setDraft(e.target.value)}
-                                        onKeyDown={e => {
-                                            if (e.key === 'Enter' && !e.shiftKey) {
-                                                e.preventDefault()
-                                                send()
-                                            }
-                                        }}
-                                        rows={1}
-                                        placeholder="Reply…"
-                                        className="flex-1 resize-none rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none"
-                                    />
-                                    <button
-                                        onClick={send}
-                                        className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110">
-                                        <Send size={16} />
-                                    </button>
+                                <div className="relative border-t border-[#1E322C] p-3">
+                                    {quickOpen && (
+                                        <div className="absolute bottom-full left-3 right-3 z-10 mb-2 max-h-72 overflow-y-auto rounded border border-[#1E322C] bg-[#132320] shadow-xl">
+                                            <div className="flex items-center justify-between border-b border-[#1E322C] px-3 py-2">
+                                                <span className="text-xs text-[#7E938B]">Click a reply to send it</span>
+                                                <Link href="/admin/quick-replies" className="flex items-center gap-1 text-xs text-[#D4AF57] hover:underline">
+                                                    <Settings2 size={12} /> Manage
+                                                </Link>
+                                            </div>
+                                            {quick.length === 0 ? (
+                                                <p className="px-3 py-4 text-sm text-[#7E938B]">
+                                                    No saved replies yet.{' '}
+                                                    <Link href="/admin/quick-replies" className="text-[#D4AF57] underline">Create one</Link>
+                                                </p>
+                                            ) : (
+                                                quick.map(q => {
+                                                    const hl = HIGHLIGHT_STYLES[q.style] ?? HIGHLIGHT_STYLES.info
+                                                    return (
+                                                        <button
+                                                            key={q.id}
+                                                            onClick={() => sendQuick(q)}
+                                                            disabled={sending}
+                                                            className="block w-full border-b border-[#1E322C]/60 px-3 py-2 text-left hover:bg-[#0C1714] disabled:opacity-50">
+                                                            <span style={{ color: hl.bar }} className="flex items-center gap-1.5 text-xs font-semibold">
+                                                                <hl.icon size={13} /> {q.title}
+                                                            </span>
+                                                            <span className="mt-0.5 line-clamp-2 block text-xs text-[#7E938B]">{q.body}</span>
+                                                        </button>
+                                                    )
+                                                })
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {notice && (
+                                        <p className="mb-2 rounded bg-[#C25B45]/15 px-3 py-2 text-xs text-[#e8a090]" role="alert">{notice}</p>
+                                    )}
+
+                                    {files.length > 0 && (
+                                        <div className="mb-2 flex gap-2 overflow-x-auto pb-1">
+                                            {files.map((f, i) => (
+                                                <div key={`${f.name}-${i}`} className="relative flex shrink-0 items-center gap-2 rounded border border-[#1E322C] bg-[#0C1714] py-1.5 pl-2 pr-7">
+                                                    <FileThumb file={f} className="h-8 w-8" />
+                                                    <span className="max-w-[120px]">
+                                                        <span className="block truncate text-xs text-[#EFE9DA]">{f.name}</span>
+                                                        <span className="block text-[10px] text-[#7E938B]">{formatSize(f.size)}</span>
+                                                    </span>
+                                                    <button
+                                                        onClick={() => setFiles(list => list.filter((_, n) => n !== i))}
+                                                        aria-label={`Remove ${f.name}`}
+                                                        className="absolute right-1 top-1 rounded p-0.5 text-[#7E938B] hover:text-[#EFE9DA]">
+                                                        <X size={13} />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {voice.recording ? (
+                                        <div className="flex items-center gap-2">
+                                            <button onClick={voice.cancel} aria-label="Discard recording" className="rounded p-2 text-[#7E938B] hover:text-[#C25B45]">
+                                                <Trash2 size={16} />
+                                            </button>
+                                            <div className="flex flex-1 items-center gap-3 rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA]">
+                                                <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#C25B45]" />
+                                                Recording… {formatClock(voice.seconds)}
+                                            </div>
+                                            <button onClick={sendVoice} aria-label="Send voice message" className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110">
+                                                <Send size={16} />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="flex items-end gap-2">
+                                                <input ref={fileInputRef} type="file" multiple accept={ATTACH_ACCEPT} onChange={pickFiles} className="hidden" />
+                                                <button
+                                                    onClick={() => setQuickOpen(v => !v)}
+                                                    aria-label="Saved replies"
+                                                    title="Saved replies"
+                                                    className={`rounded p-2 hover:text-[#D4AF57] ${quickOpen ? 'text-[#D4AF57]' : 'text-[#7E938B]'}`}>
+                                                    <Zap size={18} />
+                                                </button>
+                                                <button
+                                                    onClick={() => fileInputRef.current?.click()}
+                                                    aria-label="Attach photos, GIFs or documents"
+                                                    disabled={sending}
+                                                    className="rounded p-2 text-[#7E938B] hover:text-[#EFE9DA] disabled:opacity-40">
+                                                    <Paperclip size={18} />
+                                                </button>
+                                                <textarea
+                                                    value={draft}
+                                                    onChange={e => setDraft(e.target.value)}
+                                                    onKeyDown={e => {
+                                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                                            e.preventDefault()
+                                                            send()
+                                                        }
+                                                    }}
+                                                    rows={1}
+                                                    placeholder="Reply…"
+                                                    className="max-h-32 min-w-0 flex-1 resize-none rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none"
+                                                />
+                                                {!draft.trim() && !files.length && voice.supported ? (
+                                                    <button onClick={startVoice} aria-label="Record a voice message" className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110">
+                                                        <Mic size={16} />
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        onClick={send}
+                                                        disabled={sending}
+                                                        aria-label="Send"
+                                                        className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110 disabled:opacity-50">
+                                                        {sending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+                                                    </button>
+                                                )}
+                                            </div>
+                                            <div className="mt-2 flex items-center gap-2 text-xs text-[#7E938B]">
+                                                <label htmlFor="hl-style">Highlight this message:</label>
+                                                <select
+                                                    id="hl-style"
+                                                    value={style}
+                                                    onChange={e => setStyle(e.target.value)}
+                                                    className="rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1 text-xs text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none">
+                                                    <option value="">No highlight</option>
+                                                    {Object.entries(HIGHLIGHT_STYLES).map(([k, v]) => (
+                                                        <option key={k} value={k}>{v.label}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </>
                         ) : (

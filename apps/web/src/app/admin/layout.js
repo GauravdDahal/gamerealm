@@ -13,11 +13,15 @@ import {
     Images,
     UserCheck,
     MessageCircle,
+    Zap,
+    Bell,
+    BellOff,
     LogOut,
     Menu,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { ToastProvider } from '@/components/admin/ui'
+import { ToastProvider, useToast } from '@/components/admin/ui'
+import { useAdminChatAlerts } from '@/lib/useAdminChatAlerts'
 
 const fraunces = Fraunces({
     subsets: ['latin'],
@@ -37,6 +41,7 @@ const nav = [
     { href: '/admin/registrations', label: 'Registrations', icon: UserCheck },
     { href: '/admin/clients', label: 'Players', icon: Users },
     { href: '/admin/chats', label: 'Chats', icon: MessageCircle },
+    { href: '/admin/quick-replies', label: 'Saved replies', icon: Zap },
     { href: '/admin/roles', label: 'Roles', icon: KeyRound },
     { href: '/admin/activity', label: 'Activity', icon: ScrollText },
     { href: '/admin/banners', label: 'Banners', icon: Images },
@@ -52,6 +57,11 @@ const Shell = ({ children }) => {
     const pathname = usePathname()
     const [navOpen, setNavOpen] = useState(false)
     const supabase = createClient()
+    const toast = useToast()
+    const alerts = useAdminChatAlerts({
+        staffId: status === 'ready' ? user?.id : null,
+        onChatsPage: pathname.startsWith('/admin/chats'),
+    })
 
     useEffect(() => {
         let cancelled = false
@@ -180,7 +190,12 @@ const Shell = ({ children }) => {
                                             : 'text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]'
                                     }`}>
                                 <Icon size={16} strokeWidth={1.75} />
-                                {label}
+                                <span className="flex-1">{label}</span>
+                                {href === '/admin/chats' && alerts.unread > 0 && (
+                                    <span className="rounded-full bg-[#D4AF57] px-1.5 text-[11px] font-semibold leading-5 text-[#0C1714]">
+                                        {alerts.unread > 99 ? '99+' : alerts.unread}
+                                    </span>
+                                )}
                             </Link>
                         )
                     })}
@@ -191,6 +206,17 @@ const Shell = ({ children }) => {
                         <p className="truncate text-sm text-[#EFE9DA]">{user.name}</p>
                         <p className="truncate text-xs text-[#7E938B]">{user.email}</p>
                     </div>
+                    {alerts.allowed && (
+                        <button
+                            onClick={async () => {
+                                const problem = await alerts.toggleAlerts()
+                                if (problem) toast(problem, 'error')
+                            }}
+                            className="flex w-full items-center gap-3 rounded px-3 py-2 text-sm text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]">
+                            {alerts.alertsOn ? <Bell size={16} strokeWidth={1.75} className="text-[#D4AF57]" /> : <BellOff size={16} strokeWidth={1.75} />}
+                            {alerts.alertsOn ? 'Alerts on' : 'Turn on alerts'}
+                        </button>
+                    )}
                     <button
                         onClick={signOut}
                         className="flex w-full items-center gap-3 rounded px-3 py-2 text-sm text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]">

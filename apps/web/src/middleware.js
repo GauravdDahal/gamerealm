@@ -45,6 +45,6 @@ export const config = {
          * Run on everything except static assets and image optimisation,
          * so the session cookie stays fresh on normal page navigations.
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        '/((?!_next/static|_next/image|favicon.ico|sw.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
 }
