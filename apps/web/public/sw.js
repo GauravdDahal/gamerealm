@@ -1,6 +1,10 @@
 // Lets notifications work on phones, and brings the site to the front when one is tapped.
 self.addEventListener('install', () => self.skipWaiting())
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()))
+// Lets the browser treat the site as an installable app. Pages are always
+// fetched fresh from the network, nothing is cached here.
+self.addEventListener('fetch', () => {})
+
 self.addEventListener('notificationclick', event => {
     event.notification.close()
     const url = event.notification.data?.url || '/'
