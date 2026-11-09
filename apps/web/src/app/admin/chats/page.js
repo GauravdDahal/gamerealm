@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2 } from 'lucide-react'
+import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, QrCode } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
 import {
@@ -15,6 +15,7 @@ import {
     useVoiceRecorder,
 } from '@/lib/chatMedia'
 import { FileThumb, HIGHLIGHT_STYLES, MessageMedia, hasMedia } from '@/components/chat/MessageMedia'
+import QrPanel from '@/components/chat/QrPanel'
 import { Badge, EmptyState, ErrorState, Panel, Skeleton } from '@/components/admin/ui'
 
 const initials = name =>
@@ -59,6 +60,7 @@ const Inbox = () => {
     const [style, setStyle] = useState('')
     const [quick, setQuick] = useState([])
     const [quickOpen, setQuickOpen] = useState(false)
+    const [qrOpen, setQrOpen] = useState(false)
     const fileInputRef = useRef(null)
     const voice = useVoiceRecorder()
     const urls = useSignedUrls(supabase, messages)
@@ -202,6 +204,14 @@ const Inbox = () => {
         }
     }
 
+    // Staff tapped a QR code: send its image to the player as an attachment.
+    const sendQr = async (code, file) => {
+        if (!activeId || !staffId || sending) return false
+        const ok = await deliver({ text: `${code.label} QR code`, files: [file] })
+        if (ok) setQrOpen(false)
+        return ok
+    }
+
     const sendQuick = async q => {
         setQuickOpen(false)
         if (!activeId || !staffId || sending) return
@@ -292,7 +302,23 @@ const Inbox = () => {
 
                     <Panel
                         title={activeChat ? activeChat.client_name : 'Select a conversation'}
-                        className="flex h-[80dvh] min-h-0 flex-col overflow-hidden lg:h-full">
+                        action={
+                            activeChat && (
+                                <button
+                                    onClick={() => setQrOpen(true)}
+                                    aria-label="Send a payment QR code"
+                                    title="Send a payment QR code"
+                                    className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#D4AF57]">
+                                    <QrCode size={18} />
+                                </button>
+                            )
+                        }
+                        className="relative flex h-[80dvh] min-h-0 flex-col overflow-hidden lg:h-full">
+                        {qrOpen && activeChat && (
+                            <div className="absolute inset-0 z-20 flex flex-col bg-[#0C1714]">
+                                <QrPanel tone="admin" onClose={() => setQrOpen(false)} onSend={sendQr} />
+                            </div>
+                        )}
                         {activeChat ? (
                             <>
                                 <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4">

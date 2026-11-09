@@ -12,9 +12,13 @@ import {
     BellOff,
     Trash2,
     Loader2,
+    QrCode,
 } from 'lucide-react'
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { useAuth } from '@/hooks/auth'
+import { useGames } from '@/lib/useGames'
+import QrPanel from '@/components/chat/QrPanel'
+import GameQuickBar from '@/components/chat/GameQuickBar'
 import { createClient } from '@/lib/supabase/client'
 import {
     ATTACH_ACCEPT,
@@ -47,6 +51,9 @@ function ChatPopup() {
     const supabase = useMemo(() => createClient(), [])
     const [unreadCount, setUnreadCount] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
+    const [showQr, setShowQr] = useState(false)
+    const [openCount, setOpenCount] = useState(0)
+    const games = useGames()
     const [messages, setMessages] = useState([])
     const [newMessage, setNewMessage] = useState('')
     const [chat, setChat] = useState(null)
@@ -335,6 +342,11 @@ function ChatPopup() {
     }, [])
 
     useEffect(() => {
+        if (isOpen) setOpenCount(n => n + 1)
+        else setShowQr(false)
+    }, [isOpen])
+
+    useEffect(() => {
         const onOpen = () => canChat && setIsOpen(true)
         window.addEventListener('open-chat', onOpen)
         return () => window.removeEventListener('open-chat', onOpen)
@@ -448,6 +460,15 @@ function ChatPopup() {
                                 </div>
                                 <div className="flex shrink-0 items-center gap-1">
                                     <button
+                                        onClick={() => setShowQr(v => !v)}
+                                        aria-label="Payment QR codes"
+                                        title="Payment QR codes"
+                                        className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface2 ${
+                                            showQr ? 'text-accent2' : 'text-muted hover:text-ink'
+                                        }`}>
+                                        <QrCode className="h-5 w-5" />
+                                    </button>
+                                    <button
                                         onClick={toggleAlerts}
                                         aria-label={alertsOn ? 'Turn message alerts off' : 'Turn message alerts on'}
                                         title={alertsOn ? 'Alerts on' : 'Get alerts for new replies'}
@@ -465,6 +486,8 @@ function ChatPopup() {
                                 </div>
                             </div>
 
+                            {showQr && <QrPanel onClose={() => setShowQr(false)} />}
+                            <div className={showQr ? 'hidden' : 'contents'}>
                             {chat ? (
                                 <>
                                     {/* Messages */}
@@ -537,6 +560,13 @@ function ChatPopup() {
 
                                     {/* Input */}
                                     <div className="border-t border-accent/25 bg-black/25 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
+                                        {!voice.recording && (
+                                            <GameQuickBar
+                                                games={games}
+                                                openKey={openCount}
+                                                onPick={g => setGameRequest({ title: g.title, image: g.image, at: Date.now() })}
+                                            />
+                                        )}
                                         {notice && (
                                             <p className="mb-2 rounded-lg bg-danger/15 px-3 py-2 text-xs text-danger-soft" role="alert">
                                                 {notice}
@@ -652,6 +682,7 @@ function ChatPopup() {
                                     </button>
                                 </div>
                             )}
+                            </div>
                         </div>
                     </div>
                 </div>
