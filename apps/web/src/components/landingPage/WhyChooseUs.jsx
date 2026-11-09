@@ -3,35 +3,12 @@ import { useState, useEffect } from "react";
 import dynamic from 'next/dynamic';
 
 import LazyLottie from '@/components/common/LazyLottie';
+import { useSiteContent } from '@/lib/useSiteContent'
 
-const features = [
-  { 
-    animation: "/Lottie/secure.json", 
-    title: "Secure & Fair Gaming",
-    description: "Advanced encryption and certified RNG technology ensure your gaming experience is both safe and fair.",
-    aos: "fade-left"
-  },
-  { 
-    animation: "/Lottie/premium.json", 
-    title: "Premium Game Selection",
-    description: "Access hundreds of high-quality casino games from top providers, updated regularly with new releases.",
-    aos: "fade-left"
-  },
-  { 
-    animation: "/Lottie/winner.json", 
-    title: "Competitive Rewards",
-    description: "Enjoy industry-leading winning rates and exclusive bonus programs designed to maximize your chances.",
-    aos: "fade-left"
-  },
-  { 
-    animation: "/Lottie/reward.json", 
-    title: "Smart Investment Gaming",
-    description: "Strategic gaming options with real earning potential through our innovative reward systems.",
-    aos: "fade-left"
-  }
-];
+const animations = ['/Lottie/secure.json', '/Lottie/premium.json', '/Lottie/winner.json', '/Lottie/reward.json'];
 
 export default function WhyChooseUs() {
+  const c = useSiteContent('why');
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -62,45 +39,37 @@ export default function WhyChooseUs() {
                       <h1
                           data-aos="fade-down"
                           className="text-5xl sm:text-4xl font-glance leading-tight sm:pt-3">
-                          Why Play Our Casino
+                          {c.title}
                       </h1>
                       <p
                           data-aos="fade-down"
                           data-aos-delay="100"
                           className="text-lg text-gray-300 max-w-xl">
-                          Experience the thrill of premium online gaming with
-                          industry-leading security and endless entertainment
-                          options.
+                          {c.intro}
                       </p>
                       <p
                           data-aos="fade-down"
                           data-aos-delay="200"
                           className="text-gray-400">
-                          Join thousands of players worldwide who trust our
-                          platform for its reliability, fairness, and
-                          exceptional gaming experience. Our commitment to
-                          transparency and player satisfaction has made us a
-                          leading choice in the online gaming community, with a
-                          track record of creating memorable gaming moments and
-                          lasting player relationships.
+                          {c.body}
                       </p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-10">
                       {isClient &&
-                          features.map(
+                          c.features.map(
                               (
-                                  { animation, title, description, aos },
+                                  { title, description },
                                   index,
                               ) => {
                                   return (
                                       <div
                                           key={index}
                                           className="space-y-4 last:mb-8"
-                                          data-aos={aos}
+                                          data-aos="fade-left"
                                           data-aos-delay={index * 200}>
                                           <div className="w-20 h-20 flex  items-center justify-center">
-                                              <LazyLottie src={animation} className="w-20 h-20" />
+                                              <LazyLottie src={animations[index % animations.length]} className="w-20 h-20" />
                                           </div>
                                           <h3 className="text-xl font-glance">
                                               {title}

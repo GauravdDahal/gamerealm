@@ -7,93 +7,101 @@ import {
     Twitter,
     Disc as Discord,
 } from 'lucide-react'
+import { useSiteContent } from '@/lib/useSiteContent'
 
-const sections = [
-    {
-        title: 'Quick Links',
-        links: ['Home', 'Featured Games', '', 'Contact'],
-    },
-    {
-        title: 'Games',
-        links: ['Spin Wheel', 'Cards', 'Poker', 'Roulette'],
-    },
-    {
-        title: 'Contact Us',
-        items: [
-            'support@gamerealm.com',
-            '+1 (555) 123-4567',
-            '123 Gaming Street',
-            'Los Angeles, CA 90001',
-        ],
-    },
-]
+const socialIcons = {
+    twitch: Twitch,
+    youtube: Youtube,
+    twitter: Twitter,
+    discord: Discord,
+}
+
+const socialNames = {
+    twitch: 'Twitch',
+    youtube: 'YouTube',
+    twitter: 'Twitter',
+    discord: 'Discord',
+}
 
 export default function Footer() {
+    const c = useSiteContent('footer')
+    const brand = useSiteContent('brand')
+
+    // Only show icons that have a link.
+    const social = c.social.filter(s => s.url && socialIcons[s.platform])
+
     return (
         <footer className="bg-gray-900 border-t border-gray-800 py-20">
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-4 gap-12">
                     <div>
                         <div className="flex items-center gap-2 mb-6">
-                            <Gamepad2 className="w-8 h-8 text-[#4f46e5] animate-float" />
+                            {brand.logo ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={brand.logo} alt={brand.name} className="w-8 h-8 object-contain" />
+                            ) : (
+                                <Gamepad2 className="w-8 h-8 text-[#4f46e5] animate-float" />
+                            )}
                             <span className="text-xl  font-bold bg-clip-text bg-gradient-to-r from-[#4f46e5] via-[#7c3aed] to-[#db2777] text-transparent">
-                                CASINO PLAY
+                                {brand.name}
                             </span>
                         </div>
-                        <p className="text-gray-400 mb-6">
-                            Experience the thrill of the game anytime, anywhere!
-                            Spin the reels, place your bets, and chase big wins
-                            with the ultimate online casino adventure. Luck is
-                            just a click away! 🎰💰🔥
-                        </p>
+                        <p className="text-gray-400 mb-6">{c.description}</p>
                         <div className="flex gap-4">
-                            {[
-                                { icon: Twitch, href: '#', label: 'Twitch' },
-                                { icon: Youtube, href: '#', label: 'YouTube' },
-                                { icon: Twitter, href: '#', label: 'Twitter' },
-                                { icon: Discord, href: '#', label: 'Discord' },
-                            ].map((social, index) => (
-                                <a
-                                    key={index}
-                                    href={social.href}
-                                    aria-label={social.label}
-                                    className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-[#4f46e5] delay-200 ease-in-out duration-150 transition-colors">
-                                    <social.icon className="w-5 h-5" />
-                                </a>
-                            ))}
+                            {social.map((s, index) => {
+                                const Icon = socialIcons[s.platform]
+                                return (
+                                    <a
+                                        key={index}
+                                        href={s.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={socialNames[s.platform]}
+                                        className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-[#4f46e5] delay-200 ease-in-out duration-150 transition-colors">
+                                        <Icon className="w-5 h-5" />
+                                    </a>
+                                )
+                            })}
                         </div>
                     </div>
-                    {sections.map((section, index) => (
+
+                    {c.columns.map((column, index) => (
                         <div key={index}>
-                            <h4 className="text-lg font-bold mb-6 text-white">
-                                {section.title}
-                            </h4>
+                            <h4 className="text-lg font-bold mb-6 text-white">{column.title}</h4>
                             <ul className="space-y-4">
-                                {(section.links || section.items).map(
-                                    (item, itemIndex) => (
-                                        <li key={itemIndex}>
-                                            {section.links ? (
-                                                <a
-                                                    href="#"
-                                                    className="text-gray-400 hover:text-game-primary transition-colors">
-                                                    {item}
-                                                </a>
-                                            ) : (
-                                                <span className="text-gray-400">
-                                                    {item}
-                                                </span>
-                                            )}
-                                        </li>
-                                    ),
-                                )}
+                                {column.links.map((link, i) => (
+                                    <li key={i}>
+                                        {link.url ? (
+                                            <a
+                                                href={link.url}
+                                                className="text-gray-400 hover:text-game-primary transition-colors">
+                                                {link.label}
+                                            </a>
+                                        ) : (
+                                            <span className="text-gray-400">{link.label}</span>
+                                        )}
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     ))}
+
+                    {c.contact.length > 0 && (
+                        <div>
+                            <h4 className="text-lg font-bold mb-6 text-white">{c.contact_title}</h4>
+                            <ul className="space-y-4">
+                                {c.contact.map((line, i) => (
+                                    <li key={i}>
+                                        <span className="text-gray-400">{line.text}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
                 <div className="border-t border-gray-800 mt-16 pt-8 text-center text-gray-600 dark:text-gray-400">
                     <p>
-                        &copy; {new Date().getFullYear()} CASINO PLAY. All
-                        rights reserved.
+                        &copy; {new Date().getFullYear()} {c.copyright_name}. All rights reserved.
                     </p>
                 </div>
             </div>

@@ -1,14 +1,14 @@
 'use client'
 
-const items = [
-    { text: 'Jackpot ♠' },
-    { text: 'casino ♠', opacity: 'opacity-60' },
-    { text: 'Spinning wheel ♠' },
-    { text: 'casino games ♠', opacity: 'opacity-60' },
-]
+import { useSiteContent } from '@/lib/useSiteContent'
+
 
 /* Pure CSS scrolling (see .marquee-track in global.css): no JavaScript loop. */
-const Marquee = () => (
+const Marquee = () => {
+    const { items: words } = useSiteContent('marquee')
+    const items = words.map((w, i) => ({ text: w.text, opacity: i % 2 ? 'opacity-60' : '' }))
+    if (items.length === 0) return null
+    return (
     <div className="relative w-full overflow-hidden bg-[#151C28]">
         <div className="py-8 md:py-12 lg:py-16">
             <div className="marquee-track flex w-max whitespace-nowrap">
@@ -22,6 +22,7 @@ const Marquee = () => (
             </div>
         </div>
     </div>
-)
+    )
+}
 
 export default Marquee

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 import { useGames } from '@/lib/useGames'
+import { useSiteContent } from '@/lib/useSiteContent'
 import { playGame } from '@/lib/playGame'
 
 
@@ -12,6 +13,7 @@ export default function GamesSection() {
     const router = useRouter()
     const { user, loading: authLoading } = useAuth()
     const games = useGames()
+    const c = useSiteContent('games')
     const [showAll, setShowAll] = useState(false)
     const [screenWidth, setScreenWidth] = useState(
         typeof window !== 'undefined' ? window.innerWidth : 0,
@@ -49,15 +51,14 @@ export default function GamesSection() {
                     data-aos="fade-down"
                     data-aos-duration="1000"
                     className="text-white text-4xl sm:text-9xl md:text-4xl lg:text-6xl font-godofwar text-center mb-4">
-                    Featured Games
+                    {c.title}
                 </h2>
                 <p
                     data-aos="fade-down"
                     data-aos-duration="1000"
                     data-aos-delay="200"
                     className="text-gray-400 text-center mb-12 md:mb-16 max-w-2xl mx-auto text-sm sm:text-base">
-                    Dive into our selection of popular competitive games and
-                    start your journey to the top.
+                    {c.intro}
                 </p>
                 <div className="grid grid-cols-1 min-[560px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-14 mx-auto max-w-7xl place-items-center">
                     {displayedGames.map((game, index) => (
@@ -109,7 +110,7 @@ export default function GamesSection() {
                                         }
                                         className="absolute inset-0 items-center rounded-lg text-sm font-medium">
                                         <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">
-                                            Play Game
+                                            {c.play_label}
                                         </span>
                                     </button>
                                 )}
@@ -119,7 +120,7 @@ export default function GamesSection() {
                                     }
                                     className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition">
                                     <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">
-                                        Play Game
+                                        {c.play_label}
                                     </span>
                                 </button>
                             </div>
@@ -132,7 +133,7 @@ export default function GamesSection() {
                         <button
                             onClick={() => setShowAll(!showAll)}
                             className="text-white gradient-border bg-gray-900 px-4 sm:px-6 py-2 text-sm sm:text-base font-medium flex items-center gap-2">
-                            {showAll ? 'Show Less' : 'See More'}
+                            {showAll ? c.less_label : c.more_label}
                             {showAll ? (
                                 <ChevronUp size={18} />
                             ) : (

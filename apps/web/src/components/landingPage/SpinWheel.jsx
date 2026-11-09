@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Gift, Sparkles, Volume2, VolumeX, X, Zap } from 'lucide-react'
 import { useAuth } from '@/hooks/auth'
 import { createClient } from '@/lib/supabase/client'
+import { useSiteContent } from '@/lib/useSiteContent'
 import { lose, setSoundOn, soundOn, tick, unlock, whoosh, win } from '@/lib/wheelSound'
 
 // Shown until the real segments arrive (and if they can't be loaded).
@@ -44,6 +45,7 @@ const untilText = iso => {
 }
 
 export default function SpinWheel() {
+    const copy = useSiteContent('wheel')
     const router = useRouter()
     const supabase = useMemo(() => createClient(), [])
     const { user, loading: authLoading } = useAuth()
@@ -202,17 +204,16 @@ export default function SpinWheel() {
                 {/* ------------------------------------------------ words */}
                 <div className="text-center lg:text-left">
                     <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-indigo-300 sm:text-xs">
-                        <Zap className="h-3.5 w-3.5" /> Online gaming · Lucky wheel
+                        <Zap className="h-3.5 w-3.5" /> {copy.eyebrow}
                     </p>
                     <h1 className="mt-4 font-godofwar text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-                        Spin free.{' '}
+                        {copy.title}{' '}
                         <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
-                            Win freeplay.
+                            {copy.highlight}
                         </span>
                     </h1>
                     <p className="mx-auto mt-3 max-w-xl text-sm text-gray-400 sm:mt-4 sm:text-lg lg:mx-0">
-                        Every approved player gets one free spin a day. Land on a prize and our team will credit it to
-                        your account.
+                        {copy.subtitle}
                     </p>
 
                     <div className="mt-6 hidden flex-wrap justify-center gap-2 sm:flex lg:justify-start">

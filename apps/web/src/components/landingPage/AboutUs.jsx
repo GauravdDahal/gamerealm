@@ -4,7 +4,9 @@ import LazyLottie from '@/components/common/LazyLottie'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import dynamic from 'next/dynamic'
+import { useSiteContent } from '@/lib/useSiteContent'
 export default function AboutUs() {
+    const c = useSiteContent('about')
 
     return (
         <section id='about' className="min-h-[600px] bg-[#151C28] relative overflow-hidden">
@@ -18,25 +20,19 @@ export default function AboutUs() {
                             className="text-4xl sm:text-5xl font-godofwar text-white tracking-tight"
                             data-aos="fade-up"
                             data-aos-delay="200">
-                            About US
+                            {c.title}
                         </h1>
                         <p
                             className="text-lg text-gray-300 leading-relaxed max-w-xl"
                             data-aos="fade-up"
                             data-aos-delay="300">
-                            A casino is a facility for certain types of
-                            gambling. Casinos are often built near or combined
-                            with hotels, resorts, restaurants, retail shopping,
-                            cruise ships, and other tourist attractions. Our
-                            players get a friendly team, quick support through
-                            live chat, and a regular schedule of games, events
-                            and rewards.
+                            {c.body}
                         </p>
                         <button
                             className="border border-game-primary hover:bg-blue-950 ease-in-out delay-300 duration-1000 px-8 py-3 rounded-full font-medium transition backdrop-blur-sm"
                             data-aos="fade-up"
                             data-aos-delay="400">
-                            Learn More
+                            {c.button}
                         </button>
                     </div>
                     <div

@@ -15,12 +15,14 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 import Image from 'next/image'
 import UserAvatar from '@/components/common/UserAvatar'
+import { useSiteContent } from '@/lib/useSiteContent'
 
 export default function Navigation({ isScrolled }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const { user, logout } = useAuth()
     const router = useRouter();
+    const brand = useSiteContent('brand')
 
     const handleJoinClick = () => {
         router.push('/users')
@@ -37,34 +39,27 @@ export default function Navigation({ isScrolled }) {
                 <div className="flex items-center justify-between w-full">
                     {/* Logo - Far Left */}
                     <div className="flex items-center gap-2">
-                        <Dice6 className="w-9 h-9 text-[#4f46e5] animate-float" />
+                        {brand.logo ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={brand.logo} alt={brand.name} className="w-9 h-9 object-contain" />
+                        ) : (
+                            <Dice6 className="w-9 h-9 text-[#4f46e5] animate-float" />
+                        )}
                         <span className="text-xl bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-[#4f46e5] via-[#605C66] to-[#322C3C] text-transparent">
-                            CASINO PLAY
+                            {brand.name}
                         </span>
                     </div>
 
                     {/* Center Navigation Links */}
                     <div className="hidden md:flex items-center gap-9 my-1 absolute left-1/2 transform -translate-x-1/2">
-                        <a
-                            href="#home"
-                            className="text-[#0d012e] text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-white">
-                            Home
-                        </a>
-                        <a
-                            href="#games"
-                            className="text-[#0d012e] text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-white">
-                            Games
-                        </a>
-                        <a
-                            href="#tournaments"
-                            className="text-[#0d012e] text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-white">
-                            Events
-                        </a>
-                        <a
-                            href="#rules"
-                            className="text-[#0d012e] text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-white">
-                            Rules
-                        </a>
+                        {brand.nav.map((link, i) => (
+                            <a
+                                key={i}
+                                href={link.href}
+                                className="text-[#0d012e] text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-white">
+                                {link.label}
+                            </a>
+                        ))}
                     </div>
 
                     {/* Profile/Join Button - Far Right */}
@@ -150,7 +145,7 @@ export default function Navigation({ isScrolled }) {
                                 <button
                                     onClick={handleJoinClick}
                                     className="text-black hidden md:block rounded-xl border-2 border-black boreder-opacity-40 font-aldo bg-[#bdbb9a] px-3 py-1 transition-transform hover:scale-105 hover:text-[#faf4bb] hover:border-white hover:bg-[#2b3133]">
-                                    JOIN NOW
+                                    {brand.join_label}
                                 </button>
                             </div>
                         )}
@@ -175,26 +170,14 @@ export default function Navigation({ isScrolled }) {
                             </div>
                         )}
                         <div className="flex flex-col gap-3 mx-3 my-2 mb-4">
-                            <a
-                                href="#home"
-                                className="hover:text-game-primary font-aldo text-[#0d012e]">
-                                Home
-                            </a>
-                            <a
-                                href="#games"
-                                className="hover:text-game-primary font-aldo text-[#0d012e]">
-                                Games
-                            </a>
-                            <a
-                                href="#tournaments"
-                                className="hover:text-game-primary font-aldo text-[#0d012e]">
-                                Events
-                            </a>
-                            <a
-                                href="#rules"
-                                className="hover:text-game-primary font-aldo text-[#0d012e]">
-                                Rules
-                            </a>
+                            {brand.nav.map((link, i) => (
+                                <a
+                                    key={i}
+                                    href={link.href}
+                                    className="hover:text-game-primary font-aldo text-[#0d012e]">
+                                    {link.label}
+                                </a>
+                            ))}
                         </div>
                         <div>
                             {user ? (
@@ -209,7 +192,7 @@ export default function Navigation({ isScrolled }) {
                                 <button
                                     onClick={handleJoinClick}
                                     className="text-[#0d012e] bg-[#bdbb9a] rounded-xl border-2 font-aldo border-black boreder-opacity-40 px-6 py-2 font-medium w-full">
-                                    JOIN NOW
+                                    {brand.join_label}
                                 </button>
                             )}
                         </div>

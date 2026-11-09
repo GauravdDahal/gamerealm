@@ -16,6 +16,7 @@ import {
     Zap,
     Gamepad2,
     Gift,
+    PencilLine,
     Bell,
     BellOff,
     LogOut,
@@ -49,6 +50,7 @@ const nav = [
     { href: '/admin/banners', label: 'Banners', icon: Images },
     { href: '/admin/games', label: 'Games', icon: Gamepad2 },
     { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift },
+    { href: '/admin/site', label: 'Site content', icon: PencilLine },
 ]
 
 /* Deliberately not using useAuth({ middleware: 'auth' }).

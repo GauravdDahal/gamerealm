@@ -6,18 +6,15 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { useRef, useState, useEffect } from 'react'
 import AOS from 'aos'
+import { useSiteContent } from '@/lib/useSiteContent'
 import 'aos/dist/aos.css'
 
 export default function Testimonial() {
     const [isMobile, setIsMobile] = useState(false)
     const swiperRef = useRef(null)
 
-    const testimonials = [
-        { id: 1, name: 'Kylie Rogers', role: 'Player', rating: 4, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua.' },
-        { id: 2, name: 'Peter Parker', role: 'Player', rating: 4, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua. Adipiscing elit.' },
-        { id: 3, name: 'Sam Smith', role: 'Player', rating: 5, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua.' },
-        { id: 4, name: 'Emma Wilson', role: 'Player', rating: 5, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua.' },
-    ]
+    const c = useSiteContent('testimonials')
+    const testimonials = c.items.map((t, i) => ({ ...t, id: i }))
 
     useEffect(() => {
         const checkScreenSize = () => setIsMobile(window.innerWidth < 768)
@@ -25,6 +22,8 @@ export default function Testimonial() {
         window.addEventListener('resize', checkScreenSize)
         return () => window.removeEventListener('resize', checkScreenSize)
     }, [])
+
+    if (testimonials.length === 0) return null
 
     return (
         <section
@@ -51,10 +50,10 @@ export default function Testimonial() {
             <div className="container mx-auto px-4 relative">
                 <div className="text-center mb-12" data-aos="fade-up">
                     <h3 className="text-white text-4xl sm:text-9xl md:text-4xl lg:text-6xl font-godofwar">
-                        Winners feedback
+                        {c.title}
                     </h3>
                     <h2 className="text-gray-200 text-lg font-medium mt-4">
-                        What Our Players Say
+                        {c.subtitle}
                     </h2>
                 </div>
 
