@@ -52,7 +52,7 @@ function Home() {
             <SectionDecor name="bonuses"><BonusesSection /></SectionDecor>
             <SectionDecor name="why"><WhyChooseUs /></SectionDecor>
             <SectionDecor name="rules"><RulesSection /></SectionDecor>
-            <FAQSection />
+            <SectionDecor name="faq"><FAQSection /></SectionDecor>
             <Testimonial />
             <PaymentSection />
             <SectionDecor name="footer"><Footer /></SectionDecor>

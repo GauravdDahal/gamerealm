@@ -279,4 +279,14 @@
 
 /* Artwork credit, only while the Halloween theme is on */
 .decor-credit { display: none; }
-html[data-theme="halloween"] .decor-credit { display: block; }
+html[data-theme="halloween"] .decor-credit,
+html[data-theme="christmas"] .decor-credit { display: block; }
+
+/* Christmas: Santa's sleigh sits behind the lucky-wheel banner */
+html[data-theme="christmas"] #home {
+  background-image: url('/assets/decor/christmas/santa.webp');
+  background-repeat: no-repeat;
+  background-position: 50% 100%;
+  background-size: min(860px, 118%) auto;
+}
+@media (min-width: 1024px) { html[data-theme="christmas"] #home { background-position: 46% 100%; } }

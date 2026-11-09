@@ -55,12 +55,34 @@ export const THEMES = [
     },
     scales: { gray: [150, 20], purple: [145, 65], pink: [350, 80], orange: [45, 92] },
     decor: {
-      fall: { art: 'snowflake', count: 10 }, strip: 'lights',
+      fall: { art: 'snowflake', count: 8 }, strip: 'lights',
       scene: {
-        hero: [{ art: 'snowflake', right: '2%', top: '110px', size: 90, color: 'ink', op: 0.2, anim: 'spin', dur: 70 }],
-        about: [{ art: 'pine', left: '2%', bottom: '-6px', size: 150, color: 'secondary', op: 0.45 }, { art: 'pine', left: '9%', bottom: '-6px', size: 100, color: 'secondary2', op: 0.35 }],
-        bonuses: [{ art: 'snowflake', left: '2%', top: '20px', size: 70, color: 'ink', op: 0.18, anim: 'spin', dur: 90 }],
-        footer: [{ art: 'pine', right: '7%', top: '-92px', size: 120, color: 'secondary', op: 0.5 }, { art: 'pine', right: '14%', top: '-62px', size: 80, color: 'secondary2', op: 0.4 }],
+        hero: [{ img: '/assets/decor/christmas/ornament.webp', right: '5%', top: '70px', size: 64, op: 0.95, anim: 'sway', dur: 5, origin: 'top' }],
+        games: [
+          { img: '/assets/decor/christmas/sil.webp', left: 0, top: '14px', size: 360, op: 0.12, anim: 'fly', dur: 60 },
+          { img: '/assets/decor/christmas/giftstack.webp', left: '2%', bottom: '-14px', size: 130 },
+        ],
+        about: [
+          { img: '/assets/decor/christmas/garland.webp', left: '1%', top: '-6px', size: 300, op: 0.9 },
+          { img: '/assets/decor/christmas/snowman.webp', right: '3%', bottom: '-24px', size: 100, anim: 'bob', dur: 7 },
+        ],
+        bonuses: [
+          { img: '/assets/decor/christmas/sack.webp', left: '2%', bottom: '-34px', size: 130 },
+          { img: '/assets/decor/christmas/snowflake.webp', right: '3%', top: '14px', size: 66, anim: 'spin', dur: 90 },
+        ],
+        why: [
+          { img: '/assets/decor/christmas/bell.webp', right: '3%', top: '0', size: 56, anim: 'sway', dur: 4, origin: 'top' },
+          { img: '/assets/decor/christmas/gift.webp', left: '2%', bottom: '-10px', size: 90 },
+        ],
+        rules: [
+          { img: '/assets/decor/christmas/sweater.webp', right: '3%', top: '10px', size: 90, anim: 'sway', dur: 7, origin: 'top' },
+          { img: '/assets/decor/christmas/gingerbread.webp', left: '3%', bottom: '0', size: 78, anim: 'bob', dur: 6 },
+        ],
+        faq: [{ img: '/assets/decor/christmas/elfstar.webp', right: '3%', bottom: '-64px', size: 90 }],
+        footer: [
+          { img: '/assets/decor/christmas/elfpair.webp', left: '42%', top: '-66px', size: 260 },
+          { img: '/assets/decor/christmas/cart.webp', right: '5%', top: '-72px', size: 150 },
+        ],
       },
     },
   },
