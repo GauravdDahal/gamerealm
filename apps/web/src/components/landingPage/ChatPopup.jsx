@@ -335,6 +335,12 @@ function ChatPopup() {
     }, [])
 
     useEffect(() => {
+        const onOpen = () => canChat && setIsOpen(true)
+        window.addEventListener('open-chat', onOpen)
+        return () => window.removeEventListener('open-chat', onOpen)
+    }, [canChat])
+
+    useEffect(() => {
         if (!gameRequest || !canChat || loading) return
         const req = gameRequest
         setGameRequest(null)

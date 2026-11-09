@@ -67,7 +67,7 @@ const LevelCard = ({ lv, state }) => {
     )
 }
 
-export default function ReferralSection() {
+export default function ReferralSection({ bare = false }) {
     const c = useSiteContent('referral')
     const router = useRouter()
     const { user, loading } = useAuth()
@@ -105,8 +105,10 @@ export default function ReferralSection() {
     }
 
     return (
-        <section id="referrals" className="bg-gray-900 py-12 sm:py-16">
+        <section id="referrals" className={`bg-gray-900 ${bare ? 'pt-10 pb-4' : 'py-12 sm:py-16'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                {!bare && (
+                    <>
                 <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-accent">
                     <Users className="h-3.5 w-3.5" /> {c.eyebrow}
                 </p>
@@ -115,8 +117,11 @@ export default function ReferralSection() {
                 </h2>
                 <p className="mt-3 max-w-2xl text-sm text-muted sm:text-base">{c.subtitle}</p>
 
+                    </>
+                )}
+
                 {/* ------------------------------------------- personal panel */}
-                <div className="mt-8 rounded-2xl border border-line/60 bg-surface/70 p-5 sm:p-6">
+                <div className={`${bare ? '' : 'mt-8 '}rounded-2xl border border-line/60 bg-surface/70 p-5 sm:p-6`}>
                     {loading ? null : !user ? (
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <p className="text-sm text-muted">Create an account to get your personal referral link.</p>

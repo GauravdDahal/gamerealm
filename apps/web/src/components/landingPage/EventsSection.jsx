@@ -3,7 +3,7 @@ import React from "react";
 import { Gift, Send } from "lucide-react";
 import { useSiteContent } from '@/lib/useSiteContent'
 
-const fallbackLinks = ['#referrals', '#bonuses']
+const fallbackLinks = ['/referral', '/bonuses']
 
 const styles = [
   { gradient: "from-green-400 to-blue-500", btnGradient: "from-green-500 to-blue-600", Icon: Send },

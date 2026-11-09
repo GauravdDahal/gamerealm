@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 import { useGames } from '@/lib/useGames'
@@ -9,7 +10,7 @@ import { useSiteContent } from '@/lib/useSiteContent'
 import { playGame } from '@/lib/playGame'
 
 
-export default function GamesSection() {
+export default function GamesSection({ bare = false, all = false }) {
     const router = useRouter()
     const { user, loading: authLoading } = useAuth()
     const games = useGames()
@@ -31,6 +32,7 @@ export default function GamesSection() {
     const handleJoinGameClick = game => playGame({ game, user, authLoading, router })
 
     const getDisplayedGames = () => {
+        if (all) return games
         if (screenWidth >= 1536) {
             return games
         } else if (screenWidth >= 768) {
@@ -42,11 +44,13 @@ export default function GamesSection() {
 
     const displayedGames = getDisplayedGames()
     const shouldShowButton =
-        screenWidth < 1536 && games.length > (screenWidth >= 768 ? 8 : 3)
+        !all && screenWidth < 1536 && games.length > (screenWidth >= 768 ? 8 : 3)
 
     return (
-        <section id="games" className="py-16 md:py-24 lg:py-32 bg-gray-900">
+        <section id="games" className={`bg-gray-900 ${bare ? 'py-10 md:py-14' : 'py-16 md:py-24 lg:py-32'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                {!bare && (
+                    <>
                 <h2
                     data-aos="fade-down"
                     data-aos-duration="1000"
@@ -60,6 +64,8 @@ export default function GamesSection() {
                     className="text-gray-400 text-center mb-12 md:mb-16 max-w-2xl mx-auto text-sm sm:text-base">
                     {c.intro}
                 </p>
+                    </>
+                )}
                 <div className="grid grid-cols-1 min-[560px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-14 mx-auto max-w-7xl place-items-center">
                     {displayedGames.map((game, index) => (
                         <div
@@ -127,6 +133,14 @@ export default function GamesSection() {
                         </div>
                     ))}
                 </div>
+
+                {!bare && (
+                    <div className="mt-6 text-center">
+                        <Link href="/games" className="text-sm font-semibold text-accent hover:text-accent2">
+                            View all games →
+                        </Link>
+                    </div>
+                )}
 
                 {shouldShowButton && (
                     <div className="mt-8 text-center flex justify-center">

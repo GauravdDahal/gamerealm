@@ -9,10 +9,11 @@ export const siteDefaults = {
         logo: '',
         join_label: 'JOIN NOW',
         nav: [
-            { label: 'Home', href: '#home' },
-            { label: 'Games', href: '#games' },
-            { label: 'Events', href: '#tournaments' },
-            { label: 'Rules', href: '#rules' },
+            { label: 'Home', href: '/' },
+            { label: 'Games', href: '/games' },
+            { label: 'Bonuses', href: '/bonuses' },
+            { label: 'Referral', href: '/referral' },
+            { label: 'Support', href: '/support' },
         ],
     },
     wheel: {

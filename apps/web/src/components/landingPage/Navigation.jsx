@@ -11,7 +11,8 @@ import {
     CreditCard,
     ShieldCheck,
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 import Image from 'next/image'
 import UserAvatar from '@/components/common/UserAvatar'
@@ -21,7 +22,9 @@ export default function Navigation({ isScrolled }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const [isProfileOpen, setIsProfileOpen] = useState(false)
     const { user, logout } = useAuth()
-    const router = useRouter();
+    const router = useRouter()
+    const pathname = usePathname()
+    const active = href => href === pathname
     const brand = useSiteContent('brand')
 
     const handleJoinClick = () => {
@@ -53,12 +56,12 @@ export default function Navigation({ isScrolled }) {
                     {/* Center Navigation Links */}
                     <div className="hidden md:flex items-center gap-9 my-1 absolute left-1/2 transform -translate-x-1/2">
                         {brand.nav.map((link, i) => (
-                            <a
+                            <Link
                                 key={i}
                                 href={link.href}
-                                className="text-ink text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-accent">
+                                className={`text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-accent ${active(link.href) ? 'text-accent' : 'text-ink'}`}>
                                 {link.label}
-                            </a>
+                            </Link>
                         ))}
                     </div>
 
@@ -171,12 +174,13 @@ export default function Navigation({ isScrolled }) {
                         )}
                         <div className="flex flex-col gap-3 mx-3 my-2 mb-4">
                             {brand.nav.map((link, i) => (
-                                <a
+                                <Link
                                     key={i}
                                     href={link.href}
-                                    className="hover:text-accent font-aldo text-ink">
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className={`hover:text-accent font-aldo ${active(link.href) ? 'text-accent' : 'text-ink'}`}>
                                     {link.label}
-                                </a>
+                                </Link>
                             ))}
                         </div>
                         <div>

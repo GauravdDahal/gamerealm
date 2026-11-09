@@ -10,7 +10,7 @@ import { useSiteContent } from '@/lib/useSiteContent'
  * Visitors are sent to sign in; approved players open the support chat with
  * a ready-made request for that bonus.
  */
-export default function BonusesSection() {
+export default function BonusesSection({ bare = false }) {
     const c = useSiteContent('bonuses')
     const router = useRouter()
     const { user, loading } = useAuth()
@@ -32,8 +32,9 @@ export default function BonusesSection() {
     const odd = c.cards.length % 2 === 1
 
     return (
-        <section id="bonuses" className="bg-gray-900 py-12 sm:py-16">
+        <section id="bonuses" className={`bg-gray-900 ${bare ? 'pt-10 pb-4' : 'py-12 sm:py-16'}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                {!bare && (
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div>
                         <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-orange-400">
@@ -51,8 +52,9 @@ export default function BonusesSection() {
                         </a>
                     )}
                 </div>
+                )}
 
-                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                <div className={`${bare ? '' : 'mt-6 '}grid gap-4 md:grid-cols-2`}>
                     {c.cards.map((card, i) => (
                         <div
                             key={i}
