@@ -31,7 +31,7 @@ const RootLayout = ({ children }) => {
             <head>
                 <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
             </head>
-            <body className="antialiased">
+            <body className="antialiased relative">
                 <ThemeApplier />
                 <SeasonalDecor />
                 <AOSProvider />
