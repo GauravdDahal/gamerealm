@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, Download, Loader2, QrCode, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useSiteContent } from '@/lib/useSiteContent'
 
 /**
  * Payment QR codes. Lists the available methods (Cash App, Venmo, PayPal …);
@@ -18,6 +19,9 @@ const ext = path => (path.split('.').pop() || 'png').toLowerCase()
 
 export default function QrPanel({ onClose, tone = 'player', onSend }) {
     const supabase = useMemo(() => createClient(), [])
+    const payments = useSiteContent('payments')
+    // Logo for a method = the picture of a payment method with the same name (Site content > Payment methods).
+    const logoFor = label => payments.methods.find(m => m.image && m.name?.trim().toLowerCase() === label.trim().toLowerCase())?.image
     const [codes, setCodes] = useState(null)
     const [error, setError] = useState(false)
     const [picked, setPicked] = useState(null)
@@ -102,7 +106,7 @@ export default function QrPanel({ onClose, tone = 'player', onSend }) {
                 ) : (
                     <QrCode className={`h-5 w-5 ${c.accent}`} />
                 )}
-                <p className={`flex-1 text-sm font-bold ${c.text}`}>{picked ? picked.label : onSend ? 'Tap a QR code to send it to the player' : 'Pay with a QR code'}</p>
+                <p className={`flex-1 text-sm font-bold ${c.text}`}>{picked ? (admin ? picked.label : `Deposit · ${picked.label}`) : onSend ? 'Tap a QR code to send it to the player' : 'Pay with a QR code'}</p>
                 <button onClick={onClose} aria-label="Close QR codes" className={`rounded-full p-1.5 ${c.muted} hover:text-white`}>
                     <X className="h-5 w-5" />
                 </button>
@@ -140,8 +144,22 @@ export default function QrPanel({ onClose, tone = 'player', onSend }) {
                             <li key={q.id}>
                                 <button onClick={() => (onSend ? sendCode(q) : setPicked(q))} disabled={!!sendingId}
                                     className={`flex h-full w-full flex-col items-center gap-2 rounded-xl border p-4 text-center transition ${c.card}`}>
-                                    {sendingId === q.id ? <Loader2 className={`h-8 w-8 animate-spin ${c.accent}`} /> : <QrCode className={`h-8 w-8 ${c.accent}`} />}
-                                    <span className={`text-sm font-semibold ${c.text}`}>{q.label}</span>
+                                    {sendingId === q.id ? (
+                                        <Loader2 className={`h-8 w-8 animate-spin ${c.accent}`} />
+                                    ) : logoFor(q.label) ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={logoFor(q.label)} alt={q.label} className="h-10 max-w-full rounded object-contain" />
+                                    ) : (
+                                        <QrCode className={`h-8 w-8 ${c.accent}`} />
+                                    )}
+                                    {admin ? (
+                                        <span className={`text-sm font-semibold ${c.text}`}>{q.label}</span>
+                                    ) : (
+                                        <>
+                                            <span className={`text-sm font-bold uppercase tracking-wider ${c.text}`}>Deposit</span>
+                                            <span className={`text-[11px] ${c.muted}`}>{q.label}</span>
+                                        </>
+                                    )}
                                     {q.note && <span className={`line-clamp-2 text-[11px] ${c.muted}`}>{q.note}</span>}
                                 </button>
                             </li>
