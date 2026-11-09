@@ -1,11 +1,8 @@
 import { createClient } from '@/lib/supabase/client'
 
 /**
- * Supabase-backed replacement for the old Laravel adminApi.js. Every admin
- * page still imports { adminApi, errorMessage } from this file and calls the
- * same method names with the same shapes back — only what happens inside
- * each method changed, from an axios call to the Laravel API to a Supabase
- * query or RPC call. See supabase/migrations/0004_admin_rpcs.sql for the
+ * The admin data layer. Every admin page imports { adminApi, errorMessage }
+ * from this file; each method is a Supabase query or RPC call. See supabase/migrations/0004_admin_rpcs.sql for the
  * database functions most of these call through.
  */
 

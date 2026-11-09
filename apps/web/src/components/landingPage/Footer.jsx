@@ -48,14 +48,15 @@ export default function Footer() {
                         </p>
                         <div className="flex gap-4">
                             {[
-                                { icon: Twitch, href: '#' },
-                                { icon: Youtube, href: '#' },
-                                { icon: Twitter, href: '#' },
-                                { icon: Discord, href: '#' },
+                                { icon: Twitch, href: '#', label: 'Twitch' },
+                                { icon: Youtube, href: '#', label: 'YouTube' },
+                                { icon: Twitter, href: '#', label: 'Twitter' },
+                                { icon: Discord, href: '#', label: 'Discord' },
                             ].map((social, index) => (
                                 <a
                                     key={index}
                                     href={social.href}
+                                    aria-label={social.label}
                                     className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-[#4f46e5] delay-200 ease-in-out duration-150 transition-colors">
                                     <social.icon className="w-5 h-5" />
                                 </a>

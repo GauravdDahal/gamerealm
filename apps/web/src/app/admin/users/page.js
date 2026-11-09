@@ -25,6 +25,7 @@ const blank = { name: '', email: '', role_name: '' }
 
 const AdminUsers = () => {
     const toast = useToast()
+    const [invite, setInvite] = useState(null)
     const [users, setUsers] = useState([])
     const [roles, setRoles] = useState([])
     const [loading, setLoading] = useState(true)
@@ -86,10 +87,11 @@ const AdminUsers = () => {
                 await adminApi.updateUser(editing.id, form)
                 toast('Changes saved.')
             } else {
-                await adminApi.createUser(form)
-                // Password is generated server-side and emailed. MAIL_MAILER=log in dev,
-                // so it lands in storage/logs/laravel.log rather than an inbox.
-                toast('User created. Invite written to the mail log.')
+                const created = await adminApi.createUser(form)
+                // The password is generated on the server and is NOT emailed.
+                // Show it once so the admin can pass it on.
+                setInvite({ email: form.email, password: created?.temp_password })
+                toast('User created.')
             }
             setOpen(false)
             load()
@@ -265,12 +267,26 @@ const AdminUsers = () => {
                     </Field>
                     {!editing && (
                         <p className="text-xs leading-relaxed text-[#7E938B]">
-                            A password is generated automatically and emailed to this
-                            address. In local development mail goes to
-                            storage/logs/laravel.log.
+                            A temporary password is generated automatically. It is
+                            shown once after you create the user, so you can pass it
+                            on. They can change it with &ldquo;Forgot password&rdquo;.
                         </p>
                     )}
                 </div>
+            </Modal>
+
+            <Modal
+                open={!!invite}
+                title="User created"
+                onClose={() => setInvite(null)}
+                footer={<Button onClick={() => setInvite(null)}>Done</Button>}>
+                <p className="text-sm text-[#7E938B]">
+                    Give these sign-in details to {invite?.email}. This password
+                    is shown only once.
+                </p>
+                <p className="mt-3 select-all rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 font-mono text-sm">
+                    {invite?.password}
+                </p>
             </Modal>
 
             <ConfirmDialog

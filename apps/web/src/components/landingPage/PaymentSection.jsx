@@ -11,7 +11,7 @@ export default function PaymentSection() {
                 <button className="transition-transform hover:scale-105">
                     <img
                         src="/assets/images/paymentSectionImg/mastercard.jpg"
-                        alt="Cash on Delivery"
+                        alt="Mastercard"
                         className="h-12 sm:h-16 rounded-md"
                     />
                 </button>
@@ -19,7 +19,7 @@ export default function PaymentSection() {
                     <button className="transition-transform hover:scale-105">
                         <img
                             src="/assets/images/paymentSectionImg/visa.jpg"
-                            alt="Cash on Delivery"
+                            alt="Visa"
                             className="h-12 sm:h-16 rounded-md"
                         />
                     </button>

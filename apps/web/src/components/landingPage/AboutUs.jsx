@@ -27,11 +27,10 @@ export default function AboutUs() {
                             A casino is a facility for certain types of
                             gambling. Casinos are often built near or combined
                             with hotels, resorts, restaurants, retail shopping,
-                            cruise ships, and other tourist attractions. Lorem
-                            ipsum dolor sit amet consectetur adipisicing elit.
-                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Voluptatum harum odit facere culpa eaque,
-                            accusantium ullam repellat distinctio quo impedit.
+                            cruise ships, and other tourist attractions. Our
+                            players get a friendly team, quick support through
+                            live chat, and a regular schedule of games, events
+                            and rewards.
                         </p>
                         <button
                             className="border border-game-primary hover:bg-blue-950 ease-in-out delay-300 duration-1000 px-8 py-3 rounded-full font-medium transition backdrop-blur-sm"

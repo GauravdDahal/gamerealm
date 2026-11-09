@@ -106,7 +106,7 @@ export default function FAQSection() {
                     data-aos-delay="100"
                     className="text-center text-gray-300 mb-12 max-w-2xl mx-auto">
                     A casino is a facility for certain types of gambling.
-                    Casinos are often built combined with hotels and resorts.
+                    Casinos are often found in or alongside hotels and resorts.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

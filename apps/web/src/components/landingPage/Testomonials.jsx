@@ -17,7 +17,6 @@ export default function Testimonial() {
         { id: 2, name: 'Peter Parker', role: 'Player', rating: 4, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua. Adipiscing elit.' },
         { id: 3, name: 'Sam Smith', role: 'Player', rating: 5, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua.' },
         { id: 4, name: 'Emma Wilson', role: 'Player', rating: 5, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua.' },
-        { id: 5, name: 'Emma Wilson', role: 'Player', rating: 5, comment: 'Adipiscing elit, sed do eiusmod tempor incididunt labore dolore magna aliqua.' },
     ]
 
     useEffect(() => {
