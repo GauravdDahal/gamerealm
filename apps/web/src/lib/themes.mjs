@@ -47,17 +47,21 @@ export const THEMES = [
     id: 'christmas', label: 'Christmas', emoji: '🎄',
     blurb: 'Pine green, candy red and festive gold.',
     tokens: {
-      night: '#06130d', surface: '#0d2218', surface2: '#143324', line: '#245238',
-      ink: '#fff8ef', muted: '#b9d6c4', dim: '#80a28f',
-      accent: '#f5c542', accent2: '#ffe08a', 'accent-dim': '#a67c10', 'accent-ink': '#1a1400',
-      danger: '#dc2f3f', 'danger-soft': '#ffb8bf',
-      secondary: '#168a4a', secondary2: '#34c26e', hot: '#e11d48',
+      night: '#0c3321', surface: '#4a1020', surface2: '#1b6b41', line: '#35a96b',
+      ink: '#fffaf0', muted: '#dcf5e4', dim: '#a6dcba',
+      accent: '#ffd23f', accent2: '#fff0a6', 'accent-dim': '#d49a12', 'accent-ink': '#2a1500',
+      danger: '#ff4d5e', 'danger-soft': '#ffc2c8',
+      secondary: '#22c55e', secondary2: '#6ee7a0', hot: '#ff3b4e',
     },
-    scales: { gray: [150, 20], purple: [145, 65], pink: [350, 80], orange: [45, 92] },
+    scales: { gray: [152, 48], purple: [145, 70], pink: [352, 88], orange: [46, 100] },
     decor: {
-      fall: { art: 'snowflake', count: 8 }, strip: 'lights',
+      fall: { art: 'snowflake', count: 14 }, strip: 'lights',
       scene: {
         hero: [
+          { art: 'spark', left: '36%', top: '110px', size: 22, color: 'accent', op: 0.9, anim: 'pulse', dur: 3 },
+          { art: 'spark', left: '6%', top: '34%', size: 16, color: 'accent2', op: 0.8, anim: 'pulse', dur: 4, delay: -1 },
+          { art: 'spark', right: '8%', top: '62%', size: 20, color: 'ink', op: 0.8, anim: 'pulse', dur: 3.5, delay: -2 },
+          { art: 'spark', left: '48%', top: '58%', size: 14, color: 'accent', op: 0.8, anim: 'pulse', dur: 2.8, delay: -0.5 },
           { kind: 'glide', img: '/assets/decor/christmas/santa.webp', bottom: '16px', size: 720, dur: 34 },
           { img: '/assets/decor/christmas/ornament.webp', desktop: true, right: '5%', top: '70px', size: 64, op: 0.95, anim: 'sway', dur: 5, origin: 'top' }],
         games: [
