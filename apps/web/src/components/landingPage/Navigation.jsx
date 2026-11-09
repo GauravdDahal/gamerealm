@@ -10,6 +10,8 @@ import {
     Settings,
     CreditCard,
     ShieldCheck,
+    Download,
+    Share,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -17,6 +19,7 @@ import { useAuth } from '@/hooks/auth'
 import Image from 'next/image'
 import UserAvatar from '@/components/common/UserAvatar'
 import { useSiteContent } from '@/lib/useSiteContent'
+import { useInstallApp } from '@/lib/installApp'
 
 export default function Navigation({ isScrolled }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -26,6 +29,8 @@ export default function Navigation({ isScrolled }) {
     const pathname = usePathname()
     const active = href => href === pathname
     const brand = useSiteContent('brand')
+    const app = useInstallApp()
+    const [iosHint, setIosHint] = useState(false)
 
     const handleJoinClick = () => {
         router.push('/users')
@@ -48,7 +53,7 @@ export default function Navigation({ isScrolled }) {
                         ) : (
                             <Dice6 className="w-9 h-9 text-accent animate-float" />
                         )}
-                        <span className="text-xl bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-accent2 via-accent to-accent2 text-transparent">
+                        <span className="text-base sm:text-xl whitespace-nowrap bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-accent2 via-accent to-accent2 text-transparent">
                             {brand.name}
                         </span>
                     </div>
@@ -66,7 +71,24 @@ export default function Navigation({ isScrolled }) {
                     </div>
 
                     {/* Profile/Join Button - Far Right */}
-                    <div className="flex items-center gap-4 ml-auto">
+                    <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+                        {(app.canInstall || app.showIosHint) && (
+                            <div className="relative">
+                                <button
+                                    onClick={() => (app.canInstall ? app.install() : setIosHint(v => !v))}
+                                    aria-label="Get the app"
+                                    className="flex items-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2.5 py-1 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2">
+                                    <Download className="h-4 w-4" />
+                                    <span>Get app</span>
+                                </button>
+                                {iosHint && (
+                                    <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-accent/40 bg-night p-3 text-xs text-muted shadow-xl">
+                                        Tap <Share className="inline h-3.5 w-3.5 align-text-bottom" /> then
+                                        &ldquo;Add to Home Screen&rdquo;.
+                                    </div>
+                                )}
+                            </div>
+                        )}
                         <div className="md:hidden">
                             <button
                                 onClick={() =>
