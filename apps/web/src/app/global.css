@@ -282,6 +282,12 @@
 html[data-theme="halloween"] .decor-credit,
 html[data-theme="christmas"] .decor-credit { display: block; }
 
-/* Christmas: leave a strip under the lucky-wheel banner for Santa's sleigh to glide through */
-html[data-theme="christmas"] #home { padding-bottom: 210px; }
-@media (min-width: 1024px) { html[data-theme="christmas"] #home { padding-bottom: 270px; } }
+/* Christmas: room for Santa's sleigh under the wheel banner, the doorway garland above
+   "About us", and the elves carrying bunting at the top of the footer. */
+html[data-theme="christmas"] #home { padding-bottom: 150px; }
+html[data-theme="christmas"] #about { padding-top: 54px; }
+html[data-theme="christmas"] footer { padding-top: clamp(110px, 17vw, 190px); }
+@media (min-width: 1024px) {
+  html[data-theme="christmas"] #home { padding-bottom: 270px; }
+  html[data-theme="christmas"] #about { padding-top: 86px; }
+}

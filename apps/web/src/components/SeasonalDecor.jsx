@@ -23,7 +23,7 @@ export const CSS = `
 @keyframes d-pulse { 0%,100% { transform: scale(.9); opacity: .55 } 50% { transform: scale(1.12); opacity: 1 } }
 @keyframes d-rise { from { transform: translate3d(0,0,0) } to { transform: translate3d(30px,-120vh,0) } }
 @keyframes d-twinkle { 0%,100% { opacity: .25 } 50% { opacity: 1 } }
-@keyframes d-glide { 0% { transform: translate3d(-62vw,0,0); opacity: 0 } 10% { opacity: 1 } 25% { transform: translate3d(-31vw,-9px,0) } 50% { transform: translate3d(0,0,0) } 75% { transform: translate3d(31vw,-9px,0) } 90% { opacity: 1 } 100% { transform: translate3d(62vw,0,0); opacity: 0 } }
+@keyframes d-glide { 0% { transform: translate3d(62vw,0,0); opacity: 0 } 10% { opacity: 1 } 25% { transform: translate3d(31vw,-9px,0) } 50% { transform: translate3d(0,0,0) } 75% { transform: translate3d(-31vw,-9px,0) } 90% { opacity: 1 } 100% { transform: translate3d(-62vw,0,0); opacity: 0 } }
 @keyframes d-spin { to { transform: rotate(360deg) } }
 @keyframes d-drop { 0%,100% { transform: translateY(-30px) } 50% { transform: translateY(0) } }
 .d-prop { position: absolute; line-height: 1; user-select: none; }

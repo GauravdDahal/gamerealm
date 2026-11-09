@@ -12,7 +12,7 @@ import { tone } from '@/components/SeasonalDecor'
 const sizeOf = p => `clamp(${Math.round(p.size * 0.5)}px, ${(p.size / 12.8).toFixed(1)}vw, ${p.size}px)`
 
 const Glide = ({ p, still }) => (
-    <span style={{ position: 'absolute', left: 0, right: 0, bottom: p.bottom, overflow: 'hidden', lineHeight: 0, display: 'flex', justifyContent: 'center' }}>
+    <span style={{ position: 'absolute', left: 0, right: 0, bottom: p.bottom, overflow: 'hidden', lineHeight: 0, display: 'flex', justifyContent: 'center', padding: '28px 0 6px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={p.img} alt="" draggable={false}
             style={{ width: `min(${p.size}px, 92%)`, height: 'auto', animation: still ? undefined : `d-glide ${p.dur ?? 30}s linear infinite` }} />
@@ -39,6 +39,12 @@ const Banner = ({ p }) => {
 }
 
 const Item = ({ p, still }) => {
+    const straddles = [p.top, p.bottom].some(v => typeof v === 'string' && v.startsWith('-'))
+    if ((p.desktop || straddles) && !p.kind) return <span className="d-desktop"><Piece p={p} still={still} /></span>
+    return <Piece p={p} still={still} />
+}
+
+const Piece = ({ p, still }) => {
     if (p.kind === 'glide') return <Glide p={p} still={still} />
     if (p.kind === 'swag') return <Swag p={p} />
     if (p.kind === 'banner') return <Banner p={p} />
