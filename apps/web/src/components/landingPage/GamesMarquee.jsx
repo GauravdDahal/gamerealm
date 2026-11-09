@@ -20,7 +20,7 @@ export default function GamesMarquee() {
     const repeats = Math.max(1, Math.ceil(8 / games.length))
     const row = Array.from({ length: repeats }).flatMap(() => games)
     const track = [...row, ...row]
-    const seconds = Math.max(20, row.length * 4)
+    const seconds = Math.max(14, row.length * 2.8)
 
     return (
         <section

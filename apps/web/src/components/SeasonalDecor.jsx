@@ -13,6 +13,9 @@ import Art from '@/components/decorArt'
 //   strip  - a garland / bunting / lights row hanging under the top bar
 // Visitors who ask their device for reduced motion get still decorations.
 
+// 1 = the speeds written in themes.mjs; lower is faster
+export const SPEED = 0.55
+
 export const CSS = `
 @keyframes d-fall { from { transform: translate3d(0,-10vh,0) rotate(0deg) } to { transform: translate3d(var(--drift),110vh,0) rotate(360deg) } }
 @keyframes d-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
@@ -38,14 +41,14 @@ const LIGHT_COLORS = ['#ff4d4d', '#ffd24d', '#4dd96a', '#4da6ff']
 
 const Strip = ({ type, still }) => {
     const wrap = 'pointer-events-none fixed left-0 right-0 top-[75px] z-[49] flex justify-between overflow-hidden'
-    const anim = (name, dur, i) => (still ? undefined : `${name} ${dur}s ease-in-out ${-i * 0.37}s infinite`)
+    const anim = (name, dur, i) => (still ? undefined : `${name} ${(dur * SPEED).toFixed(2)}s ease-in-out ${-i * 0.37}s infinite`)
     if (type === 'lights')
         return (
             <div className={wrap} style={{ height: 26 }}>
                 <div className="absolute left-0 right-0 top-0 h-[2px] bg-black/60" />
                 {Array.from({ length: 34 }, (_, i) => (
                     <span key={i} className="relative top-[2px] block h-3 w-2 rounded-b-full"
-                        style={{ background: LIGHT_COLORS[i % 4], boxShadow: `0 0 12px 3px ${LIGHT_COLORS[i % 4]}`, animation: anim('d-twinkle', 1.8, i), marginTop: i % 2 ? 6 : 0 }} />
+                        style={{ background: LIGHT_COLORS[i % 4], boxShadow: `0 0 7px 1px ${LIGHT_COLORS[i % 4]}`, willChange: 'opacity', animation: anim('d-twinkle', 1.8, i), marginTop: i % 2 ? 6 : 0 }} />
                 ))}
             </div>
         )
@@ -65,7 +68,7 @@ const Strip = ({ type, still }) => {
             <div className={wrap} style={{ height: 22 }}>
                 {Array.from({ length: 40 }, (_, i) => (
                     <span key={i} className="block rounded-full"
-                        style={{ width: 4 + (i % 3) * 2, height: 4 + (i % 3) * 2, marginTop: (i * 7) % 14, background: i % 2 ? '#fde68a' : '#e5e7eb', boxShadow: '0 0 8px 2px rgb(253 230 138 / .8)', animation: anim('d-twinkle', 1.4 + (i % 4) * 0.4, i) }} />
+                        style={{ width: 4 + (i % 3) * 2, height: 4 + (i % 3) * 2, marginTop: (i * 7) % 14, background: i % 2 ? '#fde68a' : '#e5e7eb', boxShadow: '0 0 5px 1px rgb(253 230 138 / .8)', willChange: 'opacity', animation: anim('d-twinkle', 1.4 + (i % 4) * 0.4, i) }} />
                 ))}
             </div>
         )
@@ -116,11 +119,11 @@ const SeasonalDecor = () => {
     return (
         <>
             <style>{CSS}</style>
-            <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[5] overflow-hidden">
+            <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[5] overflow-hidden" style={{ transform: 'translateZ(0)' }}>
                 {!still &&
                     falling.map((p, i) => (
                         <span key={i} className="d-fall"
-                            style={{ left: `${p.left}%`, width: p.size, height: p.size * (fall.art === 'confetti' ? 1.8 : 1), color: tone(p.color), opacity: fall.art === 'confetti' ? 0.55 : 0.4, '--drift': `${p.drift}px`, animation: `d-fall ${p.duration}s linear ${p.delay}s infinite` }}>
+                            style={{ left: `${p.left}%`, width: p.size, height: p.size * (fall.art === 'confetti' ? 1.8 : 1), color: tone(p.color), opacity: fall.art === 'confetti' ? 0.55 : 0.4, '--drift': `${p.drift}px`, animation: `d-fall ${(p.duration * 0.6).toFixed(1)}s linear ${p.delay}s infinite` }}>
                             <Art kind={fall.art} />
                         </span>
                     ))}

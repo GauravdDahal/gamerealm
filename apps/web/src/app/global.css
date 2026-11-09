@@ -269,7 +269,7 @@
 }
 /* Big gradient words (MarqueeText): the content is repeated twice, so
    sliding half-way and restarting looks seamless. */
-.marquee-track { animation: marquee-scroll 30s linear infinite; will-change: transform; }
+.marquee-track { animation: marquee-scroll 20s linear infinite; will-change: transform; }
 /* Moving game logos (GamesMarquee). Duration is set per list in the component. */
 .games-marquee-track { animation: marquee-scroll 40s linear infinite; will-change: transform; }
 .games-marquee:hover .games-marquee-track { animation-play-state: paused; }

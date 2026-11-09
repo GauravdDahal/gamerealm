@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useThemeSetting } from '@/lib/useSiteContent'
 import { THEMES } from '@/lib/themes.mjs'
 import Art from '@/components/decorArt'
-import { tone } from '@/components/SeasonalDecor'
+import { tone, SPEED } from '@/components/SeasonalDecor'
 
 // Wraps one homepage section. The seasonal theme can place a small piece of
 // artwork "sitting" in that section (on a corner or along an edge), so it
@@ -14,8 +14,8 @@ const sizeOf = p => `clamp(${Math.round(p.size * 0.5)}px, ${(p.size / 12.8).toFi
 const Glide = ({ p, still }) => (
     <span style={{ position: 'absolute', left: 0, right: 0, bottom: p.bottom, overflow: 'hidden', lineHeight: 0, display: 'flex', justifyContent: 'center', padding: '28px 0 6px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={p.img} alt="" draggable={false}
-            style={{ width: `min(${p.size}px, 92%)`, height: 'auto', animation: still ? undefined : `d-glide ${p.dur ?? 30}s linear infinite` }} />
+        <img src={p.img} alt="" draggable={false} loading="lazy" decoding="async"
+            style={{ width: `min(${p.size}px, 92%)`, height: 'auto', animation: still ? undefined : `d-glide ${((p.dur ?? 30) * SPEED).toFixed(1)}s linear infinite` }} />
     </span>
 )
 
@@ -48,10 +48,10 @@ const Piece = ({ p, still }) => {
     if (p.kind === 'glide') return <Glide p={p} still={still} />
     if (p.kind === 'swag') return <Swag p={p} />
     if (p.kind === 'banner') return <Banner p={p} />
-    const base = { position: 'absolute', width: sizeOf(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.6, left: p.left, right: p.right, top: p.top, bottom: p.bottom, lineHeight: 0 }
+    const base = { position: 'absolute', width: sizeOf(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.6, left: p.left, right: p.right, top: p.top, bottom: p.bottom, lineHeight: 0, willChange: p.anim && p.anim !== 'none' ? 'transform' : undefined }
     let style = base
     if (!still && p.anim && p.anim !== 'none') {
-        const dur = p.dur ?? 7
+        const dur = ((p.dur ?? 7) * SPEED).toFixed(2)
         style =
             p.anim === 'fly'
                 ? { ...base, left: 0, animation: `d-fly ${dur}s linear ${p.delay ?? 0}s infinite` }
@@ -59,17 +59,17 @@ const Piece = ({ p, still }) => {
     }
     if (p.hang)
         return (
-            <span style={{ position: 'absolute', left: p.left, top: p.len, width: sizeOf(p), opacity: p.op ?? 1, lineHeight: 0, animation: still ? undefined : 'd-drop 7s ease-in-out infinite' }}>
+            <span style={{ position: 'absolute', left: p.left, top: p.len, width: sizeOf(p), opacity: p.op ?? 1, lineHeight: 0, animation: still ? undefined : 'd-drop 4s ease-in-out infinite' }}>
                 <span style={{ position: 'absolute', left: '68%', top: -p.len, width: 1, height: p.len + 6, background: 'rgb(var(--c-ink) / .45)' }} />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.img} alt="" draggable={false} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                <img src={p.img} alt="" draggable={false} loading="lazy" decoding="async" style={{ width: '100%', height: 'auto', display: 'block' }} />
             </span>
         )
     return (
         <span style={style} className="select-none">
             {p.img ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.img} alt="" draggable={false} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                <img src={p.img} alt="" draggable={false} loading="lazy" decoding="async" style={{ width: '100%', height: 'auto', display: 'block' }} />
             ) : (
                 <span style={{ display: 'block', width: '100%', aspectRatio: '1' }}>
                     <Art kind={p.art} />
