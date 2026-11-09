@@ -1,10 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import React from "react";
 import { Gift, Send } from "lucide-react";
-
-// Dynamically import AOS to avoid SSR issues
-const AOS = dynamic(() => import("aos"), { ssr: false });
 
 const bonusCards = [
   {
@@ -26,47 +22,35 @@ const bonusCards = [
 ];
 
 export default function EventSection() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
-      <section id="tournaments" className="py-26 bg-gray-900">
+      <section id="tournaments" className="py-16 sm:py-24 bg-gray-900">
           <div className="container mx-auto px-4 text-center">
               <h2
-                  className="text-4xl sm:text-9xl md:text-4xl lg:text-5xl font-godofwar mb-4"
-                  {...(isClient && { 'data-aos': 'fade-down' })}>
+                  className="text-3xl sm:text-4xl lg:text-5xl font-godofwar mb-4"
+                  data-aos="fade-down">
                   Earn Rewards And Bonuses
               </h2>
               <p
-                  className="text-gray-400 mb-16 max-w-2xl mx-auto "
-                  {...(isClient && {
-                      'data-aos': 'fade-down',
-                      'data-aos-delay': '100',
-                  })}>
+                  className="text-gray-400 mb-10 sm:mb-16 max-w-2xl mx-auto"
+                  data-aos="fade-down"
+                  data-aos-delay="100">
                   Participate in our referral program and upcoming bonuses to
                   maximize your rewards.
               </p>
 
-              <div className="grid md:grid-cols-2 gap-10">
+              <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
                   {bonusCards.map((card, index) => (
                       <div
                           key={index}
-                          className="relative p-1 rounded-xl shadow-lg transform transition-all hover:scale-105"
-                          {...(isClient && {
-                              'data-aos':
-                                  index % 2 === 0 ? 'fade-right' : 'fade-left',
-                              'data-aos-delay': index * 200,
-                          })}>
-                          <div className="relative bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-md">
+                          data-aos="fade-up"
+                          data-aos-delay={index * 150}>
+                          <div className="relative h-full bg-gray-800 p-6 sm:p-8 rounded-xl border border-gray-700 shadow-md transition-transform duration-300 hover:scale-[1.03]">
                               <div className="flex items-center gap-4 mb-4">
                                   <div
-                                      className={`w-14 h-14 flex items-center justify-center rounded-lg bg-gradient-to-r ${card.gradient}`}>
+                                      className={`w-14 h-14 shrink-0 flex items-center justify-center rounded-lg bg-gradient-to-r ${card.gradient}`}>
                                       {card.icon}
                                   </div>
-                                  <h3 className="text-3xl font-aldo text-white">
+                                  <h3 className="text-2xl sm:text-3xl font-aldo text-white text-left">
                                       {card.title}
                                   </h3>
                               </div>
