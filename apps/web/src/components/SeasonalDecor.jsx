@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { useThemeSetting } from '@/lib/useSiteContent'
 import { THEMES } from '@/lib/themes.mjs'
+import Art from '@/components/decorArt'
 
 // Seasonal decorations. Three layers, all pointer-events:none so nothing
 // blocks a click, transform-only animation, and none of it in the admin panel:
@@ -22,11 +23,15 @@ const CSS = `
 @keyframes d-pulse { 0%,100% { transform: scale(.9); opacity: .55 } 50% { transform: scale(1.12); opacity: 1 } }
 @keyframes d-rise { from { transform: translate3d(0,0,0) } to { transform: translate3d(30px,-120vh,0) } }
 @keyframes d-twinkle { 0%,100% { opacity: .25 } 50% { opacity: 1 } }
+@keyframes d-spin { to { transform: rotate(360deg) } }
 @keyframes d-drop { 0%,100% { transform: translateY(-30px) } 50% { transform: translateY(0) } }
-.d-prop { position: absolute; line-height: 1; user-select: none; filter: drop-shadow(0 6px 14px rgb(0 0 0 / .45)) drop-shadow(0 0 16px rgb(var(--c-accent) / .28)); }
-.d-fall { position: absolute; top: 0; line-height: 1; user-select: none; opacity: .6; will-change: transform; }
+.d-prop { position: absolute; line-height: 1; user-select: none; }
+.d-fall { position: absolute; top: 0; line-height: 1; user-select: none; will-change: transform; }
 @media (max-width: 767px) { .d-desktop { display: none } }
 `
+
+// 'accent' -> the theme colour; anything else is used as written
+const tone = c => (/^#|^rgb/.test(c) ? c : `rgb(var(--c-${c}))`)
 
 const LIGHT_COLORS = ['#ff4d4d', '#ffd24d', '#4dd96a', '#4da6ff']
 
@@ -67,8 +72,9 @@ const Strip = ({ type, still }) => {
         return (
             <div className={wrap} style={{ height: 40 }}>
                 {Array.from({ length: 22 }, (_, i) => (
-                    <span key={i} className="block text-[26px]" style={{ transformOrigin: 'top', marginTop: (i % 3) * 4, animation: anim('d-sway', 4 + (i % 3), i) }}>
-                        {i % 2 ? '🍁' : '🍂'}
+                    <span key={i} className="block h-[24px] w-[24px]"
+                        style={{ color: tone(['accent', 'accent2', 'accent-dim'][i % 3]), opacity: 0.8, transformOrigin: 'top', marginTop: (i % 3) * 4, animation: anim('d-sway', 4 + (i % 3), i) }}>
+                        <Art kind="leaf" />
                     </span>
                 ))}
             </div>
@@ -88,25 +94,29 @@ const SeasonalDecor = () => {
     }, [])
 
     const spec = THEMES.find(t => t.id === active)?.decor
+    const fall = spec?.fall
     const falling = useMemo(() => {
-        if (!spec) return []
-        return Array.from({ length: spec.count }, (_, i) => ({
-            glyph: spec.glyphs[i % spec.glyphs.length],
+        if (!fall || !fall.count) return []
+        const palette = {
+            snowflake: ['ink'], confetti: ['accent', 'accent2', 'ink', 'secondary2', 'hot'], star5: ['#ffffff', '#e63946', '#60a5fa'], leaf: ['accent', 'accent2', 'danger'],
+        }[fall.art] ?? ['ink']
+        return Array.from({ length: fall.count }, (_, i) => ({
+            color: palette[i % palette.length],
             left: (i * 37 + 11) % 100,
-            size: 14 + ((i * 7) % 16),
+            size: fall.art === 'confetti' ? 9 + ((i * 3) % 6) : 14 + ((i * 7) % 14),
             delay: -((i * 3.1) % 18),
-            duration: 16 + ((i * 5) % 14),
-            drift: ((i % 5) - 2) * 18,
+            duration: 18 + ((i * 5) % 14),
+            drift: ((i % 5) - 2) * 22,
         }))
-    }, [spec])
+    }, [fall])
 
     if (!ready || !loaded || !spec || decor === false || pathname?.startsWith('/admin')) return null
 
     const props = (spec.props ?? []).filter(p => !still || (p.anim !== 'fly' && p.anim !== 'rise'))
-    const size = p => `clamp(${Math.round(p.size * 0.45)}px, ${(p.size / 12.8).toFixed(1)}vw, ${p.size}px)`
+    const size = p => `clamp(${Math.round(p.size * 0.4)}px, ${(p.size / 12.8).toFixed(1)}vw, ${p.size}px)`
 
     const place = p => {
-        const base = { fontSize: size(p), left: p.left, right: p.right, top: p.top, bottom: p.bottom }
+        const base = { width: size(p), height: size(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.5, left: p.left, right: p.right, top: p.top, bottom: p.bottom }
         if (still || !p.anim || p.anim === 'none') return base
         const dur = p.dur ?? 6
         if (p.anim === 'peek') return { ...base, '--peek': p.right !== undefined ? '-45px' : '45px', animation: `d-peek ${dur}s ease-in-out ${p.delay ?? 0}s infinite` }
@@ -117,7 +127,7 @@ const SeasonalDecor = () => {
 
     const Prop = ({ p }) => (
         <span className={`d-prop ${p.desktop ? 'd-desktop' : ''}`} style={place(p)}>
-            <span style={{ display: 'block', transform: p.flip ? 'scaleX(-1)' : undefined }}>{p.g}</span>
+            <Art kind={p.art} style={{ transform: p.flip ? 'scaleX(-1)' : undefined }} />
         </span>
     )
 
@@ -128,19 +138,11 @@ const SeasonalDecor = () => {
                 {!still &&
                     falling.map((p, i) => (
                         <span key={i} className="d-fall"
-                            style={{ left: `${p.left}%`, fontSize: p.size, '--drift': `${p.drift}px`, animation: `d-fall ${p.duration}s linear ${p.delay}s infinite` }}>
-                            {p.glyph}
+                            style={{ left: `${p.left}%`, width: p.size, height: p.size * (fall.art === 'confetti' ? 1.8 : 1), color: tone(p.color), opacity: fall.art === 'confetti' ? 0.55 : 0.4, '--drift': `${p.drift}px`, animation: `d-fall ${p.duration}s linear ${p.delay}s infinite` }}>
+                            <Art kind={fall.art} />
                         </span>
                     ))}
                 {props.filter(p => p.mode === 'fixed').map((p, i) => <Prop key={i} p={p} />)}
-                {props.filter(p => p.hang).map((p, i) => (
-                    <span key={`h${i}`} className="d-prop" style={{ left: p.left, top: 0, fontSize: p.size }}>
-                        <span className="block" style={{ animation: still ? undefined : 'd-drop 6s ease-in-out infinite' }}>
-                            <span className="mx-auto block w-px bg-ink/50" style={{ height: p.len }} />
-                            <span className="block">{p.g}</span>
-                        </span>
-                    </span>
-                ))}
                 <Strip type={spec.strip} still={still} />
             </div>
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
