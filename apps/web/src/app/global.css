@@ -276,3 +276,7 @@
 @media (prefers-reduced-motion: reduce) {
     .marquee-track, .games-marquee-track { animation: none; }
 }
+
+/* Artwork credit, only while the Halloween theme is on */
+.decor-credit { display: none; }
+html[data-theme="halloween"] .decor-credit { display: block; }

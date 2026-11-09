@@ -116,7 +116,7 @@ const SeasonalDecor = () => {
     const size = p => `clamp(${Math.round(p.size * 0.4)}px, ${(p.size / 12.8).toFixed(1)}vw, ${p.size}px)`
 
     const place = p => {
-        const base = { width: size(p), height: size(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.5, left: p.left, right: p.right, top: p.top, bottom: p.bottom }
+        const base = { width: size(p), height: p.img ? undefined : size(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.5, left: p.left, right: p.right, top: p.top, bottom: p.bottom }
         if (still || !p.anim || p.anim === 'none') return base
         const dur = p.dur ?? 6
         if (p.anim === 'peek') return { ...base, '--peek': p.right !== undefined ? '-45px' : '45px', animation: `d-peek ${dur}s ease-in-out ${p.delay ?? 0}s infinite` }
@@ -127,7 +127,12 @@ const SeasonalDecor = () => {
 
     const Prop = ({ p }) => (
         <span className={`d-prop ${p.desktop ? 'd-desktop' : ''}`} style={place(p)}>
-            <Art kind={p.art} style={{ transform: p.flip ? 'scaleX(-1)' : undefined }} />
+            {p.img ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={p.img} alt="" draggable={false} style={{ width: '100%', height: 'auto', display: 'block', transform: p.flip ? 'scaleX(-1)' : undefined }} />
+            ) : (
+                <Art kind={p.art} style={{ transform: p.flip ? 'scaleX(-1)' : undefined }} />
+            )}
         </span>
     )
 
@@ -142,7 +147,14 @@ const SeasonalDecor = () => {
                             <Art kind={fall.art} />
                         </span>
                     ))}
-                {props.filter(p => p.mode === 'fixed').map((p, i) => <Prop key={i} p={p} />)}
+                {props.filter(p => p.mode === 'fixed' && !p.hang).map((p, i) => <Prop key={i} p={p} />)}
+                {props.filter(p => p.hang).map((p, i) => (
+                    <span key={`h${i}`} className="d-desktop" style={{ position: 'absolute', left: p.left, top: p.len, width: size(p), opacity: p.op ?? 1, animation: still ? undefined : 'd-drop 7s ease-in-out infinite' }}>
+                        <span style={{ position: 'absolute', left: '68%', top: -p.len, width: 1, height: p.len + 6, background: 'rgb(var(--c-ink) / .45)' }} />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.img} alt="" draggable={false} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    </span>
+                ))}
                 <Strip type={spec.strip} still={still} />
             </div>
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">

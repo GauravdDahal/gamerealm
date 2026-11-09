@@ -103,6 +103,12 @@ export default function Footer() {
                     <p>
                         &copy; {new Date().getFullYear()} {c.copyright_name}. All rights reserved.
                     </p>
+                    <p className="decor-credit mt-2 text-xs">
+                        Halloween artwork:{' '}
+                        <a href="https://www.vecteezy.com" target="_blank" rel="noopener noreferrer" className="underline">
+                            Vecteezy.com
+                        </a>
+                    </p>
                 </div>
             </div>
         </footer>
