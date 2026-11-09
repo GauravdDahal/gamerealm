@@ -348,16 +348,18 @@ function ChatPopup() {
             lastGameSent.current[req.title] = Date.now()
             await deliver({
                 chatId: current.id,
-                text: `Hi! I would like to play ${req.title}.`,
-                extraAttachments: [
-                    {
-                        kind: 'game',
-                        path: `game:${req.title}`,
-                        name: req.title,
-                        type: 'image/jpeg',
-                        url: req.image,
-                    },
-                ],
+                text: req.text ?? `Hi! I would like to play ${req.title}.`,
+                extraAttachments: req.image
+                    ? [
+                          {
+                              kind: 'game',
+                              path: `game:${req.title}`,
+                              name: req.title,
+                              type: 'image/jpeg',
+                              url: req.image,
+                          },
+                      ]
+                    : [],
             })
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps

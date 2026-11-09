@@ -15,6 +15,7 @@ import MarqueeText from '@/components/landingPage/MarqueeText'
 import AboutUs from '@/components/landingPage/AboutUs'
 import Testimonial from '@/components/landingPage/Testomonials'
 import CatSection from '@/components/landingPage/CatSection'
+import BonusesSection from '@/components/landingPage/BonusesSection'
 import PaymentSection from '@/components/landingPage/PaymentSection'
 const GamesSection = dynamic(
     () => import('@/components/landingPage/GamesSection'),
@@ -47,6 +48,7 @@ function Home() {
             <MarqueeText />
             <AboutUs />
             <CatSection />
+            <BonusesSection />
             <WhyChooseUs />
             <RulesSection />
             <FAQSection />

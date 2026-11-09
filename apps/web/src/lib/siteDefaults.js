@@ -63,6 +63,36 @@ export const siteDefaults = {
     cta: {
         signin_label: 'Sign in to Play',
     },
+    // Example offers: replace them with your real bonuses in Admin → Site content.
+    bonuses: {
+        eyebrow: 'Bonuses',
+        title: 'More to play with,',
+        highlight: 'every deposit.',
+        link_label: 'See all bonuses',
+        link_url: '',
+        signin_label: 'Sign in to claim',
+        claim_label: 'Claim bonus',
+        cards: [
+            {
+                badge: '50%',
+                title: '50% Welcome Deposit Bonus',
+                description: 'Start strong: your first deposit gets a 50% boost, straight into your wallet.',
+                note: 'One time only',
+            },
+            {
+                badge: '20%',
+                title: '20% Daily Deposit Bonus',
+                description: 'Claim every 12 hours and get 20% extra on your next deposit.',
+                note: 'Every 12h',
+            },
+            {
+                badge: '40%',
+                title: '40% Big Deposit Bonus',
+                description: 'Deposit $50 or more and take 40% on top.',
+                note: 'Every 24h · min deposit $50.00',
+            },
+        ],
+    },
     why: {
         title: 'Why Play Our Casino',
         intro: 'Experience the thrill of premium online gaming with industry-leading security and endless entertainment options.',

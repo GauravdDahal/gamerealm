@@ -106,6 +106,33 @@ export const siteSchema = [
         fields: [{ name: 'signin_label', label: 'Sign-in button text', type: 'text' }],
     },
     {
+        key: 'bonuses',
+        label: 'Bonus offers',
+        help: 'The bonus cards. Visitors who are not signed in are sent to sign in; approved players open the chat with a ready-made request. Change the example offers to your real ones.',
+        fields: [
+            { name: 'eyebrow', label: 'Small line above the title', type: 'text' },
+            { name: 'title', label: 'Title', type: 'text' },
+            { name: 'highlight', label: 'Title, orange part', type: 'text' },
+            { name: 'link_label', label: 'Top-right link text', type: 'text' },
+            { name: 'link_url', label: 'Top-right link goes to', type: 'text', hint: 'Leave empty to hide the link.' },
+            { name: 'signin_label', label: 'Button text when not signed in', type: 'text' },
+            { name: 'claim_label', label: 'Button text when signed in', type: 'text' },
+            {
+                name: 'cards',
+                label: 'Bonus cards',
+                type: 'list',
+                itemLabel: 'title',
+                addLabel: 'Add bonus',
+                fields: [
+                    { name: 'badge', label: 'Badge', type: 'text', hint: 'The big short figure, for example 50%.' },
+                    { name: 'title', label: 'Title', type: 'text' },
+                    { name: 'description', label: 'Text', type: 'textarea' },
+                    { name: 'note', label: 'Small note', type: 'text', hint: 'For example: Every 24h · min deposit $50.00' },
+                ],
+            },
+        ],
+    },
+    {
         key: 'why',
         label: 'Why play with us',
         fields: [
