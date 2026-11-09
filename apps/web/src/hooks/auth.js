@@ -64,13 +64,13 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const register = async ({ setErrors, password_confirmation, ...props }) => {
         setErrors([])
 
-        const { name, email, password, phone, date_of_birth, country, address } = props
+        const { name, email, password, phone, date_of_birth, country, address, referral_code } = props
 
         const { error } = await supabase.auth.signUp({
             email,
             password,
             options: {
-                data: { name, phone, date_of_birth, country, address },
+                data: { name, phone, date_of_birth, country, address, referral_code: referral_code?.trim() || undefined },
             },
         })
 

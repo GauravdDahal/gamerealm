@@ -17,6 +17,7 @@ import Testimonial from '@/components/landingPage/Testomonials'
 import CatSection from '@/components/landingPage/CatSection'
 import BonusesSection from '@/components/landingPage/BonusesSection'
 import SectionDecor from '@/components/SectionDecor'
+import ReferralSection from '@/components/landingPage/ReferralSection'
 import PaymentSection from '@/components/landingPage/PaymentSection'
 const GamesSection = dynamic(
     () => import('@/components/landingPage/GamesSection'),
@@ -50,6 +51,7 @@ function Home() {
             <SectionDecor name="about"><AboutUs /></SectionDecor>
             <CatSection />
             <SectionDecor name="bonuses"><BonusesSection /></SectionDecor>
+            <ReferralSection />
             <SectionDecor name="why"><WhyChooseUs /></SectionDecor>
             <SectionDecor name="rules"><RulesSection /></SectionDecor>
             <SectionDecor name="faq"><FAQSection /></SectionDecor>

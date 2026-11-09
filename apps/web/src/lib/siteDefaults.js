@@ -203,6 +203,15 @@ export const siteDefaults = {
             { name: 'Visa', image: '/assets/images/paymentSectionImg/visa.jpg' },
         ],
     },
+    referral: {
+        eyebrow: 'Refer & earn',
+        title: 'Invite friends,',
+        highlight: 'level up your rewards.',
+        subtitle:
+            'Share your personal link. Every friend our team approves counts toward your level, and each new level unlocks a bigger reward.',
+        signin_label: 'Sign up to get your link',
+        pending_note: 'Your referral link appears here as soon as your account is approved.',
+    },
     theme: { active: 'casino', decor: true },
     footer: {
         description:

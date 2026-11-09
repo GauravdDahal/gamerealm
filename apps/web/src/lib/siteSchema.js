@@ -106,6 +106,19 @@ export const siteSchema = [
         fields: [{ name: 'signin_label', label: 'Sign-in button text', type: 'text' }],
     },
     {
+        key: 'referral',
+        label: 'Referral levels',
+        help: 'The words around the referral section. The levels themselves (friends needed, rewards) are edited in Referrals.',
+        fields: [
+            { name: 'eyebrow', label: 'Small line above the title', type: 'text' },
+            { name: 'title', label: 'Title', type: 'text' },
+            { name: 'highlight', label: 'Title, coloured part', type: 'text' },
+            { name: 'subtitle', label: 'Text under the title', type: 'textarea' },
+            { name: 'signin_label', label: 'Button text when not signed in', type: 'text' },
+            { name: 'pending_note', label: 'Note for players still waiting for approval', type: 'text' },
+        ],
+    },
+    {
         key: 'bonuses',
         label: 'Bonus offers',
         help: 'The bonus cards. Visitors who are not signed in are sent to sign in; approved players open the chat with a ready-made request. Change the example offers to your real ones.',

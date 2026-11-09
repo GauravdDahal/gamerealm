@@ -16,6 +16,7 @@ import {
     Zap,
     Gamepad2,
     Gift,
+    UserPlus,
     PencilLine,
     Palette,
     Bell,
@@ -51,6 +52,7 @@ const nav = [
     { href: '/admin/banners', label: 'Banners', icon: Images },
     { href: '/admin/games', label: 'Games', icon: Gamepad2 },
     { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift },
+    { href: '/admin/referrals', label: 'Referrals', icon: UserPlus },
     { href: '/admin/site', label: 'Site content', icon: PencilLine },
     { href: '/admin/theme', label: 'Site theme', icon: Palette },
 ]

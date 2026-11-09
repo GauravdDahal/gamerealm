@@ -6,7 +6,7 @@ import InputError from '@/components/InputError'
 import Label from '@/components/Label'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
 
 /** Latest date of birth that still makes someone 18 today. */
@@ -28,9 +28,20 @@ const Page = () => {
         address: '',
         password: '',
         password_confirmation: '',
+        referral_code: '',
     })
     const [errors, setErrors] = useState({})
     const [submitting, setSubmitting] = useState(false)
+
+    // A friend's link looks like /register?ref=CODE. Remember it in case they browse around first.
+    useEffect(() => {
+        try {
+            const fromLink = new URLSearchParams(window.location.search).get('ref')
+            if (fromLink) localStorage.setItem('referral-code', fromLink.trim().toUpperCase().slice(0, 20))
+            const code = localStorage.getItem('referral-code')
+            if (code) setForm(f => (f.referral_code ? f : { ...f, referral_code: code }))
+        } catch {}
+    }, [])
 
     const set = key => event => setForm({ ...form, [key]: event.target.value })
 
@@ -52,6 +63,7 @@ const Page = () => {
         setSubmitting(false)
 
         if (ok) {
+            try { localStorage.removeItem('referral-code') } catch {}
             // Account exists but is pending; the gate handles what they see next.
             router.push('/account-pending')
         }
@@ -181,6 +193,19 @@ const Page = () => {
                 <InputError
                     messages={errors.password_confirmation}
                     className="mt-2"
+                />
+            </div>
+
+            <div className="mt-4">
+                <Label htmlFor="referral_code">Referral code (optional)</Label>
+                <Input
+                    id="referral_code"
+                    type="text"
+                    value={form.referral_code}
+                    className="block mt-1 w-full uppercase"
+                    onChange={event => setForm({ ...form, referral_code: event.target.value.toUpperCase() })}
+                    maxLength={20}
+                    placeholder="Got one from a friend?"
                 />
             </div>
 
