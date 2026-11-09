@@ -282,15 +282,6 @@
 html[data-theme="halloween"] .decor-credit,
 html[data-theme="christmas"] .decor-credit { display: block; }
 
-/* Christmas: Santa's sleigh flies along its own strip under the lucky-wheel banner,
-   so it is shown in full instead of hiding behind the wheel. */
-html[data-theme="christmas"] #home {
-  background-image: url('/assets/decor/christmas/santa.webp');
-  background-repeat: no-repeat;
-  background-position: 50% calc(100% - 16px);
-  background-size: min(560px, 92%) auto;
-  padding-bottom: 210px;
-}
-@media (min-width: 1024px) {
-  html[data-theme="christmas"] #home { background-size: min(720px, 60%) auto; padding-bottom: 270px; }
-}
+/* Christmas: leave a strip under the lucky-wheel banner for Santa's sleigh to glide through */
+html[data-theme="christmas"] #home { padding-bottom: 210px; }
+@media (min-width: 1024px) { html[data-theme="christmas"] #home { padding-bottom: 270px; } }

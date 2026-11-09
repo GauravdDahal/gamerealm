@@ -11,7 +11,37 @@ import { tone } from '@/components/SeasonalDecor'
 // scrolls with the section instead of floating over the page.
 const sizeOf = p => `clamp(${Math.round(p.size * 0.5)}px, ${(p.size / 12.8).toFixed(1)}vw, ${p.size}px)`
 
+const Glide = ({ p, still }) => (
+    <span style={{ position: 'absolute', left: 0, right: 0, bottom: p.bottom, overflow: 'hidden', lineHeight: 0, display: 'flex', justifyContent: 'center' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={p.img} alt="" draggable={false}
+            style={{ width: `min(${p.size}px, 92%)`, height: 'auto', animation: still ? undefined : `d-glide ${p.dur ?? 30}s linear infinite` }} />
+    </span>
+)
+
+// one pattern repeated edge to edge, like a garland hung across a doorway
+const Swag = ({ p }) => (
+    <span style={{ position: 'absolute', left: 0, right: 0, top: p.top, height: `clamp(${Math.round(p.height * 0.6)}px, ${(p.height / 12.8).toFixed(1)}vw, ${p.height}px)`, backgroundImage: `url(${p.img})`, backgroundRepeat: 'repeat-x', backgroundSize: 'auto 100%', backgroundPosition: 'center top' }} />
+)
+
+// two elves at the page edges hold a bunting line between them
+const Banner = ({ p }) => {
+    const h = `clamp(${Math.round(p.height * 0.6)}px, ${(p.height / 9).toFixed(1)}vw, ${p.height}px)`
+    return (
+        <span style={{ position: 'absolute', left: 0, right: 0, top: p.top, display: 'flex', alignItems: 'flex-start', lineHeight: 0, '--h': h }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={p.left} alt="" draggable={false} style={{ height: 'var(--h)', width: 'auto', flex: 'none' }} />
+            <span style={{ flex: 1, marginTop: 'calc(var(--h) * 0.262)', marginLeft: 'calc(var(--h) * -0.02)', marginRight: 'calc(var(--h) * -0.02)', height: 'calc(var(--h) * 0.24)', backgroundImage: `url(${p.tile})`, backgroundRepeat: 'repeat-x', backgroundSize: 'auto 100%' }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={p.right} alt="" draggable={false} style={{ height: 'var(--h)', width: 'auto', flex: 'none' }} />
+        </span>
+    )
+}
+
 const Item = ({ p, still }) => {
+    if (p.kind === 'glide') return <Glide p={p} still={still} />
+    if (p.kind === 'swag') return <Swag p={p} />
+    if (p.kind === 'banner') return <Banner p={p} />
     const base = { position: 'absolute', width: sizeOf(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.6, left: p.left, right: p.right, top: p.top, bottom: p.bottom, lineHeight: 0 }
     let style = base
     if (!still && p.anim && p.anim !== 'none') {

@@ -57,18 +57,21 @@ export const THEMES = [
     decor: {
       fall: { art: 'snowflake', count: 8 }, strip: 'lights',
       scene: {
-        hero: [{ img: '/assets/decor/christmas/ornament.webp', right: '5%', top: '70px', size: 64, op: 0.95, anim: 'sway', dur: 5, origin: 'top' }],
+        hero: [
+          { kind: 'glide', img: '/assets/decor/christmas/santa.webp', bottom: '16px', size: 720, dur: 34 },
+          { img: '/assets/decor/christmas/ornament.webp', right: '5%', top: '70px', size: 64, op: 0.95, anim: 'sway', dur: 5, origin: 'top' }],
         games: [
           { img: '/assets/decor/christmas/sil.webp', left: 0, top: '14px', size: 360, op: 0.12, anim: 'fly', dur: 60 },
           { img: '/assets/decor/christmas/giftstack.webp', left: '2%', bottom: '-14px', size: 130 },
         ],
         about: [
-          { img: '/assets/decor/christmas/garland.webp', left: '1%', top: '-6px', size: 300, op: 0.9 },
+          { kind: 'swag', img: '/assets/decor/christmas/garland-tile.webp', top: '0', height: 86 },
           { img: '/assets/decor/christmas/snowman.webp', right: '3%', bottom: '-24px', size: 100, anim: 'bob', dur: 7 },
         ],
         bonuses: [
           { img: '/assets/decor/christmas/sack.webp', left: '2%', bottom: '-34px', size: 130 },
           { img: '/assets/decor/christmas/snowflake.webp', right: '3%', top: '14px', size: 66, anim: 'spin', dur: 90 },
+          { img: '/assets/decor/christmas/cart.webp', right: '4%', bottom: '-30px', size: 140 },
         ],
         why: [
           { img: '/assets/decor/christmas/bell.webp', right: '3%', top: '0', size: 56, anim: 'sway', dur: 4, origin: 'top' },
@@ -80,8 +83,7 @@ export const THEMES = [
         ],
         faq: [{ img: '/assets/decor/christmas/elfstar.webp', right: '3%', bottom: '-64px', size: 90 }],
         footer: [
-          { img: '/assets/decor/christmas/elfpair.webp', left: '42%', top: '-66px', size: 260 },
-          { img: '/assets/decor/christmas/cart.webp', right: '5%', top: '-72px', size: 150 },
+          { kind: 'banner', left: '/assets/decor/christmas/elf-left.webp', right: '/assets/decor/christmas/elf-right.webp', tile: '/assets/decor/christmas/bunting.webp', top: '-92px', height: 150 },
         ],
       },
     },
