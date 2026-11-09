@@ -36,3 +36,9 @@ export const useSiteContent = section => {
 }
 
 export const SITE_CONTENT_KEY = KEY
+
+/** The chosen theme, plus whether the saved value has arrived yet. */
+export const useThemeSetting = () => {
+    const { data } = useSWR(KEY, load, { revalidateOnFocus: false, shouldRetryOnError: false })
+    return { loaded: !!data, ...withDefaults(data?.theme, siteDefaults.theme) }
+}

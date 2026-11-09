@@ -374,7 +374,7 @@ function ChatPopup() {
 
     if (!canChat || loading) return null
 
-    const brand = 'linear-gradient(110deg, #a88a43, #e2ce86 48%, #b18f45)'
+    const brand = 'linear-gradient(110deg, rgb(var(--c-accent-dim)), rgb(var(--c-accent2)) 48%, rgb(var(--c-accent-dim)))'
     const display = { fontFamily: "'PlayFairlDisplay', Georgia, serif" }
     const brandFont = { fontFamily: "'Aldo', sans-serif" }
     const formatTime = iso =>
@@ -383,26 +383,26 @@ function ChatPopup() {
     return (
         <>
             <style>{`
-                .casino-scroll { scrollbar-width: thin; scrollbar-color: #8f7a3d #14150f; }
+                .casino-scroll { scrollbar-width: thin; scrollbar-color: rgb(var(--c-accent)) rgb(var(--c-night)); }
                 .casino-scroll::-webkit-scrollbar { width: 8px; }
                 .casino-scroll::-webkit-scrollbar-track { background: transparent; }
-                .casino-scroll::-webkit-scrollbar-thumb { background: linear-gradient(#b18f45, #8f7a3d); border-radius: 8px; border: 2px solid #14150f; }
+                .casino-scroll::-webkit-scrollbar-thumb { background: linear-gradient(rgb(var(--c-accent-dim)), rgb(var(--c-accent))); border-radius: 8px; border: 2px solid rgb(var(--c-night)); }
             `}</style>
             {/* Floating button */}
             <button
                 onClick={() => setIsOpen(true)}
                 aria-label={unreadCount > 0 ? `Open support chat, ${unreadCount} unread` : 'Open support chat'}
                 style={{
-                    background: '#a98a42',
-                    border: '5px dashed #f0df9b',
-                    boxShadow: '0 8px 22px rgba(0,0,0,.6), 0 0 24px rgba(216,196,123,.25)',
+                    background: 'rgb(var(--c-accent-dim))',
+                    border: '5px dashed rgb(var(--c-accent2))',
+                    boxShadow: '0 8px 22px rgba(0,0,0,.6), 0 0 24px rgb(var(--c-accent) / .25)',
                 }}
-                className={`fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-[#1b190f] transition hover:scale-105 active:scale-95 ${
+                className={`fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-accent-ink transition hover:scale-105 active:scale-95 ${
                     isOpen ? 'pointer-events-none opacity-0' : 'opacity-100'
                 }`}>
                 <MessageCircle className="h-6 w-6" />
                 {unreadCount > 0 && (
-                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[#14150f] bg-[#c0392b] px-1 text-[11px] font-bold leading-none text-[#f8f4e8]">
+                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-night bg-danger px-1 text-[11px] font-bold leading-none text-ink">
                         {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
@@ -418,24 +418,24 @@ function ChatPopup() {
                         style={{ background: brand }}
                         className="h-full w-full animate-fade-scale-up sm:h-[min(640px,calc(100dvh-3rem))] sm:w-[400px] sm:rounded-2xl sm:p-px sm:shadow-2xl sm:shadow-black/60">
                         <div
-                            style={{ background: 'linear-gradient(145deg, #23231b, #10110e 55%)' }}
+                            style={{ background: 'linear-gradient(145deg, rgb(var(--c-surface2)), rgb(var(--c-night)) 55%)' }}
                             className="flex h-full w-full flex-col overflow-hidden sm:rounded-[15px]">
                             {/* Header */}
-                            <div className="flex items-center justify-between gap-3 border-b border-[#d8c47b]/25 bg-black/20 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:pt-3">
+                            <div className="flex items-center justify-between gap-3 border-b border-accent/25 bg-black/20 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:pt-3">
                                 <div className="flex min-w-0 items-center gap-3">
                                     <div
-                                        style={{ border: '1px solid rgba(216,196,123,.65)', boxShadow: '0 0 20px rgba(216,196,123,.12)', ...display }}
-                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] text-xl text-[#d8c47b]"
+                                        style={{ border: '1px solid rgb(var(--c-accent) / .65)', boxShadow: '0 0 20px rgb(var(--c-accent) / .12)', ...display }}
+                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] text-xl text-accent"
                                         aria-hidden="true">
                                         &spades;&#xFE0E;
                                     </div>
                                     <div className="min-w-0">
                                         <h3
                                             style={brandFont}
-                                            className="truncate text-[15px] leading-tight tracking-[2px] text-[#f6f0dc]">
+                                            className="truncate text-[15px] leading-tight tracking-[2px] text-ink">
                                             CASINO PLAY
                                         </h3>
-                                        <p className="truncate text-[11px] uppercase tracking-[1.5px] text-[#d8c47b]">
+                                        <p className="truncate text-[11px] uppercase tracking-[1.5px] text-accent">
                                             Player support
                                         </p>
                                     </div>
@@ -445,15 +445,15 @@ function ChatPopup() {
                                         onClick={toggleAlerts}
                                         aria-label={alertsOn ? 'Turn message alerts off' : 'Turn message alerts on'}
                                         title={alertsOn ? 'Alerts on' : 'Get alerts for new replies'}
-                                        className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-[#25261d] ${
-                                            alertsOn ? 'text-[#e2ce86]' : 'text-[#aaa895] hover:text-[#f8f4e8]'
+                                        className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-surface2 ${
+                                            alertsOn ? 'text-accent2' : 'text-muted hover:text-ink'
                                         }`}>
                                         {alertsOn ? <Bell className="h-5 w-5" /> : <BellOff className="h-5 w-5" />}
                                     </button>
                                 <button
                                     onClick={() => setIsOpen(false)}
                                     aria-label="Close chat"
-                                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#aaa895] transition-colors hover:bg-[#25261d] hover:text-[#f8f4e8]">
+                                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface2 hover:text-ink">
                                     <X className="h-5 w-5" />
                                 </button>
                                 </div>
@@ -463,15 +463,15 @@ function ChatPopup() {
                                 <>
                                     {/* Messages */}
                                     <div
-                                        style={{ background: 'radial-gradient(circle at 85% 0%, rgba(216,196,123,.08), transparent 45%)' }}
+                                        style={{ background: 'radial-gradient(circle at 85% 0%, rgb(var(--c-accent) / .08), transparent 45%)' }}
                                         className="casino-scroll flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4">
                                         {messages.length === 0 && (
                                             <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
-                                                <p className="text-2xl tracking-[10px] text-[#d8c47b]" aria-hidden="true">
-                                                    <span>&spades;&#xFE0E;</span> <span className="text-[#c0392b]">&hearts;&#xFE0E;</span> <span className="text-[#c0392b]">&diams;&#xFE0E;</span> <span>&clubs;&#xFE0E;</span>
+                                                <p className="text-2xl tracking-[10px] text-accent" aria-hidden="true">
+                                                    <span>&spades;&#xFE0E;</span> <span className="text-danger">&hearts;&#xFE0E;</span> <span className="text-danger">&diams;&#xFE0E;</span> <span>&clubs;&#xFE0E;</span>
                                                 </p>
-                                                <p style={display} className="text-xl text-[#f6f0dc]">Take a seat</p>
-                                                <p className="text-sm text-[#aaa895]">
+                                                <p style={display} className="text-xl text-ink">Take a seat</p>
+                                                <p className="text-sm text-muted">
                                                     Ask us anything. Our team usually replies within a day.
                                                 </p>
                                             </div>
@@ -488,7 +488,7 @@ function ChatPopup() {
                                                     {hl ? (
                                                         <div
                                                             style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
-                                                            className="max-w-[88%] space-y-2 break-words rounded-2xl rounded-bl-md border border-white/10 px-3.5 py-2.5 text-[15px] leading-relaxed text-[#f8f4e8]">
+                                                            className="max-w-[88%] space-y-2 break-words rounded-2xl rounded-bl-md border border-white/10 px-3.5 py-2.5 text-[15px] leading-relaxed text-ink">
                                                             <p
                                                                 style={{ color: hl.bar }}
                                                                 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide">
@@ -500,17 +500,17 @@ function ChatPopup() {
                                                         </div>
                                                     ) : (
                                                         <div
-                                                            style={mine ? { background: 'linear-gradient(110deg, #a88a43, #e2ce86 48%, #b18f45)' } : undefined}
+                                                            style={mine ? { background: 'linear-gradient(110deg, rgb(var(--c-accent-dim)), rgb(var(--c-accent2)) 48%, rgb(var(--c-accent-dim)))' } : undefined}
                                                             className={`max-w-[85%] space-y-2 break-words rounded-2xl px-3.5 py-2 text-[15px] leading-relaxed ${
                                                                 mine
-                                                                    ? 'rounded-br-md border border-[#f4e5a5]/40 text-[#1b190f]'
-                                                                    : 'rounded-bl-md border border-[#d8c47b]/15 bg-[#1c1d16] text-[#f8f4e8]'
+                                                                    ? 'rounded-br-md border border-accent2/40 text-accent-ink'
+                                                                    : 'rounded-bl-md border border-accent/15 bg-surface text-ink'
                                                             }`}>
                                                             {hasText && <p className="whitespace-pre-wrap break-words">{msg.message}</p>}
                                                             {hasMedia(msg) && <MessageMedia message={msg} urls={urls} mine={mine} />}
                                                         </div>
                                                     )}
-                                                    <div className="mt-1 flex items-center gap-1 px-1 text-[11px] text-[#8a8670]">
+                                                    <div className="mt-1 flex items-center gap-1 px-1 text-[11px] text-dim">
                                                         <span>{formatTime(msg.created_at)}</span>
                                                         {mine &&
                                                             (msg.is_read ? (
@@ -530,9 +530,9 @@ function ChatPopup() {
                                     </div>
 
                                     {/* Input */}
-                                    <div className="border-t border-[#d8c47b]/25 bg-black/25 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
+                                    <div className="border-t border-accent/25 bg-black/25 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
                                         {notice && (
-                                            <p className="mb-2 rounded-lg bg-[#c0392b]/15 px-3 py-2 text-xs text-[#f0a79d]" role="alert">
+                                            <p className="mb-2 rounded-lg bg-danger/15 px-3 py-2 text-xs text-danger-soft" role="alert">
                                                 {notice}
                                             </p>
                                         )}
@@ -542,16 +542,16 @@ function ChatPopup() {
                                                 {files.map((f, i) => (
                                                     <div
                                                         key={`${f.name}-${i}`}
-                                                        className="relative flex shrink-0 items-center gap-2 rounded-xl border border-[#484638] bg-[#1c1d16] py-1.5 pl-2 pr-7">
+                                                        className="relative flex shrink-0 items-center gap-2 rounded-xl border border-line bg-surface py-1.5 pl-2 pr-7">
                                                         <FileThumb file={f} className="h-9 w-9" />
                                                         <span className="max-w-[110px]">
-                                                            <span className="block truncate text-xs text-[#f8f4e8]">{f.name}</span>
-                                                            <span className="block text-[10px] text-[#8a8670]">{formatSize(f.size)}</span>
+                                                            <span className="block truncate text-xs text-ink">{f.name}</span>
+                                                            <span className="block text-[10px] text-dim">{formatSize(f.size)}</span>
                                                         </span>
                                                         <button
                                                             onClick={() => setFiles(list => list.filter((_, n) => n !== i))}
                                                             aria-label={`Remove ${f.name}`}
-                                                            className="absolute right-1 top-1 rounded-full p-0.5 text-[#aaa895] hover:bg-[#25261d] hover:text-[#f8f4e8]">
+                                                            className="absolute right-1 top-1 rounded-full p-0.5 text-muted hover:bg-surface2 hover:text-ink">
                                                             <X className="h-3.5 w-3.5" />
                                                         </button>
                                                     </div>
@@ -564,18 +564,18 @@ function ChatPopup() {
                                                 <button
                                                     onClick={voice.cancel}
                                                     aria-label="Discard recording"
-                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#aaa895] hover:bg-[#25261d] hover:text-[#f8f4e8]">
+                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted hover:bg-surface2 hover:text-ink">
                                                     <Trash2 className="h-5 w-5" />
                                                 </button>
-                                                <div className="flex min-h-[44px] flex-1 items-center gap-3 rounded-full border border-[#484638] bg-[#1c1d16] px-4">
-                                                    <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#c0392b]" />
-                                                    <span className="text-sm text-[#f8f4e8]">Recording… {formatClock(voice.seconds)}</span>
+                                                <div className="flex min-h-[44px] flex-1 items-center gap-3 rounded-full border border-line bg-surface px-4">
+                                                    <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-danger" />
+                                                    <span className="text-sm text-ink">Recording… {formatClock(voice.seconds)}</span>
                                                 </div>
                                                 <button
                                                     onClick={sendVoice}
                                                     aria-label="Send voice message"
                                                     style={{ background: brand }}
-                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#1b190f] transition hover:brightness-110 active:scale-95">
+                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-accent-ink transition hover:brightness-110 active:scale-95">
                                                     <Send className="h-5 w-5" />
                                                 </button>
                                             </div>
@@ -593,7 +593,7 @@ function ChatPopup() {
                                                     onClick={() => fileInputRef.current?.click()}
                                                     aria-label="Attach photos, GIFs or documents"
                                                     disabled={sending}
-                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#aaa895] transition-colors hover:bg-[#25261d] hover:text-[#f8f4e8] disabled:opacity-40">
+                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface2 hover:text-ink disabled:opacity-40">
                                                     <Paperclip className="h-5 w-5" />
                                                 </button>
                                                 <textarea
@@ -603,14 +603,14 @@ function ChatPopup() {
                                                     onKeyDown={handleKeyPress}
                                                     placeholder="Type your message..."
                                                     rows={1}
-                                                    className="max-h-[120px] min-h-[44px] min-w-0 flex-1 resize-none rounded-2xl border border-[#484638] bg-[#1c1d16] px-4 py-2.5 text-base text-[#f8f4e8] placeholder-[#8a8670] focus:border-[#d8c47b] focus:outline-none focus:ring-2 focus:ring-[#d8c47b]/25"
+                                                    className="max-h-[120px] min-h-[44px] min-w-0 flex-1 resize-none rounded-2xl border border-line bg-surface px-4 py-2.5 text-base text-ink placeholder-dim focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
                                                 />
                                                 {!newMessage.trim() && !files.length && voice.supported ? (
                                                     <button
                                                         onClick={startVoice}
                                                         aria-label="Record a voice message"
                                                         style={{ background: brand }}
-                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#1b190f] transition hover:brightness-110 active:scale-95">
+                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-accent-ink transition hover:brightness-110 active:scale-95">
                                                         <Mic className="h-5 w-5" />
                                                     </button>
                                                 ) : (
@@ -619,7 +619,7 @@ function ChatPopup() {
                                                         disabled={sending || (!newMessage.trim() && !files.length)}
                                                         aria-label="Send message"
                                                         style={{ background: brand }}
-                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[#1b190f] transition hover:brightness-110 active:scale-95 disabled:opacity-40 disabled:hover:brightness-100">
+                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-accent-ink transition hover:brightness-110 active:scale-95 disabled:opacity-40 disabled:hover:brightness-100">
                                                         {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
                                                     </button>
                                                 )}
@@ -629,19 +629,19 @@ function ChatPopup() {
                                 </>
                             ) : (
                                 <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
-                                    <p className="text-3xl tracking-[10px] text-[#d8c47b]" aria-hidden="true">
-                                        <span>&spades;&#xFE0E;</span> <span className="text-[#c0392b]">&hearts;&#xFE0E;</span> <span className="text-[#c0392b]">&diams;&#xFE0E;</span> <span>&clubs;&#xFE0E;</span>
+                                    <p className="text-3xl tracking-[10px] text-accent" aria-hidden="true">
+                                        <span>&spades;&#xFE0E;</span> <span className="text-danger">&hearts;&#xFE0E;</span> <span className="text-danger">&diams;&#xFE0E;</span> <span>&clubs;&#xFE0E;</span>
                                     </p>
                                     <div>
-                                        <p style={display} className="text-2xl text-[#f6f0dc]">Need a hand?</p>
-                                        <p className="mt-1 text-sm text-[#aaa895]">
+                                        <p style={display} className="text-2xl text-ink">Need a hand?</p>
+                                        <p className="mt-1 text-sm text-muted">
                                             Start a conversation and our team will get back to you.
                                         </p>
                                     </div>
                                     <button
                                         onClick={handleCreateChat}
                                         style={{ background: brand }}
-                                        className="min-h-[46px] rounded-[10px] border border-[#ead58f] px-7 text-[11px] font-black uppercase tracking-[1.7px] text-[#1b190f] shadow-[0_8px_24px_rgba(184,151,72,.18)] transition hover:brightness-110 active:scale-95">
+                                        className="min-h-[46px] rounded-[10px] border border-accent2 px-7 text-[11px] font-black uppercase tracking-[1.7px] text-accent-ink shadow-[0_8px_24px_rgb(var(--c-accent) / .18)] transition hover:brightness-110 active:scale-95">
                                         Start Conversation
                                     </button>
                                 </div>

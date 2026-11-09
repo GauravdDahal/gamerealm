@@ -74,36 +74,36 @@ export default function InstallApp() {
         <div
             role="dialog"
             aria-label="Install the app"
-            style={{ background: 'linear-gradient(145deg, #23231b, #10110e 60%)' }}
-            className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-24 z-40 flex max-w-sm items-center gap-3 rounded-2xl border border-[#d8c47b]/40 p-3 shadow-2xl shadow-black/60 sm:left-6 sm:right-auto">
+            style={{ background: 'linear-gradient(145deg, rgb(var(--c-surface2)), rgb(var(--c-night)) 60%)' }}
+            className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 right-24 z-40 flex max-w-sm items-center gap-3 rounded-2xl border border-accent/40 p-3 shadow-2xl shadow-black/60 sm:left-6 sm:right-auto">
             <span
                 aria-hidden="true"
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#d8c47b]/60 text-xl text-[#d8c47b]">
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/60 text-xl text-accent">
                 &spades;&#xFE0E;
             </span>
             <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-[#f6f0dc]">Get the Casino Play app</p>
+                <p className="text-sm font-semibold text-ink">Get the Casino Play app</p>
                 {ios ? (
-                    <p className="text-xs text-[#aaa895]">
+                    <p className="text-xs text-muted">
                         Tap <Share className="inline h-3.5 w-3.5 align-text-bottom" /> then
                         &ldquo;Add to Home Screen&rdquo;.
                     </p>
                 ) : (
-                    <p className="text-xs text-[#aaa895]">Opens full screen, one tap from your home screen.</p>
+                    <p className="text-xs text-muted">Opens full screen, one tap from your home screen.</p>
                 )}
             </div>
             {!ios && (
                 <button
                     onClick={install}
-                    style={{ background: 'linear-gradient(110deg, #a88a43, #e2ce86 48%, #b18f45)' }}
-                    className="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold uppercase tracking-wider text-[#1b190f]">
+                    style={{ background: 'linear-gradient(110deg, rgb(var(--c-accent-dim)), rgb(var(--c-accent2)) 48%, rgb(var(--c-accent-dim)))' }}
+                    className="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold uppercase tracking-wider text-accent-ink">
                     <Download className="h-3.5 w-3.5" /> Install
                 </button>
             )}
             <button
                 onClick={dismiss}
                 aria-label="Not now"
-                className="shrink-0 rounded-full p-1 text-[#aaa895] hover:text-white">
+                className="shrink-0 rounded-full p-1 text-muted hover:text-white">
                 <X className="h-4 w-4" />
             </button>
         </div>

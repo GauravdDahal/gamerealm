@@ -32,20 +32,20 @@ export default function Testimonial() {
             <style>
                 {`
                     .swiper-pagination-bullet {
-                        background-color: #eeeff0;
+                        background-color: rgb(var(--c-muted));
                         opacity: 1;
                         width: 12px;
                         height: 12px;
                         margin: 0 8px !important;
                     }
                     .swiper-pagination-bullet-active {
-                        background-color: #09a347;
+                        background-color: rgb(var(--c-accent));
                     }
                 `}
             </style>
 
-            <div className="absolute top-0 left-0 w-1/3 h-full bg-red-900/20 blur-[150px]" />
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-red-900/20 blur-[150px]" />
+            <div className="absolute top-0 left-0 w-1/3 h-full bg-secondary/20 blur-[150px]" />
+            <div className="absolute top-0 right-0 w-1/3 h-full bg-secondary/20 blur-[150px]" />
 
             <div className="container mx-auto px-4 relative">
                 <div className="text-center mb-12" data-aos="fade-up">
@@ -116,7 +116,7 @@ export default function Testimonial() {
                         onSwiper={swiper => (swiperRef.current = swiper)}>
                         {testimonials.map(testimonial => (
                             <SwiperSlide key={testimonial.id}>
-                                <div className="bg-[#100f2b] rounded-2xl sm:w-full p-6 sm:p-10 m-4 h-full">
+                                <div className="bg-surface rounded-2xl sm:w-full p-6 sm:p-10 m-4 h-full">
                                     <div className="flex gap-1">
                                         {[...Array(5)].map((_, i) => (
                                             <svg

@@ -56,7 +56,7 @@ export default function BonusesSection() {
                     {c.cards.map((card, i) => (
                         <div
                             key={i}
-                            className={`rounded-2xl border border-white/10 bg-gradient-to-br from-[#2a1650] to-[#160b2b] p-5 shadow-lg shadow-black/30 ${
+                            className={`rounded-2xl border border-white/10 bg-gradient-to-br from-surface2 to-night p-5 shadow-lg shadow-black/30 ${
                                 odd && i === c.cards.length - 1 ? 'md:col-span-2' : ''
                             }`}>
                             <div className="flex items-start gap-4">

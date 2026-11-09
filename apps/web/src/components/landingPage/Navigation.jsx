@@ -34,7 +34,7 @@ export default function Navigation({ isScrolled }) {
 
     return (
         <nav
-            className={'fixed top-0 left-0 right-0 z-50 transition-all bg-gradient-to-r from-[#d5d3ae] via-[#a09a63] to-[#534c28] duration-300 w-full px-4 py-5'}>
+            className={'fixed top-0 left-0 right-0 z-50 transition-all bg-gradient-to-r from-night via-surface to-night border-b border-line/70 backdrop-blur duration-300 w-full px-4 py-5'}>
             <div className="max-w-8xl mx-auto px-4">
                 <div className="flex items-center justify-between w-full">
                     {/* Logo - Far Left */}
@@ -43,9 +43,9 @@ export default function Navigation({ isScrolled }) {
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={brand.logo} alt={brand.name} className="w-9 h-9 object-contain" />
                         ) : (
-                            <Dice6 className="w-9 h-9 text-[#4f46e5] animate-float" />
+                            <Dice6 className="w-9 h-9 text-accent animate-float" />
                         )}
-                        <span className="text-xl bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-[#4f46e5] via-[#605C66] to-[#322C3C] text-transparent">
+                        <span className="text-xl bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-accent2 via-accent to-accent2 text-transparent">
                             {brand.name}
                         </span>
                     </div>
@@ -56,7 +56,7 @@ export default function Navigation({ isScrolled }) {
                             <a
                                 key={i}
                                 href={link.href}
-                                className="text-[#0d012e] text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-white">
+                                className="text-ink text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-accent">
                                 {link.label}
                             </a>
                         ))}
@@ -144,7 +144,7 @@ export default function Navigation({ isScrolled }) {
                             <div>
                                 <button
                                     onClick={handleJoinClick}
-                                    className="text-black hidden md:block rounded-xl border-2 border-black boreder-opacity-40 font-aldo bg-[#bdbb9a] px-3 py-1 transition-transform hover:scale-105 hover:text-[#faf4bb] hover:border-white hover:bg-[#2b3133]">
+                                    className="text-accent-ink hidden md:block rounded-xl border-2 border-accent2 font-aldo bg-accent px-3 py-1 transition-transform hover:scale-105 hover:bg-accent2">
                                     {brand.join_label}
                                 </button>
                             </div>
@@ -153,10 +153,10 @@ export default function Navigation({ isScrolled }) {
                 </div>
 
                 {isMobileMenuOpen && (
-                    <div className="md:hidden bg-gray-300 mt-4 p-4 rounded-lg">
+                    <div className="md:hidden bg-surface border border-line mt-4 p-4 rounded-lg">
                         {user && (
-                            <div className="flex items-center bg-gray-400 rounded-lg shadow-md justify-between relative">
-                                <p className="text-center font-semibold text-gray-800 px-4 py-2">
+                            <div className="flex items-center bg-surface2 rounded-lg shadow-md justify-between relative">
+                                <p className="text-center font-semibold text-ink px-4 py-2">
                                     Hello, {user?.name}{' '}
                                 </p>
                                 <div className="relative w-8 h-8">
@@ -174,7 +174,7 @@ export default function Navigation({ isScrolled }) {
                                 <a
                                     key={i}
                                     href={link.href}
-                                    className="hover:text-game-primary font-aldo text-[#0d012e]">
+                                    className="hover:text-accent font-aldo text-ink">
                                     {link.label}
                                 </a>
                             ))}
@@ -191,7 +191,7 @@ export default function Navigation({ isScrolled }) {
                             ) : (
                                 <button
                                     onClick={handleJoinClick}
-                                    className="text-[#0d012e] bg-[#bdbb9a] rounded-xl border-2 font-aldo border-black boreder-opacity-40 px-6 py-2 font-medium w-full">
+                                    className="text-accent-ink bg-accent rounded-xl border-2 font-aldo border-accent2 px-6 py-2 font-medium w-full hover:bg-accent2">
                                     {brand.join_label}
                                 </button>
                             )}

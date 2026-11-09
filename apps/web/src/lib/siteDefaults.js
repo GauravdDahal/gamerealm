@@ -203,6 +203,7 @@ export const siteDefaults = {
             { name: 'Visa', image: '/assets/images/paymentSectionImg/visa.jpg' },
         ],
     },
+    theme: { active: 'casino', decor: true },
     footer: {
         description:
             'Experience the thrill of the game anytime, anywhere! Spin the reels, place your bets, and chase big wins with the ultimate online casino adventure. Luck is just a click away! 🎰💰🔥',

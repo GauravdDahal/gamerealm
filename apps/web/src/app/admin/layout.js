@@ -17,6 +17,7 @@ import {
     Gamepad2,
     Gift,
     PencilLine,
+    Palette,
     Bell,
     BellOff,
     LogOut,
@@ -51,6 +52,7 @@ const nav = [
     { href: '/admin/games', label: 'Games', icon: Gamepad2 },
     { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift },
     { href: '/admin/site', label: 'Site content', icon: PencilLine },
+    { href: '/admin/theme', label: 'Site theme', icon: Palette },
 ]
 
 /* Deliberately not using useAuth({ middleware: 'auth' }).

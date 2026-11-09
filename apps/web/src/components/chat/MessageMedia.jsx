@@ -22,7 +22,7 @@ const isOwnGameImage = url => {
 
 /** Colours for highlighted (staff) messages. */
 export const HIGHLIGHT_STYLES = {
-    info: { label: 'Info', icon: Info, bar: '#d8c47b', tint: 'rgba(216,196,123,0.12)', text: '#f4e5a5' },
+    info: { label: 'Info', icon: Info, bar: 'rgb(var(--c-accent))', tint: 'rgb(var(--c-accent) / 0.12)', text: 'rgb(var(--c-accent2))' },
     promo: { label: 'Promo', icon: Sparkles, bar: '#e5484d', tint: 'rgba(229,72,77,0.14)', text: '#fbcfe8' },
     success: { label: 'Good news', icon: CheckCircle2, bar: '#10b981', tint: 'rgba(16,185,129,0.14)', text: '#a7f3d0' },
     warning: { label: 'Important', icon: AlertTriangle, bar: '#f97316', tint: 'rgba(249,115,22,0.15)', text: '#fed7aa' },
@@ -51,7 +51,7 @@ export const MessageMedia = ({ message, urls, mine }) => {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={g.url} alt={g.name} className="h-32 w-full object-cover" />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-3 pb-2 pt-8">
-                            <span className="block text-[10px] font-bold uppercase tracking-[2px] text-[#e2ce86]">
+                            <span className="block text-[10px] font-bold uppercase tracking-[2px] text-accent2">
                                 Game request
                             </span>
                             <span className="block text-base font-semibold text-white">{g.name}</span>

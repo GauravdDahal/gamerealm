@@ -17,7 +17,7 @@ export default function WhyChooseUs() {
   }, []);
 
   return (
-      <section className="bg-[#151C28] h-auto text-white p-1 sm:p-4 md:p-3  lg:p-30 relative overflow-hidden">
+      <section className="bg-surface h-auto text-white p-1 sm:p-4 md:p-3  lg:p-30 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10 pointer-events-none">
               <div className="absolute top-1/4 left-1/4 text-6xl sm:text-5xl">
                   ♠

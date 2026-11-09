@@ -197,7 +197,7 @@ export default function SpinWheel() {
                 className="pointer-events-none absolute inset-0"
                 style={{
                     background:
-                        'radial-gradient(60% 50% at 80% 40%, rgba(124,58,237,.28), transparent 70%), radial-gradient(45% 40% at 10% 10%, rgba(79,70,229,.25), transparent 70%), radial-gradient(40% 35% at 50% 100%, rgba(219,39,119,.18), transparent 70%)',
+                        'radial-gradient(60% 50% at 80% 40%, rgb(var(--c-secondary2) / .28), transparent 70%), radial-gradient(45% 40% at 10% 10%, rgb(var(--c-secondary) / .25), transparent 70%), radial-gradient(40% 35% at 50% 100%, rgb(var(--c-hot) / .18), transparent 70%)',
                 }}
             />
             <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
@@ -251,12 +251,12 @@ export default function SpinWheel() {
                         aria-hidden="true">
                         <defs>
                             <linearGradient id="ptr" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0" stopColor="#f4e5a5" />
-                                <stop offset="1" stopColor="#b18f45" />
+                                <stop offset="0" style={{ stopColor: 'rgb(var(--c-accent2))' }} />
+                                <stop offset="1" style={{ stopColor: 'rgb(var(--c-accent-dim))' }} />
                             </linearGradient>
                         </defs>
-                        <path d="M20 46 L4 10 Q20 -4 36 10 Z" fill="url(#ptr)" stroke="#6b5521" strokeWidth="1.5" />
-                        <circle cx="20" cy="14" r="4" fill="#14150f" />
+                        <path d="M20 46 L4 10 Q20 -4 36 10 Z" fill="url(#ptr)" style={{ stroke: 'rgb(var(--c-accent-dim))' }} strokeWidth="1.5" />
+                        <circle cx="20" cy="14" r="4" style={{ fill: 'rgb(var(--c-night))' }} />
                     </svg>
 
                     <div
@@ -269,9 +269,9 @@ export default function SpinWheel() {
                         <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="h-full w-full" role="img" aria-label="Lucky wheel">
                             <defs>
                                 <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
-                                    <stop offset="0" stopColor="#f4e5a5" />
-                                    <stop offset=".5" stopColor="#c9a54f" />
-                                    <stop offset="1" stopColor="#8f7a3d" />
+                                    <stop offset="0" style={{ stopColor: 'rgb(var(--c-accent2))' }} />
+                                    <stop offset=".5" style={{ stopColor: 'rgb(var(--c-accent))' }} />
+                                    <stop offset="1" style={{ stopColor: 'rgb(var(--c-accent))' }} />
                                 </linearGradient>
                                 <radialGradient id="shine" cx=".5" cy=".5" r=".5">
                                     <stop offset=".55" stopColor="#fff" stopOpacity="0" />
@@ -279,7 +279,7 @@ export default function SpinWheel() {
                                 </radialGradient>
                             </defs>
                             <circle cx={C} cy={C} r={C - 2} fill="url(#rim)" />
-                            <circle cx={C} cy={C} r={R + 8} fill="#14150f" />
+                            <circle cx={C} cy={C} r={R + 8} style={{ fill: 'rgb(var(--c-night))' }} />
                             {segments.map((s, i) => {
                                 const mid = (i + 0.5) * seg
                                 const [tx, ty] = polar(mid, R * 0.69)
@@ -306,7 +306,7 @@ export default function SpinWheel() {
                             <circle cx={C} cy={C} r={R} fill="url(#shine)" />
                             {Array.from({ length: 24 }).map((_, i) => {
                                 const [x, y] = polar(i * 15, C - 11)
-                                return <circle key={i} cx={x} cy={y} r="3.2" fill={i % 2 ? '#fff6cf' : '#7a6529'} />
+                                return <circle key={i} cx={x} cy={y} r="3.2" style={{ fill: i % 2 ? 'rgb(var(--c-ink))' : 'rgb(var(--c-accent-dim))' }} />
                             })}
                         </svg>
                     </div>
@@ -324,8 +324,8 @@ export default function SpinWheel() {
                         onClick={spin}
                         disabled={!canTap}
                         aria-label="Spin the wheel"
-                        className="absolute left-1/2 top-1/2 z-10 flex h-[26%] w-[26%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-[5px] border-[#e2ce86] bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-[0_0_30px_rgba(0,0,0,.6)] transition hover:brightness-125 active:scale-95 disabled:cursor-not-allowed">
-                        <Gift className="mb-0.5 h-[22%] w-[22%] text-[#e2ce86]" />
+                        className="absolute left-1/2 top-1/2 z-10 flex h-[26%] w-[26%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-[5px] border-accent2 bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-[0_0_30px_rgba(0,0,0,.6)] transition hover:brightness-125 active:scale-95 disabled:cursor-not-allowed">
+                        <Gift className="mb-0.5 h-[22%] w-[22%] text-accent2" />
                         <span className="font-godofwar text-[clamp(.8rem,3.2vw,1.35rem)] leading-none">SPIN</span>
                     </button>
 

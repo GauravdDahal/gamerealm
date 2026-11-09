@@ -40,9 +40,9 @@ export default function Footer() {
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={brand.logo} alt={brand.name} className="w-8 h-8 object-contain" />
                             ) : (
-                                <Gamepad2 className="w-8 h-8 text-[#4f46e5] animate-float" />
+                                <Gamepad2 className="w-8 h-8 text-secondary animate-float" />
                             )}
-                            <span className="text-xl  font-bold bg-clip-text bg-gradient-to-r from-[#4f46e5] via-[#7c3aed] to-[#db2777] text-transparent">
+                            <span className="text-xl  font-bold bg-clip-text bg-gradient-to-r from-secondary via-secondary2 to-hot text-transparent">
                                 {brand.name}
                             </span>
                         </div>
@@ -57,7 +57,7 @@ export default function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={socialNames[s.platform]}
-                                        className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-[#4f46e5] delay-200 ease-in-out duration-150 transition-colors">
+                                        className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-secondary delay-200 ease-in-out duration-150 transition-colors">
                                         <Icon className="w-5 h-5" />
                                     </a>
                                 )
