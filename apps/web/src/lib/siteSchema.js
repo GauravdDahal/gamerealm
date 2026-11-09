@@ -59,6 +59,7 @@ export const siteSchema = [
                     { name: 'title', label: 'Card title', type: 'text' },
                     { name: 'description', label: 'Text', type: 'textarea' },
                     { name: 'button', label: 'Button text', type: 'text' },
+                    { name: 'href', label: 'Button goes to', type: 'text', hint: 'Leave empty for the default. Sections: #referrals, #bonuses, #games, #rules.' },
                 ],
             },
         ],

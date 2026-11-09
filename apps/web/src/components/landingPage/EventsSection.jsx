@@ -3,6 +3,8 @@ import React from "react";
 import { Gift, Send } from "lucide-react";
 import { useSiteContent } from '@/lib/useSiteContent'
 
+const fallbackLinks = ['#referrals', '#bonuses']
+
 const styles = [
   { gradient: "from-green-400 to-blue-500", btnGradient: "from-green-500 to-blue-600", Icon: Send },
   { gradient: "from-purple-500 to-pink-500", btnGradient: "from-purple-500 to-pink-600", Icon: Gift },
@@ -48,10 +50,11 @@ export default function EventSection() {
                                   {card.description}
                               </p>
 
-                              <button
-                                  className={` bg-gradient-to-r ${st.btnGradient} text-white px-6 py-3 rounded-full font-medium transition-all hover:opacity-80 shadow-lg`}>
+                              <a
+                                  href={card.href || fallbackLinks[index] || '#home'}
+                                  className={`inline-block bg-gradient-to-r ${st.btnGradient} text-white px-6 py-3 rounded-full font-medium transition-all hover:opacity-80 shadow-lg`}>
                                   {card.button}
-                              </button>
+                              </a>
                           </div>
                       </div>
                   )})}
