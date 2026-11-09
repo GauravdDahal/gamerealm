@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Gift, Sparkles, X, Zap } from 'lucide-react'
+import { Gift, Sparkles, Volume2, VolumeX, X, Zap } from 'lucide-react'
 import { useAuth } from '@/hooks/auth'
 import { createClient } from '@/lib/supabase/client'
+import { lose, setSoundOn, soundOn, tick, unlock, whoosh, win } from '@/lib/wheelSound'
 
 // Shown until the real segments arrive (and if they can't be loaded).
 const FALLBACK = [
@@ -55,6 +56,54 @@ export default function SpinWheel() {
     const [error, setError] = useState('')
     const [, tick] = useState(0)
     const rotationRef = useRef(0)
+    const wheelRef = useRef(null)
+    const frameRef = useRef(0)
+    const [sound, setSound] = useState(true)
+
+    useEffect(() => {
+        setSound(soundOn())
+        return () => cancelAnimationFrame(frameRef.current)
+    }, [])
+
+    const toggleSound = () => {
+        const next = !sound
+        setSound(next)
+        setSoundOn(next)
+        if (next) {
+            unlock()
+            tick(0.3)
+        }
+    }
+
+    // Tick each time the pointer passes into a new slice, by watching the
+    // wheel's real on-screen angle while it turns.
+    const startTicks = segCount => {
+        const slice = 360 / segCount
+        const angleNow = () => {
+            const m = getComputedStyle(wheelRef.current).transform
+            if (!m || m === 'none') return 0
+            const [a, b] = m.slice(m.indexOf('(') + 1, -1).split(',').map(Number)
+            return ((Math.atan2(b, a) * 180) / Math.PI + 360) % 360
+        }
+        let lastSlice = Math.floor((((360 - angleNow()) % 360) / slice))
+        let lastAngle = angleNow()
+        let lastTick = 0
+        const loop = now => {
+            const angle = angleNow()
+            const sliceNow = Math.floor((((360 - angle) % 360) / slice))
+            if (sliceNow !== lastSlice) {
+                lastSlice = sliceNow
+                if (now - lastTick > 30) {
+                    const speed = Math.min(1, Math.abs(((angle - lastAngle + 540) % 360) - 180) / 30)
+                    tick(speed)
+                    lastTick = now
+                }
+            }
+            lastAngle = angle
+            frameRef.current = requestAnimationFrame(loop)
+        }
+        frameRef.current = requestAnimationFrame(loop)
+    }
 
     // Wheel segments (public).
     useEffect(() => {
@@ -90,6 +139,7 @@ export default function SpinWheel() {
         if (status?.state === 'staff') return setError('Admin accounts can’t spin. Sign in as a player to try it.')
         if (status?.state === 'wait') return setError(`Your next free spin is in ${untilText(status.next_spin_at)}.`)
 
+        unlock() // sound is only allowed after a tap, so start it here
         setSpinning(true)
         const { data, error: err } = await supabase.rpc('spin_wheel')
         if (err) {
@@ -110,11 +160,16 @@ export default function SpinWheel() {
         const next = base + 360 * 6 + wanted
         rotationRef.current = next
         setRotation(next)
+        whoosh()
+        startTicks(n)
 
         setTimeout(() => {
+            cancelAnimationFrame(frameRef.current)
             setSpinning(false)
             setResult(data)
             loadStatus()
+            if (/try again|better luck/i.test(data.label)) lose()
+            else win()
         }, SPIN_MS + 150)
     }
 
@@ -204,6 +259,7 @@ export default function SpinWheel() {
                     </svg>
 
                     <div
+                        ref={wheelRef}
                         className="aspect-square w-full will-change-transform"
                         style={{
                             transform: `rotate(${rotation}deg)`,
@@ -253,6 +309,14 @@ export default function SpinWheel() {
                             })}
                         </svg>
                     </div>
+
+                    <button
+                        onClick={toggleSound}
+                        aria-label={sound ? 'Mute wheel sounds' : 'Turn wheel sounds on'}
+                        title={sound ? 'Sound on' : 'Sound off'}
+                        className="absolute -top-2 right-0 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 bg-gray-900/80 text-gray-300 backdrop-blur transition hover:text-white sm:-right-2">
+                        {sound ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+                    </button>
 
                     {/* hub */}
                     <button
