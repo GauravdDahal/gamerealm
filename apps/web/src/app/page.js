@@ -16,6 +16,7 @@ import AboutUs from '@/components/landingPage/AboutUs'
 import Testimonial from '@/components/landingPage/Testomonials'
 import CatSection from '@/components/landingPage/CatSection'
 import BonusesSection from '@/components/landingPage/BonusesSection'
+import SectionDecor from '@/components/SectionDecor'
 import PaymentSection from '@/components/landingPage/PaymentSection'
 const GamesSection = dynamic(
     () => import('@/components/landingPage/GamesSection'),
@@ -40,21 +41,21 @@ function Home() {
         <div className="min-h-screen max-w-screen overflow-hidden bg-gray-900 text-white font-sans">
             <Navigation isScrolled={isScrolled} />
             <Suspense fallback={<LoadingSpinner />}>
-                <SpinWheel />
+                <SectionDecor name="hero"><SpinWheel /></SectionDecor>
                 <EventsSection />
             </Suspense>
-            <GamesSection />
+            <SectionDecor name="games"><GamesSection /></SectionDecor>
             <GamesMarquee />
             <MarqueeText />
-            <AboutUs />
+            <SectionDecor name="about"><AboutUs /></SectionDecor>
             <CatSection />
-            <BonusesSection />
-            <WhyChooseUs />
-            <RulesSection />
+            <SectionDecor name="bonuses"><BonusesSection /></SectionDecor>
+            <SectionDecor name="why"><WhyChooseUs /></SectionDecor>
+            <SectionDecor name="rules"><RulesSection /></SectionDecor>
             <FAQSection />
             <Testimonial />
             <PaymentSection />
-            <Footer />
+            <SectionDecor name="footer"><Footer /></SectionDecor>
             <ChatPopup />
         </div>
     )

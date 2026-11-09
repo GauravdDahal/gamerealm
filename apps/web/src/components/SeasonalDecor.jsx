@@ -13,7 +13,7 @@ import Art from '@/components/decorArt'
 //   strip  - a garland / bunting / lights row hanging under the top bar
 // Visitors who ask their device for reduced motion get still decorations.
 
-const CSS = `
+export const CSS = `
 @keyframes d-fall { from { transform: translate3d(0,-10vh,0) rotate(0deg) } to { transform: translate3d(var(--drift),110vh,0) rotate(360deg) } }
 @keyframes d-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
 @keyframes d-float { 0%,100% { transform: translate(0,0) rotate(-4deg) } 50% { transform: translate(10px,-20px) rotate(4deg) } }
@@ -31,7 +31,7 @@ const CSS = `
 `
 
 // 'accent' -> the theme colour; anything else is used as written
-const tone = c => (/^#|^rgb/.test(c) ? c : `rgb(var(--c-${c}))`)
+export const tone = c => (/^#|^rgb/.test(c) ? c : `rgb(var(--c-${c}))`)
 
 const LIGHT_COLORS = ['#ff4d4d', '#ffd24d', '#4dd96a', '#4da6ff']
 
@@ -112,30 +112,6 @@ const SeasonalDecor = () => {
 
     if (!ready || !loaded || !spec || decor === false || pathname?.startsWith('/admin')) return null
 
-    const props = (spec.props ?? []).filter(p => !still || (p.anim !== 'fly' && p.anim !== 'rise'))
-    const size = p => `clamp(${Math.round(p.size * 0.4)}px, ${(p.size / 12.8).toFixed(1)}vw, ${p.size}px)`
-
-    const place = p => {
-        const base = { width: size(p), height: p.img ? undefined : size(p), color: tone(p.color ?? 'accent'), opacity: p.op ?? 0.5, left: p.left, right: p.right, top: p.top, bottom: p.bottom }
-        if (still || !p.anim || p.anim === 'none') return base
-        const dur = p.dur ?? 6
-        if (p.anim === 'peek') return { ...base, '--peek': p.right !== undefined ? '-45px' : '45px', animation: `d-peek ${dur}s ease-in-out ${p.delay ?? 0}s infinite` }
-        if (p.anim === 'fly') return { ...base, left: 0, animation: `d-fly ${dur}s linear ${p.delay ?? 0}s infinite` }
-        const timing = p.anim === 'rise' ? 'linear' : 'ease-in-out'
-        return { ...base, transformOrigin: p.origin ? `50% ${p.origin === 'top' ? '0%' : '100%'}` : undefined, animation: `d-${p.anim} ${dur}s ${timing} ${p.delay ?? 0}s infinite` }
-    }
-
-    const Prop = ({ p }) => (
-        <span className={`d-prop ${p.desktop ? 'd-desktop' : ''}`} style={place(p)}>
-            {p.img ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={p.img} alt="" draggable={false} style={{ width: '100%', height: 'auto', display: 'block', transform: p.flip ? 'scaleX(-1)' : undefined }} />
-            ) : (
-                <Art kind={p.art} style={{ transform: p.flip ? 'scaleX(-1)' : undefined }} />
-            )}
-        </span>
-    )
-
     return (
         <>
             <style>{CSS}</style>
@@ -147,18 +123,7 @@ const SeasonalDecor = () => {
                             <Art kind={fall.art} />
                         </span>
                     ))}
-                {props.filter(p => p.mode === 'fixed' && !p.hang).map((p, i) => <Prop key={i} p={p} />)}
-                {props.filter(p => p.hang).map((p, i) => (
-                    <span key={`h${i}`} className="d-desktop" style={{ position: 'absolute', left: p.left, top: p.len, width: size(p), opacity: p.op ?? 1, animation: still ? undefined : 'd-drop 7s ease-in-out infinite' }}>
-                        <span style={{ position: 'absolute', left: '68%', top: -p.len, width: 1, height: p.len + 6, background: 'rgb(var(--c-ink) / .45)' }} />
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={p.img} alt="" draggable={false} style={{ width: '100%', height: 'auto', display: 'block' }} />
-                    </span>
-                ))}
                 <Strip type={spec.strip} still={still} />
-            </div>
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
-                {props.filter(p => p.mode === 'page').map((p, i) => <Prop key={i} p={p} />)}
             </div>
         </>
     )

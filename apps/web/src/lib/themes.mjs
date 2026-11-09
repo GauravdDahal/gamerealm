@@ -32,12 +32,15 @@ export const THEMES = [
     scales: { gray: [25, 22], purple: [275, 70], pink: [85, 75], orange: [28, 100] },
     decor: {
       fall: { art: 'bat', count: 0 },
-      props: [
-        { img: '/assets/decor/halloween/pumpkin.webp', mode: 'fixed', left: '10px', bottom: '8px', size: 120, op: 0.95, anim: 'bob', dur: 6, desktop: true },
-        { img: '/assets/decor/halloween/ghost.webp', mode: 'fixed', right: '10px', top: '58%', size: 100, op: 0.85, anim: 'float', dur: 8, desktop: true },
-        { img: '/assets/decor/halloween/bat2.webp', mode: 'fixed', top: '24%', size: 90, op: 0.8, anim: 'fly', dur: 28 },
-        { img: '/assets/decor/halloween/spider.webp', mode: 'fixed', hang: true, left: '40%', len: 120, size: 56, op: 0.95 },
-      ],
+      scene: {
+        hero: [
+          { img: '/assets/decor/halloween/bat2.webp', left: 0, top: '16%', size: 90, op: 0.8, anim: 'fly', dur: 28 },
+          { img: '/assets/decor/halloween/spider.webp', hang: true, left: '42%', len: 110, size: 54, op: 0.95 },
+        ],
+        games: [{ img: '/assets/decor/halloween/ghost.webp', right: '1.5%', top: '-40px', size: 100, op: 0.9, anim: 'float', dur: 8 }],
+        about: [{ img: '/assets/decor/halloween/pumpkin.webp', left: '3%', bottom: '-34px', size: 120, anim: 'bob', dur: 7 }],
+        footer: [{ img: '/assets/decor/halloween/pumpkin2.webp', right: '6%', top: '-62px', size: 110, anim: 'bob', dur: 8 }],
+      },
     },
   },
   {
@@ -53,12 +56,12 @@ export const THEMES = [
     scales: { gray: [150, 20], purple: [145, 65], pink: [350, 80], orange: [45, 92] },
     decor: {
       fall: { art: 'snowflake', count: 10 }, strip: 'lights',
-      props: [
-        { art: 'pine', mode: 'fixed', left: '1%', bottom: '-6px', size: 240, color: 'secondary', op: 0.35, desktop: true },
-        { art: 'snowflake', mode: 'fixed', right: '3%', top: '120px', size: 110, color: 'ink', op: 0.22, anim: 'spin', dur: 60 },
-        { art: 'pine', mode: 'page', right: '1%', top: '70%', size: 200, color: 'secondary', op: 0.3, desktop: true },
-        { art: 'snowflake', mode: 'page', left: '2%', top: '38%', size: 90, color: 'ink', op: 0.18, anim: 'spin', dur: 80, desktop: true },
-      ],
+      scene: {
+        hero: [{ art: 'snowflake', right: '2%', top: '110px', size: 90, color: 'ink', op: 0.2, anim: 'spin', dur: 70 }],
+        about: [{ art: 'pine', left: '2%', bottom: '-6px', size: 150, color: 'secondary', op: 0.45 }, { art: 'pine', left: '9%', bottom: '-6px', size: 100, color: 'secondary2', op: 0.35 }],
+        bonuses: [{ art: 'snowflake', left: '2%', top: '20px', size: 70, color: 'ink', op: 0.18, anim: 'spin', dur: 90 }],
+        footer: [{ art: 'pine', right: '7%', top: '-92px', size: 120, color: 'secondary', op: 0.5 }, { art: 'pine', right: '14%', top: '-62px', size: 80, color: 'secondary2', op: 0.4 }],
+      },
     },
   },
   {
@@ -74,12 +77,12 @@ export const THEMES = [
     scales: { gray: [230, 25], purple: [228, 80], pink: [330, 70], orange: [48, 95] },
     decor: {
       fall: { art: 'confetti', count: 12 }, strip: 'sparkle',
-      props: [
-        { art: 'burst', mode: 'fixed', left: '-110px', top: '30%', size: 240, color: 'accent', op: 0.35, anim: 'pulse', dur: 5, desktop: true },
-        { art: 'burst', mode: 'fixed', right: '-30px', top: '48%', size: 200, color: 'accent2', op: 0.4, anim: 'pulse', dur: 6, delay: -2 },
-        { art: 'burst', mode: 'page', left: '2%', top: '72%', size: 170, color: 'ink', op: 0.22, anim: 'pulse', dur: 7, desktop: true },
-        { art: 'flute', mode: 'page', right: '2%', top: '30%', size: 110, color: 'accent', op: 0.5, anim: 'sway', dur: 6, desktop: true },
-      ],
+      scene: {
+        hero: [{ art: 'burst', left: '-60px', top: '18%', size: 200, color: 'accent', op: 0.3, anim: 'pulse', dur: 6 }],
+        bonuses: [{ art: 'burst', right: '-50px', top: '10%', size: 180, color: 'accent2', op: 0.28, anim: 'pulse', dur: 7, delay: -2 }],
+        why: [{ art: 'flute', right: '4%', bottom: '10px', size: 90, color: 'accent', op: 0.45, anim: 'sway', dur: 7 }],
+        footer: [{ art: 'flute', left: '6%', top: '-86px', size: 100, color: 'accent', op: 0.55, anim: 'sway', dur: 8 }],
+      },
     },
   },
   {
@@ -95,12 +98,12 @@ export const THEMES = [
     scales: { gray: [225, 30], purple: [220, 85], pink: [355, 80], orange: [355, 78] },
     decor: {
       fall: { art: 'star5', count: 8 }, strip: 'bunting',
-      props: [
-        { art: 'burst', mode: 'fixed', left: '-110px', top: '32%', size: 230, color: '#e63946', op: 0.35, anim: 'pulse', dur: 5, desktop: true },
-        { art: 'burst', mode: 'fixed', right: '-30px', top: '50%', size: 210, color: '#60a5fa', op: 0.45, anim: 'pulse', dur: 6, delay: -2 },
-        { art: 'burst', mode: 'page', right: '3%', top: '74%', size: 160, color: '#ffffff', op: 0.25, anim: 'pulse', dur: 7, desktop: true },
-        { art: 'star5', mode: 'page', left: '2%', top: '55%', size: 70, color: '#ffffff', op: 0.3, anim: 'spin', dur: 40, desktop: true },
-      ],
+      scene: {
+        hero: [{ art: 'burst', left: '-60px', top: '20%', size: 190, color: '#e63946', op: 0.3, anim: 'pulse', dur: 6 }],
+        about: [{ art: 'star5', right: '4%', top: '24px', size: 60, color: '#ffffff', op: 0.3, anim: 'spin', dur: 50 }],
+        bonuses: [{ art: 'burst', right: '-50px', top: '10%', size: 180, color: '#60a5fa', op: 0.3, anim: 'pulse', dur: 7, delay: -2 }],
+        footer: [{ art: 'burst', left: '5%', top: '-70px', size: 120, color: '#ffffff', op: 0.3, anim: 'pulse', dur: 6 }],
+      },
     },
   },
   {
@@ -116,12 +119,13 @@ export const THEMES = [
     scales: { gray: [28, 24], purple: [348, 68], pink: [42, 85], orange: [30, 90] },
     decor: {
       fall: { art: 'leaf', count: 9 }, strip: 'leaves',
-      props: [
-        { art: 'wheat', mode: 'fixed', left: '1%', bottom: '-10px', size: 230, color: 'accent2', op: 0.4, anim: 'sway', dur: 8, origin: 'bottom', desktop: true },
-        { art: 'leaf', mode: 'fixed', right: '2%', top: '120px', size: 100, color: 'accent', op: 0.4, anim: 'sway', dur: 7, origin: 'top' },
-        { art: 'wheat', mode: 'page', right: '1%', top: '62%', size: 200, color: 'accent2', op: 0.35, anim: 'sway', dur: 9, origin: 'bottom', desktop: true },
-        { art: 'pumpkin', mode: 'page', left: '2%', top: '44%', size: 110, color: 'accent', op: 0.45, desktop: true },
-      ],
+      scene: {
+        games: [{ art: 'wheat', left: '1%', bottom: '0', size: 150, color: 'accent2', op: 0.4, anim: 'sway', dur: 9, origin: 'bottom' }],
+        about: [{ art: 'pumpkin', right: '3%', bottom: '-30px', size: 110, color: 'accent', op: 0.55, anim: 'bob', dur: 8 }],
+        bonuses: [{ art: 'leaf', right: '3%', top: '16px', size: 70, color: 'accent', op: 0.35, anim: 'sway', dur: 7, origin: 'top' }],
+        rules: [{ art: 'wheat', right: '2%', bottom: '0', size: 140, color: 'accent2', op: 0.35, anim: 'sway', dur: 9, origin: 'bottom' }],
+        footer: [{ art: 'pumpkin', left: '6%', top: '-80px', size: 100, color: 'accent', op: 0.55 }],
+      },
     },
   },
 ]
