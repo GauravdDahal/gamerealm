@@ -13,7 +13,7 @@ insert into public.permissions (name) values
   ('role-view'), ('role-create'), ('role-update'), ('role-delete'), ('role-assign'),
   ('admin_user-view'), ('admin_user-create'), ('admin_user-update'), ('admin_user-delete'),
   ('activity_log-view'), ('activity_log-clear'),
-  ('chat-view'), ('game-manage'),
+  ('chat-view'), ('game-manage'), ('wheel-manage'),
   ('message-view'), ('message-delete')
 on conflict (name) do nothing;
 

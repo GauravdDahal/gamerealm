@@ -15,6 +15,7 @@ import {
     MessageCircle,
     Zap,
     Gamepad2,
+    Gift,
     Bell,
     BellOff,
     LogOut,
@@ -47,6 +48,7 @@ const nav = [
     { href: '/admin/activity', label: 'Activity', icon: ScrollText },
     { href: '/admin/banners', label: 'Banners', icon: Images },
     { href: '/admin/games', label: 'Games', icon: Gamepad2 },
+    { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift },
 ]
 
 /* Deliberately not using useAuth({ middleware: 'auth' }).
