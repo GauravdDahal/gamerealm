@@ -74,7 +74,7 @@ export default function GamesSection({ bare = false, all = false }) {
                             data-aos-duration="1000"
                             data-aos-delay={100 * (index + 1)}
                             className="group relative w-full max-w-[340px] overflow-hidden rounded-lg gradient-border">
-                            <div className="absolute inset-0 bg-gradient-to-r from-game-primary/20 via-game-secondary/20 to-game-accent/20 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-game-primary/20 via-game-secondary/20 to-game-accent/20 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                             <div className="w-full aspect-[4/5] relative">
                                 <Image
                                     src={game.image}
