@@ -96,7 +96,7 @@ export default function HeroSection() {
                                 <div className="absolute inset-0">
                                     <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/50 z-10" />
                                     <Image
-                                        src={slide.image_url || slide.image || '/assets/images/placeholder.jpg'}
+                                        src={slide.image_url || slide.image || '/assets/images/heroSectionImg/img1.jpg'}
                                         alt={slide.title || 'Slide image'}
                                         fill={true}
                                         priority={index === 0} // Only prioritize first image

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Dice6, Spade, Club, Diamond, Sparkles, ShieldCheck } from 'lucide-react'
 
 export const metadata = {
-    title: 'Join Casino Play',
+    title: { absolute: 'Join Casino Play' },
     description: 'Sign in or create your Casino Play account.',
 }
 

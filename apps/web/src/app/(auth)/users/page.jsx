@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Home } from 'lucide-react'
+import { CircleCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 /**
@@ -19,6 +19,12 @@ const SignIn = () => {
     const [password, setPassword] = useState('')
     const [errors, setErrors] = useState({})
     const [submitting, setSubmitting] = useState(false)
+    const [flash, setFlash] = useState('')
+
+    useEffect(() => {
+        const q = new URLSearchParams(window.location.search)
+        if (q.get('reset')) setFlash('Your password was changed. Sign in with your new password.')
+    }, [])
 
     const submit = async event => {
         event.preventDefault()
@@ -31,7 +37,18 @@ const SignIn = () => {
         })
 
         if (signInError) {
-            setErrors({ email: [signInError.message] })
+            const m = signInError.message.toLowerCase()
+            setErrors({
+                email: [
+                    m.includes('invalid login')
+                        ? 'Wrong email or password. Please check them and try again.'
+                        : m.includes('not confirmed')
+                          ? 'Please confirm your email first. Check your inbox for the link.'
+                          : m.includes('failed to fetch')
+                            ? 'Could not reach the server. Check your connection and try again.'
+                            : signInError.message,
+                ],
+            })
             setSubmitting(false)
             return
         }
@@ -55,6 +72,12 @@ const SignIn = () => {
                 <h2>Good to see you<span>.</span></h2>
                 <p>Sign in to pick up where the excitement left off.</p>
             </div>
+
+            {flash && (
+                <p role="status" className="mb-4 flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
+                    <CircleCheck size={16} /> {flash}
+                </p>
+            )}
 
             <form onSubmit={submit} className="auth-form">
                 <div>

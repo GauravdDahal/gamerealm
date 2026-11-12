@@ -28,12 +28,13 @@ export default function AboutUs() {
                             data-aos-delay="300">
                             {c.body}
                         </p>
-                        <button
-                            className="border border-game-primary hover:bg-blue-950 ease-in-out delay-300 duration-1000 px-8 py-3 rounded-full font-medium transition backdrop-blur-sm"
+                        <a
+                            href="/support"
+                            className="inline-block border border-game-primary hover:bg-blue-950 ease-in-out delay-300 duration-1000 px-8 py-3 rounded-full font-medium transition backdrop-blur-sm"
                             data-aos="fade-up"
                             data-aos-delay="400">
                             {c.button}
-                        </button>
+                        </a>
                     </div>
                     <div
                         className="relative h-[400px] sm:h-[500px] lg:h-[600px] flex justify-center items-center order-2 sm:order-2 lg:order-2"

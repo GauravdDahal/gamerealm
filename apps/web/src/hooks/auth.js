@@ -14,6 +14,19 @@ import { createClient } from '@/lib/supabase/client'
  * and `is_superadmin`, computed from the caller's roles via the
  * `my_access` database function (see supabase/migrations/0003_my_access.sql).
  */
+const friendly = message => {
+    const m = (message || '').toLowerCase()
+    if (m.includes('invalid login')) return 'Wrong email or password. Please check them and try again.'
+    if (m.includes('email not confirmed')) return 'Please confirm your email first. Check your inbox for the link.'
+    if (m.includes('already registered') || m.includes('already been registered')) return 'An account with this email already exists. Try signing in instead.'
+    if (m.includes('rate limit') || m.includes('too many')) return 'Too many attempts. Please wait a minute and try again.'
+    if (m.includes('failed to fetch') || m.includes('network')) return 'Could not reach the server. Check your connection and try again.'
+    if (m.includes('database error saving')) return 'We could not create your account. Please check your details. You must be 18 or older.'
+    if (m.includes('at least 18')) return 'You must be at least 18 years old to register.'
+    if (m.includes('password') && m.includes('characters')) return 'Your password is too short. Please use at least 6 characters.'
+    return message
+}
+
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
     const supabase = createClient()
@@ -75,7 +88,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         })
 
         if (error) {
-            setErrors({ email: [error.message] })
+            setErrors({ email: [friendly(error.message)] })
             return false
         }
         return true
@@ -88,7 +101,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
 
         if (error) {
-            setErrors({ email: [error.message] })
+            setErrors({ email: [friendly(error.message)] })
             return false
         }
         await loadUser()
@@ -104,7 +117,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         })
 
         if (error) {
-            setErrors({ email: [error.message] })
+            setErrors({ email: [friendly(error.message)] })
         } else {
             setStatus('We emailed you a password reset link.')
         }
@@ -117,9 +130,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         const { error } = await supabase.auth.updateUser({ password })
 
         if (error) {
-            setErrors({ password: [error.message] })
+            setErrors({ password: [friendly(error.message)] })
         } else {
-            router.push('/users')
+            router.push('/users?reset=1')
         }
     }
 

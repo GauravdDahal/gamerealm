@@ -7,7 +7,9 @@ import {
     Twitter,
     Disc as Discord,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useSiteContent } from '@/lib/useSiteContent'
+import ContactLine from '@/components/common/ContactLine'
 
 const socialIcons = {
     twitch: Twitch,
@@ -35,7 +37,7 @@ export default function Footer() {
             <div className="container mx-auto px-4">
                 <div className="grid md:grid-cols-4 gap-12">
                     <div>
-                        <div className="flex items-center gap-2 mb-6">
+                        <Link href="/" aria-label={`${brand.name} home`} className="mb-6 flex w-fit items-center gap-2">
                             {brand.logo ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={brand.logo} alt={brand.name} className="w-8 h-8 object-contain" />
@@ -45,7 +47,7 @@ export default function Footer() {
                             <span className="text-xl  font-bold bg-clip-text bg-gradient-to-r from-secondary via-secondary2 to-hot text-transparent">
                                 {brand.name}
                             </span>
-                        </div>
+                        </Link>
                         <p className="text-gray-400 mb-6">{c.description}</p>
                         <div className="flex gap-4">
                             {social.map((s, index) => {
@@ -72,11 +74,11 @@ export default function Footer() {
                                 {column.links.map((link, i) => (
                                     <li key={i}>
                                         {link.url ? (
-                                            <a
+                                            <Link
                                                 href={link.url}
-                                                className="text-gray-400 hover:text-game-primary transition-colors">
+                                                className="text-gray-400 hover:text-accent transition-colors">
                                                 {link.label}
-                                            </a>
+                                            </Link>
                                         ) : (
                                             <span className="text-gray-400">{link.label}</span>
                                         )}
@@ -92,7 +94,7 @@ export default function Footer() {
                             <ul className="space-y-4">
                                 {c.contact.map((line, i) => (
                                     <li key={i}>
-                                        <span className="text-gray-400">{line.text}</span>
+                                        <ContactLine text={line.text} className="text-gray-400" />
                                     </li>
                                 ))}
                             </ul>

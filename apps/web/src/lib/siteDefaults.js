@@ -228,28 +228,25 @@ export const siteDefaults = {
             {
                 title: 'Quick Links',
                 links: [
-                    { label: 'Home', url: '#home' },
-                    { label: 'Featured Games', url: '#games' },
-                    { label: 'Contact', url: '' },
+                    { label: 'Home', url: '/' },
+                    { label: 'Games', url: '/games' },
+                    { label: 'Bonuses', url: '/bonuses' },
+                    { label: 'Referral rewards', url: '/referral' },
                 ],
             },
             {
-                title: 'Games',
+                title: 'Help',
                 links: [
-                    { label: 'Spin Wheel', url: '' },
-                    { label: 'Cards', url: '' },
-                    { label: 'Poker', url: '' },
-                    { label: 'Roulette', url: '' },
+                    { label: 'Support', url: '/support' },
+                    { label: 'Community rules', url: '/#rules' },
+                    { label: 'Sign in or join', url: '/users' },
                 ],
             },
         ],
         contact_title: 'Contact Us',
-        contact: [
-            { text: 'support@gamerealm.com' },
-            { text: '+1 (555) 123-4567' },
-            { text: '123 Gaming Street' },
-            { text: 'Los Angeles, CA 90001' },
-        ],
+        // Add your real email, phone number and address in Admin > Site content > Footer.
+        // Emails and phone numbers become tap-to-send and tap-to-call links.
+        contact: [],
     },
 }
 

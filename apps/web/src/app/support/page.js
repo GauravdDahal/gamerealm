@@ -10,6 +10,7 @@ import {
 import PageShell from '@/components/pages/PageShell'
 import { useAuth } from '@/hooks/auth'
 import { useSiteContent } from '@/lib/useSiteContent'
+import ContactLine from '@/components/common/ContactLine'
 
 const TOPICS = [
     { Icon: BadgeCheck, title: 'Account approval', text: 'Waiting for your account to be approved, or need to update details.', msg: 'Hi! I need help with my account approval.' },
@@ -165,7 +166,7 @@ export default function SupportPage() {
                         </button>
                         {footer.contact.length > 0 && (
                             <ul className="mt-5 space-y-2 border-t border-line/60 pt-4 text-sm text-muted">
-                                {footer.contact.map((l, i) => <li key={i}>{l.text}</li>)}
+                                {footer.contact.map((l, i) => <li key={i}><ContactLine text={l.text} /></li>)}
                             </ul>
                         )}
                         <p className="mt-5 border-t border-line/60 pt-4 text-xs text-dim">

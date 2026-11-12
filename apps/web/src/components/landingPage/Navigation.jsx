@@ -6,8 +6,6 @@ import {
     Menu,
     X,
     LogOut,
-    User,
-    Settings,
     CreditCard,
     ShieldCheck,
     Download,
@@ -32,6 +30,13 @@ export default function Navigation({ isScrolled }) {
     const app = useInstallApp()
     const [iosHint, setIosHint] = useState(false)
 
+    useEffect(() => {
+        setIsMobileMenuOpen(false)
+        setIsProfileOpen(false)
+    }, [pathname])
+
+    const isAdmin = !!(user?.is_admin || user?.is_superadmin)
+
     const handleJoinClick = () => {
         router.push('/users')
     }
@@ -46,7 +51,7 @@ export default function Navigation({ isScrolled }) {
             <div className="max-w-8xl mx-auto px-4">
                 <div className="flex items-center justify-between w-full">
                     {/* Logo - Far Left */}
-                    <div className="flex items-center gap-2">
+                    <Link href="/" aria-label={`${brand.name} home`} className="flex items-center gap-2">
                         {brand.logo ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={brand.logo} alt={brand.name} className="w-9 h-9 object-contain" />
@@ -56,7 +61,7 @@ export default function Navigation({ isScrolled }) {
                         <span className="text-base sm:text-xl whitespace-nowrap bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-accent2 via-accent to-accent2 text-transparent">
                             {brand.name}
                         </span>
-                    </div>
+                    </Link>
 
                     {/* Center Navigation Links */}
                     <div className="hidden md:flex items-center gap-9 my-1 absolute left-1/2 transform -translate-x-1/2">
@@ -89,11 +94,22 @@ export default function Navigation({ isScrolled }) {
                                 )}
                             </div>
                         )}
+                        {isAdmin && (
+                            <Link
+                                href="/admin"
+                                aria-label="Admin panel"
+                                className="flex items-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2.5 py-1 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2 md:hidden">
+                                <ShieldCheck className="h-4 w-4" />
+                                <span>Admin</span>
+                            </Link>
+                        )}
                         <div className="md:hidden">
                             <button
                                 onClick={() =>
                                     setIsMobileMenuOpen(!isMobileMenuOpen)
                                 }
+                                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                                aria-expanded={isMobileMenuOpen}
                                 className="text-white p-2">
                                 {isMobileMenuOpen ? <X /> : <Menu />}
                             </button>
@@ -143,18 +159,6 @@ export default function Navigation({ isScrolled }) {
                                                     </p>
                                                 </div>
                                             )}
-                                            <div className="flex items-center space-x-2 px-2 py-2 hover:bg-gray-100 cursor-pointer">
-                                                <User size={18} />
-                                                <p className="text-xs font-extralight">
-                                                    My Profile
-                                                </p>
-                                            </div>
-                                            <div className="flex items-center space-x-2 px-2 py-2 hover:bg-gray-100 cursor-pointer">
-                                                <Settings size={18} />
-                                                <p className="text-xs font-extralight">
-                                                    Settings
-                                                </p>
-                                            </div>
                                         </div>
                                         <button
                                             onClick={handleLogout}
@@ -208,6 +212,13 @@ export default function Navigation({ isScrolled }) {
                         <div>
                             {user ? (
                                 <div className="flex flex-col gap-2">
+                                    {isAdmin && (
+                                        <Link
+                                            href="/admin"
+                                            className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-accent2 bg-accent px-6 py-2 font-medium text-accent-ink hover:bg-accent2">
+                                            <ShieldCheck size={16} /> Admin panel
+                                        </Link>
+                                    )}
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-white font-extralight gradient-border bg-gray-900 px-6 py-2">

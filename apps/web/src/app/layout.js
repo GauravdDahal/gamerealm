@@ -11,10 +11,26 @@ const nunitoFont = Nunito({
     display: 'swap',
 })
 
+const SITE = 'Casino Play'
+const DESCRIPTION =
+    'Casino Play: spin the lucky wheel, play your favourite games, chat live with support and earn rewards and referral bonuses.'
+
 export const metadata = {
-    title: 'CASINO PLAY',
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://gamerealm-rust.vercel.app'),
+    title: { default: 'Casino Play | Online Games, Bonuses & Lucky Wheel', template: `%s | ${SITE}` },
+    description: DESCRIPTION,
+    applicationName: SITE,
     manifest: '/manifest.webmanifest',
-    icons: { apple: '/apple-touch-icon.png' },
+    icons: {
+        icon: [
+            { url: '/favicon.ico', sizes: 'any' },
+            { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+        ],
+        shortcut: '/favicon.ico',
+        apple: '/apple-touch-icon.png',
+    },
+    openGraph: { title: SITE, description: DESCRIPTION, siteName: SITE, type: 'website', images: ['/icon-512.png'] },
+    twitter: { card: 'summary', title: SITE, description: DESCRIPTION },
     appleWebApp: { capable: true, title: 'Casino Play', statusBarStyle: 'black-translucent' },
 }
 
