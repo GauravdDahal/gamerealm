@@ -361,8 +361,8 @@ function ChatPopup() {
         ;(async () => {
             const current = chat ?? (await handleCreateChat())
             if (!current) return
-            // Don't send the same request twice if they tap Play repeatedly.
-            if (Date.now() - (lastGameSent.current[req.title] ?? 0) < 30000) return
+            // Only ignore an accidental double tap, so asking again later still works.
+            if (Date.now() - (lastGameSent.current[req.title] ?? 0) < 4000) return
             lastGameSent.current[req.title] = Date.now()
             await deliver({
                 chatId: current.id,

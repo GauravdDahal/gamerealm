@@ -73,7 +73,17 @@ export default function GamesSection({ bare = false, all = false }) {
                             data-aos="fade-up"
                             data-aos-duration="1000"
                             data-aos-delay={100 * (index + 1)}
-                            className="group relative w-full max-w-[340px] overflow-hidden rounded-lg gradient-border">
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`${c.play_label}: ${game.title}`}
+                            onClick={() => handleJoinGameClick(game)}
+                            onKeyDown={e => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault()
+                                    handleJoinGameClick(game)
+                                }
+                            }}
+                            className="group relative w-full max-w-[340px] cursor-pointer overflow-hidden rounded-lg gradient-border">
                             <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-game-primary/20 via-game-secondary/20 to-game-accent/20 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                             <div className="w-full aspect-[4/5] relative">
                                 <Image
@@ -103,11 +113,9 @@ export default function GamesSection({ bare = false, all = false }) {
                                         <p className="text-gray-400 text-sm">{game.players} Active Players</p>
                                     )}
                                 </div>
-                                <button
-                                    onClick={() => handleJoinGameClick(game)}
-                                    className="shrink-0 rounded-lg bg-accent px-4 py-1.5 text-sm font-bold text-accent-ink transition hover:bg-accent2">
+                                <span className="shrink-0 rounded-lg bg-accent px-4 py-1.5 text-sm font-bold text-accent-ink transition group-hover:bg-accent2">
                                     {c.play_label}
-                                </button>
+                                </span>
                             </div>
                         </div>
                     ))}
