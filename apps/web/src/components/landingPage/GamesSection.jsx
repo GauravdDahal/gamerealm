@@ -81,7 +81,7 @@ export default function GamesSection({ bare = false, all = false }) {
                                     alt={game.title}
                                     fill={true}
                                     style={{ objectFit: 'cover' }}
-                                    className="group-hover:scale-110 group-hover:blur-sm transition duration-500"
+                                    className="group-hover:scale-105 transition duration-500"
                                 />
                                 {game.hot && (
                                     <div className="absolute top-2 right-1 z-30">
@@ -96,38 +96,17 @@ export default function GamesSection({ bare = false, all = false }) {
                                 )}
                             </div>
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent flex flex-col justify-end p-4 sm:p-6 z-20">
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h3 className="text-lg sm:text-xl font-aldo mb-1 sm:mb-2">
-                                            {game.title}
-                                        </h3>
-                                        {game.players && (
-                                            <p className="text-gray-400 text-sm sm:text-base">
-                                                {game.players} Active Players
-                                            </p>
-                                        )}
-                                    </div>
+                            <div className="flex items-center justify-between gap-3 bg-gray-900 px-4 py-3 sm:px-5">
+                                <div className="min-w-0">
+                                    <h3 className="text-base sm:text-lg leading-tight font-aldo">{game.title}</h3>
+                                    {game.players && (
+                                        <p className="text-gray-400 text-sm">{game.players} Active Players</p>
+                                    )}
                                 </div>
-                                {screenWidth < 768 && (
-                                    <button
-                                        onClick={() =>
-                                            handleJoinGameClick(game)
-                                        }
-                                        className="absolute inset-0 items-center rounded-lg text-sm font-medium">
-                                        <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">
-                                            {c.play_label}
-                                        </span>
-                                    </button>
-                                )}
                                 <button
-                                    onClick={() =>
-                                        handleJoinGameClick(game)
-                                    }
-                                    className="absolute inset-0 flex justify-center items-center opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100 transition">
-                                    <span className="border border-white text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base">
-                                        {c.play_label}
-                                    </span>
+                                    onClick={() => handleJoinGameClick(game)}
+                                    className="shrink-0 rounded-lg bg-accent px-4 py-1.5 text-sm font-bold text-accent-ink transition hover:bg-accent2">
+                                    {c.play_label}
                                 </button>
                             </div>
                         </div>
