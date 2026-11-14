@@ -16,6 +16,8 @@ import {
 } from '@/lib/chatMedia'
 import { FileThumb, HIGHLIGHT_STYLES, MessageMedia, hasMedia } from '@/components/chat/MessageMedia'
 import QrPanel from '@/components/chat/QrPanel'
+import BroadcastBubble from '@/components/chat/BroadcastBubble'
+import ChatTools from '@/components/admin/ChatTools'
 import { Badge, EmptyState, ErrorState, Panel, Skeleton } from '@/components/admin/ui'
 
 const initials = name =>
@@ -61,6 +63,7 @@ const Inbox = () => {
     const [quick, setQuick] = useState([])
     const [quickOpen, setQuickOpen] = useState(false)
     const [qrOpen, setQrOpen] = useState(false)
+    const [search, setSearch] = useState('')
     const fileInputRef = useRef(null)
     const voice = useVoiceRecorder()
     const urls = useSignedUrls(supabase, messages)
@@ -240,6 +243,10 @@ const Inbox = () => {
     }
 
     const activeChat = chats.find(c => c.id === activeId)
+    const needle = search.trim().toLowerCase()
+    const shownChats = needle
+        ? chats.filter(c => `${c.client_name} ${c.client_email}`.toLowerCase().includes(needle))
+        : chats
 
     return (
         <div className="flex flex-col gap-6 lg:h-[calc(100dvh-4rem)]">
@@ -251,6 +258,20 @@ const Inbox = () => {
                 </h1>
                 <p className="mt-1 text-sm text-[#7E938B]">Player support conversations.</p>
             </div>
+
+            {!error && (
+                <ChatTools
+                    supabase={supabase}
+                    search={search}
+                    onSearch={setSearch}
+                    onOpened={async chatId => {
+                        const { data } = await supabase.rpc('list_staff_chats')
+                        setChats(data ?? [])
+                        const c = chatId && (data ?? []).find(x => x.id === chatId)
+                        if (c) openChat(c)
+                    }}
+                />
+            )}
 
             {error ? (
                 <Panel>
@@ -268,7 +289,10 @@ const Inbox = () => {
                 <div className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[280px_1fr] lg:grid-rows-[minmax(0,1fr)]">
                     <Panel title={`${chats.length} conversation${chats.length === 1 ? '' : 's'}`} className="flex h-[70dvh] min-h-0 flex-col overflow-hidden lg:h-full">
                         <ul className="flex-1 divide-y divide-[#1E322C]/60 overflow-y-auto">
-                            {chats.map(c => (
+                            {shownChats.length === 0 && (
+                                <li className="px-4 py-6 text-center text-sm text-[#7E938B]">No conversations match “{search}”.</li>
+                            )}
+                            {shownChats.map(c => (
                                 <li key={c.id}>
                                     <button
                                         onClick={() => openChat(c)}
@@ -331,7 +355,9 @@ const Inbox = () => {
                                             <div
                                                 key={m.id}
                                                 className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
-                                                {hl ? (
+                                                {m.style === 'broadcast' ? (
+                                                    <BroadcastBubble title={m.title} text={m.message} time={formatWhen(m.created_at)} compact />
+                                                ) : hl ? (
                                                     <div
                                                         style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
                                                         className="max-w-[80%] space-y-2 rounded-lg border border-[#1E322C] px-3 py-2 text-sm text-[#EFE9DA]">

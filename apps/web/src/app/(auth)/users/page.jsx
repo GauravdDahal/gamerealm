@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { CircleCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import GoogleButton from '@/components/auth/GoogleButton'
 
 /**
  * Sign in. Replaces the previous Facebook/Google social login screen —
@@ -24,6 +25,7 @@ const SignIn = () => {
     useEffect(() => {
         const q = new URLSearchParams(window.location.search)
         if (q.get('reset')) setFlash('Your password was changed. Sign in with your new password.')
+        if (q.get('oauth')) setErrors({ email: ['Google sign-in did not finish. Please try again.'] })
     }, [])
 
     const submit = async event => {
@@ -78,6 +80,8 @@ const SignIn = () => {
                     <CircleCheck size={16} /> {flash}
                 </p>
             )}
+
+            <GoogleButton />
 
             <form onSubmit={submit} className="auth-form">
                 <div>

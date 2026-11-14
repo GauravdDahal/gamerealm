@@ -18,6 +18,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { useAuth } from '@/hooks/auth'
 import { useGames } from '@/lib/useGames'
 import QrPanel from '@/components/chat/QrPanel'
+import BroadcastBubble from '@/components/chat/BroadcastBubble'
 import GameQuickBar from '@/components/chat/GameQuickBar'
 import { createClient } from '@/lib/supabase/client'
 import {
@@ -514,7 +515,9 @@ function ChatPopup() {
                                                 <div
                                                     key={msg.id}
                                                     className={`flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
-                                                    {hl ? (
+                                                    {!mine && msg.style === 'broadcast' ? (
+                                                        <BroadcastBubble title={msg.title} text={msg.message} />
+                                                    ) : hl ? (
                                                         <div
                                                             style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
                                                             className="max-w-[88%] space-y-2 break-words rounded-2xl rounded-bl-md border border-white/10 px-3.5 py-2.5 text-[15px] leading-relaxed text-ink">

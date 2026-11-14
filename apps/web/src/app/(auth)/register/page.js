@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/auth'
+import GoogleButton from '@/components/auth/GoogleButton'
 
 /** Latest date of birth that still makes someone 18 today. */
 const maxDob = () => {
@@ -76,6 +77,8 @@ const Page = () => {
             <h2>Join the <em>play.</em></h2>
             <p>Create your account and get ready to take your seat.</p>
         </div>
+        <>
+        <GoogleButton label="Sign up with Google" />
         <form className="auth-form auth-register-form" onSubmit={submitForm}>
             <p className="auth-notice">
                 Every account is checked by our team before it goes live. You&rsquo;ll
@@ -215,6 +218,7 @@ const Page = () => {
                 </Button>
             </div>
         </form>
+        </>
         <div className="auth-switch">Already have an account? <Link href="/login">Sign in <span>→</span></Link></div>
         </div>
     )

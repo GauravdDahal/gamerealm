@@ -6,6 +6,7 @@ import SeasonalDecor from '@/components/SeasonalDecor'
 import { THEMES, DEFAULT_THEME } from '@/lib/themes.mjs'
 import AOSProvider from '@/components/AOSProvider'
 import InstallApp from '@/components/InstallApp'
+import ProfileGate from '@/components/ProfileGate'
 const nunitoFont = Nunito({
     subsets: ['latin'],
     display: 'swap',
@@ -52,6 +53,7 @@ const RootLayout = ({ children }) => {
                 <SeasonalDecor />
                 <AOSProvider />
                 <InstallApp />
+                <ProfileGate />
                 {children}
             </body>
         </html>

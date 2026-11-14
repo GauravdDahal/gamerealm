@@ -312,3 +312,74 @@ video,
 svg {
   max-width: 100%;
 }
+
+/* ---- Broadcast message: flames, sparkles and a confetti burst ------------ */
+.bc-wrap { position: relative; isolation: isolate; padding: 4px; border-radius: 20px; }
+.bc-flames {
+  position: absolute; inset: 0; z-index: -2; border-radius: 20px; overflow: hidden;
+}
+.bc-flames::before {
+  content: ''; position: absolute; inset: -60%;
+  background: conic-gradient(from 0deg, #ff1a00, #ff7a00, #ffd000, #ff3b00, #b30000, #ff7a00, #ffd000, #ff1a00);
+  animation: bc-spin 2.4s linear infinite;
+}
+.bc-glow {
+  position: absolute; inset: -6px; z-index: -3; border-radius: 26px;
+  background: radial-gradient(60% 60% at 50% 100%, rgba(255,90,0,.75), transparent 70%),
+              radial-gradient(50% 50% at 50% 0%, rgba(255,40,0,.55), transparent 70%);
+  filter: blur(12px); animation: bc-flicker 0.9s ease-in-out infinite alternate;
+}
+.bc-card {
+  position: relative; overflow: hidden; border-radius: 16px; padding: 12px 14px;
+  background: radial-gradient(120% 140% at 50% 120%, #7a0a00 0%, #3a0500 45%, #1a0303 100%);
+  box-shadow: inset 0 0 18px rgba(255,120,0,.35);
+}
+.bc-card::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,230,150,.25) 48%, transparent 66%);
+  background-size: 250% 100%; animation: bc-shine 2.8s ease-in-out infinite;
+}
+.bc-title {
+  position: relative; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;
+  font-size: 11px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase;
+  background: linear-gradient(90deg, #ffd000, #fff6c8, #ff9500, #ffd000); background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: bc-shine 2.2s linear infinite;
+}
+.bc-title svg { color: #ffcc00; filter: drop-shadow(0 0 4px #ff7a00); }
+.bc-spark {
+  position: absolute; width: 6px; height: 6px; pointer-events: none;
+  background: radial-gradient(circle, #fff 0%, #ffe066 40%, transparent 70%);
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  animation: bc-twinkle 1.8s ease-in-out infinite;
+}
+.bc-confetti { position: absolute; left: 50%; top: 50%; pointer-events: none; }
+.bc-confetti i {
+  position: absolute; width: 7px; height: 11px; border-radius: 2px; opacity: 0;
+  animation: bc-pop 1.3s cubic-bezier(.2,.8,.3,1) forwards;
+}
+@keyframes bc-spin { to { transform: rotate(360deg); } }
+@keyframes bc-flicker { 0% { opacity: .65; transform: scale(.98); } 100% { opacity: 1; transform: scale(1.03); } }
+@keyframes bc-shine { 0% { background-position: 200% 0; } 100% { background-position: -50% 0; } }
+@keyframes bc-twinkle { 0%, 100% { transform: scale(.3) rotate(0); opacity: 0; } 50% { transform: scale(1.6) rotate(45deg); opacity: 1; } }
+@keyframes bc-pop {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(540deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bc-flames::before, .bc-glow, .bc-card::after, .bc-title, .bc-spark { animation: none; }
+  .bc-confetti { display: none; }
+}
+/* flame tongues licking up over the top and bottom edges */
+.bc-wrap::before, .bc-wrap::after {
+  content: ''; position: absolute; left: 6%; right: 6%; height: 18px; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(10px 18px at 10px 100%, #ffd000 0%, #ff7a00 45%, transparent 70%) 0 0 / 22px 18px repeat-x,
+    radial-gradient(7px 13px at 7px 100%, #fff3a0 0%, #ff3b00 55%, transparent 75%) 11px 5px / 22px 13px repeat-x;
+  filter: blur(.4px) drop-shadow(0 0 6px #ff5a00);
+  animation: bc-lick .5s ease-in-out infinite alternate;
+}
+.bc-wrap::before { top: -13px; }
+.bc-wrap::after { bottom: -13px; transform: scaleY(-1); animation-delay: .25s; }
+@keyframes bc-lick { 0% { opacity: .75; translate: 0 2px; } 100% { opacity: 1; translate: 0 -2px; } }
+@media (prefers-reduced-motion: reduce) { .bc-wrap::before, .bc-wrap::after { animation: none; } }
