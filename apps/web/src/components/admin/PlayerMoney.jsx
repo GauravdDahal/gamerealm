@@ -410,24 +410,24 @@ export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip
                 </span>
                 <div className="min-w-0 flex-1">
                     <p className="truncate text-base font-semibold text-[#EFE9DA]">{chat.client_name}</p>
-                    <p className="flex min-w-0 items-center gap-1 text-xs text-[#7E938B]">
+                    <p className="flex min-w-0 flex-wrap items-center gap-x-2 text-xs text-[#7E938B]">
                         {chat.client_email && <span className="min-w-0 truncate">{chat.client_email}</span>}
                         <span className="shrink-0 whitespace-nowrap">
-                            {chat.client_email ? '· ' : ''}wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
+                            wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
                             {Number(wallet?.locked) > 0 && <span> · {money(wallet.locked)} locked</span>}
                         </span>
                     </p>
                     {chat.referrer_name && (
-                        <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-0.5 text-[11px] text-[#D4AF57]">
-                            <UserPlus size={11} /> Referred by <b>{chat.referrer_name}</b>{chat.referrer_code ? ` · code ${chat.referrer_code}` : ''}
+                        <span className="mt-1 inline-block max-w-full truncate rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-0.5 align-top text-[11px] text-[#D4AF57]">
+                            <UserPlus size={11} className="mr-1 inline" />Referred by <b>{chat.referrer_name}</b>{chat.referrer_code ? ` · code ${chat.referrer_code}` : ''}
                         </span>
                     )}
                 </div>
-                <div className="flex items-center gap-2">
-                    <button disabled={!ready} onClick={() => setDialog('deposit')} className={`${pill} border-emerald-500/60 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20`}>
+                <div className="flex w-full items-center gap-2 md:w-auto">
+                    <button disabled={!ready} onClick={() => setDialog('deposit')} className={`${pill} flex-1 justify-center md:flex-none border-emerald-500/60 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20`}>
                         <ArrowDownToLine size={14} /> Deposit
                     </button>
-                    <button disabled={!ready} onClick={() => setDialog('withdraw')} className={`${pill} border-red-500/60 bg-red-500/10 text-red-300 hover:bg-red-500/20`}>
+                    <button disabled={!ready} onClick={() => setDialog('withdraw')} className={`${pill} flex-1 justify-center md:flex-none border-red-500/60 bg-red-500/10 text-red-300 hover:bg-red-500/20`}>
                         <ArrowUpFromLine size={14} /> Withdraw
                     </button>
                     <div className="relative">
