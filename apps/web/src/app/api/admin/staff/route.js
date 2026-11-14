@@ -40,8 +40,8 @@ export async function POST(request) {
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
         return NextResponse.json(
             {
-                error: 'SUPABASE_SERVICE_ROLE_KEY is not set in apps/web/.env.local. ' +
-                    'Get it from Supabase → Project Settings → API, then restart the dev server.',
+                error: 'Adding staff needs a secret key that is not set up yet. In Vercel, open Settings → Environment Variables, ' +
+                    'add SUPABASE_SERVICE_ROLE_KEY (copy it from Supabase → Project Settings → API keys), then redeploy the site.',
             },
             { status: 500 },
         )
