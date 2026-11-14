@@ -1,5 +1,7 @@
 'use client'
 
+import { createPortal } from 'react-dom'
+
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { X, Check, AlertTriangle, Inbox } from 'lucide-react'
 
@@ -163,10 +165,12 @@ export const Modal = ({ open, title, onClose, children, footer }) => {
         return () => document.removeEventListener('keydown', onKey)
     }, [open, onClose])
 
-    if (!open) return null
+    if (!open || typeof document === 'undefined') return null
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    // Rendered at the end of <body> so a parent's layout (scroll areas,
+    // transforms) can never stretch or clip the dialog.
+    return createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
             <div
                 className="absolute inset-0 bg-black/70"
                 onClick={onClose}
@@ -176,8 +180,8 @@ export const Modal = ({ open, title, onClose, children, footer }) => {
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className="relative z-10 w-full max-w-lg rounded border border-[#1E322C] bg-[#132320] shadow-2xl">
-                <header className="flex items-center justify-between border-b border-[#1E322C] px-4 py-3">
+                className="relative z-10 flex max-h-[calc(100dvh-1.5rem)] w-full max-w-lg flex-col rounded border border-[#1E322C] bg-[#132320] shadow-2xl sm:max-h-[calc(100dvh-2rem)]">
+                <header className="flex shrink-0 items-center justify-between border-b border-[#1E322C] px-4 py-3">
                     <h2 className="text-sm text-[#EFE9DA]">{title}</h2>
                     <button
                         onClick={onClose}
@@ -186,14 +190,15 @@ export const Modal = ({ open, title, onClose, children, footer }) => {
                         <X size={16} />
                     </button>
                 </header>
-                <div className="max-h-[65vh] overflow-y-auto px-4 py-4">{children}</div>
+                <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">{children}</div>
                 {footer && (
-                    <footer className="flex justify-end gap-2 border-t border-[#1E322C] px-4 py-3">
+                    <footer className="flex shrink-0 flex-wrap justify-end gap-2 border-t border-[#1E322C] px-4 py-3">
                         {footer}
                     </footer>
                 )}
             </div>
-        </div>
+        </div>,
+        document.querySelector('.admin-root') ?? document.body,
     )
 }
 
