@@ -60,6 +60,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             is_admin: data.is_staff,
             is_superadmin: roles.includes('super-admin'),
             is_approved: data.is_approved,
+            permissions: data.permissions ?? [],
         })
         setLoading(false)
     }, [supabase])

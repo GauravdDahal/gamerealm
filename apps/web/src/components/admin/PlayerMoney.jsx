@@ -304,12 +304,11 @@ const GameAccountsDialog = ({ supabase, player, accounts, open, onClose, onDone 
 
     const save = async e => {
         e.preventDefault()
-        if (!form.game_title.trim() || !form.username.trim() || !form.password) return
+        if (!form.game_title.trim() || !form.username.trim() || (!form.id && !form.password)) return
         setBusy(true)
-        const row = { game_title: form.game_title.trim(), username: form.username.trim(), password: form.password }
-        const { error } = form.id
-            ? await supabase.from('player_game_accounts').update(row).eq('id', form.id)
-            : await supabase.from('player_game_accounts').insert({ ...row, player_id: player.id })
+        const { error } = await supabase.rpc('save_game_account', {
+            p_id: form.id ?? null, p_player: player.id, p_title: form.game_title, p_username: form.username, p_password: form.password || null,
+        })
         setBusy(false)
         if (error) return toast(errorMessage(error, 'Could not save this account.'), 'error')
         toast(form.id ? 'Account updated.' : 'Account linked.')
@@ -332,7 +331,9 @@ const GameAccountsDialog = ({ supabase, player, accounts, open, onClose, onDone 
                         <datalist id="game-titles">{titles.map(t => <option key={t} value={t} />)}</datalist>
                     </Field>
                     <Field label="Username"><Input value={form.username} onChange={e => setForm(f => ({ ...f, username: e.target.value }))} required maxLength={80} /></Field>
-                    <Field label="Password"><Input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} required maxLength={120} /></Field>
+                    <Field label="Password" hint={form.id ? 'Leave as is to keep it, or type a new one.' : 'Stored encrypted.'}>
+                        <Input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} required={!form.id} maxLength={120} />
+                    </Field>
                     <div className="flex gap-2">
                         <Button type="button" onClick={() => setForm(null)}>Back</Button>
                         <Button type="submit" variant="primary" disabled={busy}>{busy && <Loader2 size={14} className="animate-spin" />}<Check size={14} /> Save account</Button>
@@ -364,7 +365,7 @@ const GameAccountsDialog = ({ supabase, player, accounts, open, onClose, onDone 
 }
 
 /* ------------------------------------------------------------------ header */
-export default function PlayerMoney({ supabase, chat }) {
+export default function PlayerMoney({ supabase, chat, onChange }) {
     const player = useMemo(() => ({ id: chat.client_id, name: chat.client_name }), [chat.client_id, chat.client_name])
     const [wallet, setWallet] = useState(null)
     const [accounts, setAccounts] = useState([])
@@ -374,11 +375,13 @@ export default function PlayerMoney({ supabase, chat }) {
     const load = useCallback(async () => {
         const [w, a] = await Promise.all([
             supabase.rpc('player_wallet', { p_player: player.id }),
-            supabase.from('player_game_accounts').select('*').eq('player_id', player.id).order('created_at'),
+            supabase.rpc('list_game_accounts', { p_player: player.id }),
         ])
         setReady(!w.error)
         setWallet(w.data ?? null)
         setAccounts(a.data ?? [])
+        onChange?.()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [supabase, player.id])
 
     useEffect(() => {

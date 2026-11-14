@@ -29,6 +29,10 @@ export default function ProfileGate() {
                     } catch {}
                 })
         }
+        if (['suspended', 'rejected'].includes(user.status) && pathname !== '/account-pending') {
+            router.replace('/account-pending')
+            return
+        }
         if (!user.date_of_birth && pathname !== '/complete-profile' && !pathname.startsWith('/auth')) {
             router.replace('/complete-profile')
         }

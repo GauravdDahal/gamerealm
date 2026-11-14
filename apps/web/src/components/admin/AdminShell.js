@@ -43,23 +43,23 @@ const inter = Inter({
     variable: '--font-ui',
 })
 
+// `perm` hides a menu item from staff whose role lacks that permission.
 const nav = [
     { href: '/admin', label: 'Overview', icon: LayoutGrid },
-    { href: '/admin/users', label: 'Admin users', icon: ShieldCheck },
-    { href: '/admin/registrations', label: 'Registrations', icon: UserCheck },
-    { href: '/admin/clients', label: 'Players', icon: Users },
-    { href: '/admin/chats', label: 'Chats', icon: MessageCircle },
-    { href: '/admin/quick-replies', label: 'Saved replies', icon: Zap },
-    { href: '/admin/roles', label: 'Roles', icon: KeyRound },
-    { href: '/admin/activity', label: 'Activity', icon: ScrollText },
-    { href: '/admin/banners', label: 'Banners', icon: Images },
-    { href: '/admin/games', label: 'Games', icon: Gamepad2 },
-    { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift },
-    { href: '/admin/qr-codes', label: 'QR codes', icon: QrCode },
-    { href: '/admin/providers', label: 'Game providers', icon: Server },
-    { href: '/admin/referrals', label: 'Referrals', icon: UserPlus },
-    { href: '/admin/site', label: 'Site content', icon: PencilLine },
-    { href: '/admin/theme', label: 'Site theme', icon: Palette },
+    { href: '/admin/players', label: 'Players', icon: Users, perm: 'player-view' },
+    { href: '/admin/chats', label: 'Chats', icon: MessageCircle, perm: 'chat-view' },
+    { href: '/admin/quick-replies', label: 'Saved replies', icon: Zap, perm: 'chat-view' },
+    { href: '/admin/users', label: 'Staff', icon: ShieldCheck, perm: 'admin_user-view' },
+    { href: '/admin/roles', label: 'Roles', icon: KeyRound, perm: 'role-view' },
+    { href: '/admin/activity', label: 'Activity', icon: ScrollText, perm: 'activity_log-view' },
+    { href: '/admin/banners', label: 'Banners', icon: Images, perm: 'banner-view' },
+    { href: '/admin/games', label: 'Games', icon: Gamepad2, perm: 'game-manage' },
+    { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift, perm: 'wheel-manage' },
+    { href: '/admin/qr-codes', label: 'QR codes', icon: QrCode, perm: 'qr-manage' },
+    { href: '/admin/providers', label: 'Game providers', icon: Server, perm: 'provider-manage' },
+    { href: '/admin/referrals', label: 'Referrals', icon: UserPlus, perm: 'referral-manage' },
+    { href: '/admin/site', label: 'Site content', icon: PencilLine, perm: 'site-manage' },
+    { href: '/admin/theme', label: 'Site theme', icon: Palette, perm: 'site-manage' },
 ]
 
 /* Deliberately not using useAuth({ middleware: 'auth' }).
@@ -104,6 +104,7 @@ const Shell = ({ children }) => {
                 ...data.profile,
                 is_admin: data.is_staff,
                 is_superadmin: roles.includes('super-admin'),
+                permissions: data.permissions ?? null,
             })
             setStatus('ready')
         }
@@ -188,7 +189,9 @@ const Shell = ({ children }) => {
                 </div>
 
                 <nav className="flex-1 space-y-0.5 px-3 py-4">
-                    {nav.map(({ href, label, icon: Icon }) => {
+                    {nav
+                        .filter(i => !i.perm || user?.is_superadmin || !user?.permissions || user.permissions.includes(i.perm))
+                        .map(({ href, label, icon: Icon }) => {
                         const active =
                             href === '/admin'
                                 ? pathname === '/admin'

@@ -245,6 +245,16 @@ const Inbox = () => {
         await deliver({ voice: note })
     }
 
+    // /admin/chats?open=<chat id> (from the Players page) opens that conversation.
+    const wantedRef = useRef(typeof window !== 'undefined' ? Number(new URLSearchParams(window.location.search).get('open')) || null : null)
+    useEffect(() => {
+        if (!wantedRef.current || !chats.length) return
+        const c = chats.find(x => x.id === wantedRef.current)
+        wantedRef.current = null
+        if (c) openChat(c)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [chats])
+
     const activeChat = chats.find(c => c.id === activeId)
     const needle = search.trim().toLowerCase()
     const shownChats = needle
