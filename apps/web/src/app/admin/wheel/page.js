@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowDown, ArrowUp, Check, Eye, EyeOff, Pencil, Plus, RotateCcw, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
+import WheelSettings from '@/components/admin/WheelSettings'
 import {
     Badge,
     Button,
@@ -36,6 +37,7 @@ const Wheel = () => {
     const [confirming, setConfirming] = useState(null)
     const [deleting, setDeleting] = useState(false)
     const [onlyPending, setOnlyPending] = useState(true)
+    const [spinSearch, setSpinSearch] = useState('')
 
     const load = useCallback(async () => {
         setError(null)
@@ -56,6 +58,7 @@ const Wheel = () => {
         load()
     }, [load])
 
+    const hasKind = prizes.length > 0 && 'kind' in prizes[0]
     const totalWeight = prizes.filter(p => p.is_active).reduce((n, p) => n + p.weight, 0)
     const activeCount = prizes.filter(p => p.is_active && p.weight > 0).length
     const chance = p => (p.is_active && totalWeight > 0 ? `${((p.weight / totalWeight) * 100).toFixed(1)}%` : '—')
@@ -69,6 +72,10 @@ const Wheel = () => {
             color: form.color,
             weight: Math.max(0, parseInt(form.weight, 10) || 0),
             is_active: form.is_active,
+        }
+        if (hasKind) {
+            row.kind = form.kind || null
+            row.value = form.value === '' || form.value == null ? null : Number(form.value)
         }
         let err
         if (form.id) {
@@ -121,7 +128,10 @@ const Wheel = () => {
         setSpins(list => list.map(s => (s.id === spin.id ? { ...s, status: credited ? 'credited' : 'pending' } : s)))
     }
 
-    const shownSpins = onlyPending ? spins.filter(s => s.status === 'pending' && !/try again|better luck/i.test(s.prize_label)) : spins
+    const needle = spinSearch.trim().toLowerCase()
+    const shownSpins = (onlyPending ? spins.filter(s => s.status === 'pending' && !/try again|better luck/i.test(s.prize_label)) : spins).filter(
+        s => !needle || `${s.player_name} ${s.player_email} ${s.prize_label}`.toLowerCase().includes(needle),
+    )
     const pendingCount = spins.filter(s => s.status === 'pending' && !/try again|better luck/i.test(s.prize_label)).length
 
     return (
@@ -131,9 +141,11 @@ const Wheel = () => {
                     Lucky wheel
                 </h1>
                 <p className="mt-1 text-sm text-[#7E938B]">
-                    The wheel on the homepage. Each approved player gets one spin every 24 hours; the result is decided on the server.
+                    The wheel on the homepage. Approved players spin on the cooldown set below; the result is decided on the server.
                 </p>
             </div>
+
+            <WheelSettings supabase={supabase} slices={activeCount} />
 
             {(activeCount < 2 && !loading && !error) && (
                 <p className="rounded border border-[#C25B45]/40 bg-[#C25B45]/10 px-4 py-3 text-sm text-[#e8a090]">
@@ -196,12 +208,16 @@ const Wheel = () => {
 
             {/* ------------------------------------------------- spins */}
             <Panel
-                title={`Wins to credit (${pendingCount})`}
+                title={onlyPending ? `Wins to credit (${pendingCount})` : `Spin results (${spins.length})`}
                 action={
+                    <div className="flex flex-wrap items-center gap-3">
+                    <input value={spinSearch} onChange={e => setSpinSearch(e.target.value)} placeholder="Search by name, email, prize…"
+                        className="w-52 rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1 text-xs text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
                     <label className="flex items-center gap-2 text-xs text-[#7E938B]">
                         <input type="checkbox" checked={onlyPending} onChange={e => setOnlyPending(e.target.checked)} className="accent-[#D4AF57]" />
                         Only prizes still to credit
                     </label>
+                    </div>
                 }>
                 {loading || error ? null : shownSpins.length === 0 ? (
                     <EmptyState message={onlyPending ? 'Nothing waiting to be credited.' : 'No spins yet.'} />
@@ -242,6 +258,23 @@ const Wheel = () => {
                         <Field label="Label" hint="Printed on the wheel, so keep it short, like $5 Freeplay or 10% Bonus.">
                             <Input value={form.label} onChange={e => setForm(f => ({ ...f, label: e.target.value }))} maxLength={18} autoFocus required />
                         </Field>
+                        {hasKind && (
+                            <div className="grid grid-cols-2 gap-3">
+                                <Field label="Kind">
+                                    <select value={form.kind ?? ''} onChange={e => setForm(f => ({ ...f, kind: e.target.value }))}
+                                        className="w-full rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA]">
+                                        <option value="">—</option>
+                                        <option value="freeplay">Freeplay ($)</option>
+                                        <option value="bonus">Bonus (%)</option>
+                                        <option value="cash">Cash ($)</option>
+                                        <option value="none">Nothing (try again)</option>
+                                    </select>
+                                </Field>
+                                <Field label="Value" hint="$ for freeplay/cash, % for bonus.">
+                                    <Input type="number" min="0" step="0.01" value={form.value ?? ''} onChange={e => setForm(f => ({ ...f, value: e.target.value }))} />
+                                </Field>
+                            </div>
+                        )}
                         <Field label="Weight" hint="Higher = wins more often. Chance = this weight ÷ the total of all active prizes. 0 = never wins.">
                             <Input type="number" min="0" value={form.weight} onChange={e => setForm(f => ({ ...f, weight: e.target.value }))} />
                         </Field>

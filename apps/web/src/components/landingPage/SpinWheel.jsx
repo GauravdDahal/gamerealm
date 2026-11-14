@@ -139,6 +139,8 @@ export default function SpinWheel() {
         if (!user) return router.push('/users')
         if (status?.state === 'not_approved') return router.push('/account-pending')
         if (status?.state === 'staff') return setError('Admin accounts can’t spin. Sign in as a player to try it.')
+        if (status?.state === 'closed') return setError('The wheel is closed right now. Check back soon!')
+        if (status?.state === 'needs_deposit') return setError('Make a deposit to unlock your free spin. Our team can help in chat.')
         if (status?.state === 'wait') return setError(`Your next free spin is in ${untilText(status.next_spin_at)}.`)
 
         unlock() // sound is only allowed after a tap, so start it here
@@ -180,6 +182,8 @@ export default function SpinWheel() {
 
     const hint = (() => {
         if (error) return { text: error, tone: 'warn' }
+        if (state === 'closed') return { text: 'The wheel is closed right now. Check back soon!', tone: 'info' }
+        if (state === 'needs_deposit') return { text: `Make a deposit to unlock your spin (within ${status.hours} hours).`, tone: 'info' }
         if (state === 'wait') return { text: `Next free spin in ${untilText(status.next_spin_at)}`, tone: 'info' }
         if (state === 'not_approved') return { text: 'Your account is waiting for approval. You can spin once it is approved.', tone: 'info' }
         if (state === 'staff') return { text: 'Admin accounts can’t spin.', tone: 'info' }
@@ -187,8 +191,8 @@ export default function SpinWheel() {
         return { text: 'One free spin every day.', tone: 'info' }
     })()
 
-    const canTap = !spinning && state !== 'wait'
-    const cta = !user && !authLoading ? 'Sign in to spin' : state === 'wait' ? 'Come back later' : spinning ? 'Spinning…' : 'Spin now'
+    const canTap = !spinning && !['wait', 'closed', 'needs_deposit'].includes(state)
+    const cta = !user && !authLoading ? 'Sign in to spin' : state === 'wait' || state === 'closed' ? 'Come back later' : state === 'needs_deposit' ? 'Deposit to spin' : spinning ? 'Spinning…' : 'Spin now'
 
     return (
         <section id="home" className="relative overflow-hidden bg-gray-900 pb-12 pt-24 sm:pb-20 sm:pt-32">

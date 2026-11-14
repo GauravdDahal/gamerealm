@@ -18,6 +18,7 @@ import { FileThumb, HIGHLIGHT_STYLES, MessageMedia, hasMedia } from '@/component
 import QrPanel from '@/components/chat/QrPanel'
 import BroadcastBubble from '@/components/chat/BroadcastBubble'
 import ChatTools from '@/components/admin/ChatTools'
+import PlayerMoney from '@/components/admin/PlayerMoney'
 import { Badge, EmptyState, ErrorState, Panel, Skeleton } from '@/components/admin/ui'
 
 const initials = name =>
@@ -64,6 +65,7 @@ const Inbox = () => {
     const [quickOpen, setQuickOpen] = useState(false)
     const [qrOpen, setQrOpen] = useState(false)
     const [search, setSearch] = useState('')
+    const [live, setLive] = useState(null)
     const fileInputRef = useRef(null)
     const voice = useVoiceRecorder()
     const urls = useSignedUrls(supabase, messages)
@@ -132,6 +134,7 @@ const Inbox = () => {
                 },
             )
             .subscribe(status => {
+                setLive(status === 'SUBSCRIBED')
                 if (status === 'SUBSCRIBED') resync()
             })
 
@@ -287,7 +290,15 @@ const Inbox = () => {
                 </Panel>
             ) : (
                 <div className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[280px_1fr] lg:grid-rows-[minmax(0,1fr)]">
-                    <Panel title={`${chats.length} conversation${chats.length === 1 ? '' : 's'}`} className="flex h-[70dvh] min-h-0 flex-col overflow-hidden lg:h-full">
+                    <Panel
+                        title={`${chats.length} conversation${chats.length === 1 ? '' : 's'}`}
+                        action={
+                            <span className={`flex items-center gap-1.5 text-xs ${live ? 'text-emerald-400' : live === false ? 'text-[#C25B45]' : 'text-[#7E938B]'}`}>
+                                <span className={`h-2 w-2 rounded-full ${live ? 'bg-emerald-400 shadow-[0_0_6px_#34d399]' : live === false ? 'bg-[#C25B45]' : 'bg-[#7E938B]'}`} />
+                                {live ? 'Live' : live === false ? 'Offline' : 'Connecting'}
+                            </span>
+                        }
+                        className="flex h-[70dvh] min-h-0 flex-col overflow-hidden lg:h-full">
                         <ul className="flex-1 divide-y divide-[#1E322C]/60 overflow-y-auto">
                             {shownChats.length === 0 && (
                                 <li className="px-4 py-6 text-center text-sm text-[#7E938B]">No conversations match “{search}”.</li>
@@ -311,8 +322,13 @@ const Inbox = () => {
                                                     {formatWhen(c.last_message_at)}
                                                 </span>
                                             </span>
-                                            <span className="truncate text-xs text-[#7E938B]">
-                                                {c.client_email}
+                                            {c.referrer_name && (
+                                                <span className="mt-0.5 inline-block rounded bg-[#D4AF57]/10 px-1.5 text-[10px] text-[#D4AF57]">
+                                                    Ref: {c.referrer_name}
+                                                </span>
+                                            )}
+                                            <span className="block truncate text-xs text-[#7E938B]">
+                                                {c.last_message ?? c.client_email}
                                             </span>
                                         </span>
                                         {c.unread_count > 0 && (
@@ -345,6 +361,7 @@ const Inbox = () => {
                         )}
                         {activeChat ? (
                             <>
+                                <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} />
                                 <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4">
                                     {messages.map(m => {
                                         const mine = m.sender_id === staffId

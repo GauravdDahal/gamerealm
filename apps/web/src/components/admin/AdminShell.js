@@ -18,6 +18,7 @@ import {
     Gift,
     UserPlus,
     QrCode,
+    Server,
     PencilLine,
     Palette,
     Bell,
@@ -25,6 +26,7 @@ import {
     LogOut,
     Menu,
 } from 'lucide-react'
+import LowBalanceBanner from '@/components/admin/LowBalanceBanner'
 import { createClient } from '@/lib/supabase/client'
 import { ToastProvider, useToast } from '@/components/admin/ui'
 import { useAdminChatAlerts } from '@/lib/useAdminChatAlerts'
@@ -54,6 +56,7 @@ const nav = [
     { href: '/admin/games', label: 'Games', icon: Gamepad2 },
     { href: '/admin/wheel', label: 'Lucky wheel', icon: Gift },
     { href: '/admin/qr-codes', label: 'QR codes', icon: QrCode },
+    { href: '/admin/providers', label: 'Game providers', icon: Server },
     { href: '/admin/referrals', label: 'Referrals', icon: UserPlus },
     { href: '/admin/site', label: 'Site content', icon: PencilLine },
     { href: '/admin/theme', label: 'Site theme', icon: Palette },
@@ -263,6 +266,7 @@ const Shell = ({ children }) => {
                     </span>
                 </header>
 
+                <LowBalanceBanner />
                 <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
                     {children}
                 </main>
