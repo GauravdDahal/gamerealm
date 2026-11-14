@@ -126,7 +126,7 @@ const Referrals = () => {
                     Referrals
                 </h1>
                 <p className="mt-1 text-sm text-[#7E938B]">
-                    Players share a link. A friend counts once you approve them. Each level a player reaches queues a one-time reward below for you to credit.
+                    Players share a link. A friend counts as soon as their account is active. Each level a player reaches queues a one-time reward below for you to credit.
                 </p>
             </div>
 

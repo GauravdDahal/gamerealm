@@ -177,7 +177,7 @@ const Shell = ({ children }) => {
                 className={`fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-[#1E322C]
                     bg-[#0C1714] transition-transform duration-200 lg:translate-x-0
                     ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <div className="flex items-center gap-2.5 border-b border-[#1E322C] px-5 py-4">
+                <div className="flex shrink-0 items-center gap-2.5 border-b border-[#1E322C] px-5 py-4">
                     <span className="text-lg leading-none text-[#D4AF57]" aria-hidden="true">
                         &spades;
                     </span>
@@ -188,7 +188,7 @@ const Shell = ({ children }) => {
                     </span>
                 </div>
 
-                <nav className="flex-1 space-y-0.5 px-3 py-4">
+                <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
                     {nav
                         .filter(i => !i.perm || user?.is_superadmin || !user?.permissions || user.permissions.includes(i.perm))
                         .map(({ href, label, icon: Icon }) => {
@@ -219,7 +219,7 @@ const Shell = ({ children }) => {
                     })}
                 </nav>
 
-                <div className="border-t border-[#1E322C] px-3 py-3">
+                <div className="shrink-0 border-t border-[#1E322C] px-3 py-3">
                     <div className="px-2 pb-2">
                         <p className="truncate text-sm text-[#EFE9DA]">{user.name}</p>
                         <p className="truncate text-xs text-[#7E938B]">{user.email}</p>

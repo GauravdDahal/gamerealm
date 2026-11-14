@@ -118,7 +118,7 @@ const ActivityLog = () => {
                                 setFrom(e.target.value)
                             }}
                             aria-label="From date"
-                            className={`${inputClass} w-auto py-1.5`}
+                            className={`${inputClass} !w-auto min-w-0 flex-1 py-1.5 sm:flex-none`}
                         />
                         <span className="text-xs text-[#7E938B]">to</span>
                         <input
@@ -130,7 +130,7 @@ const ActivityLog = () => {
                                 setTo(e.target.value)
                             }}
                             aria-label="To date"
-                            className={`${inputClass} w-auto py-1.5`}
+                            className={`${inputClass} !w-auto min-w-0 flex-1 py-1.5 sm:flex-none`}
                         />
                         {(from || to) && (
                             <button

@@ -27,7 +27,7 @@ export const siteSchema = [
                 addLabel: 'Add menu link',
                 fields: [
                     { name: 'label', label: 'Text', type: 'text' },
-                    { name: 'href', label: 'Goes to', type: 'text', hint: 'For a section on this page use #games, #rules, #about, #tournaments.' },
+                    { name: 'href', label: 'Goes to', type: 'text', hint: 'A page: /games, /bonuses, /referral, /support. A section of the home page: /#rules, /#about.' },
                 ],
             },
         ],

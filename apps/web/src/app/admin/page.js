@@ -42,6 +42,7 @@ const Chip = ({ value, label, href }) => {
 const Overview = () => {
     const [stats, setStats] = useState(null)
     const [notices, setNotices] = useState([])
+    const [extra, setExtra] = useState({})
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
 
@@ -60,6 +61,7 @@ const Overview = () => {
             setNotices(
                 notif.status === 'fulfilled' ? (notif.value?.notifications ?? []) : [],
             )
+            setExtra(notif.status === 'fulfilled' ? notif.value : {})
         } catch (e) {
             setError(errorMessage(e, 'Could not load the dashboard.'))
         } finally {
@@ -80,7 +82,7 @@ const Overview = () => {
                     Overview
                 </h1>
                 <p className="mt-1 text-sm text-[#7E938B]">
-                    Accounts on the platform right now.
+                    Your site at a glance, and what is waiting on you.
                 </p>
             </div>
 
@@ -94,17 +96,19 @@ const Overview = () => {
                 </Panel>
             ) : (
                 <>
-                    <div className="flex flex-wrap justify-center gap-10 rounded border border-[#1E322C] bg-[#132320] px-6 py-10 sm:justify-start sm:gap-14 sm:px-10">
+                    <div className="grid grid-cols-2 justify-items-center gap-x-6 gap-y-8 rounded border border-[#1E322C] bg-[#132320] px-4 py-8 sm:flex sm:flex-wrap sm:justify-start sm:gap-14 sm:px-10 sm:py-10">
                         <Chip
                             value={stats?.adminUsersCount ?? 0}
-                            label="Admin users"
+                            label="Staff"
                             href="/admin/users"
                         />
                         <Chip
                             value={stats?.clientUsersCount ?? 0}
                             label="Players"
-                            href="/admin/clients"
+                            href="/admin/players"
                         />
+                        <Chip value={extra.unread ?? 0} label="Unread messages" href="/admin/chats" />
+                        <Chip value={extra.toCredit ?? 0} label="Prizes to credit" href="/admin/wheel" />
                     </div>
 
                     <Panel title="Needs attention">
@@ -115,15 +119,15 @@ const Overview = () => {
                         ) : (
                             <ul className="divide-y divide-[#1E322C]/60">
                                 {notices.map((n, i) => (
-                                    <li
-                                        key={i}
-                                        className="flex items-center justify-between gap-4 px-4 py-3">
-                                        <span className="text-sm text-[#EFE9DA]">
-                                            {n.message}
-                                        </span>
-                                        <span className="rounded-full border border-[#D4AF57]/40 px-2 py-0.5 text-xs tabular-nums text-[#D4AF57]">
-                                            {n.count}
-                                        </span>
+                                    <li key={i}>
+                                        <Link
+                                            href={n.href ?? '/admin'}
+                                            className="flex items-center justify-between gap-4 px-4 py-3 hover:bg-[#0C1714]/50">
+                                            <span className="text-sm text-[#EFE9DA]">{n.message}</span>
+                                            <span className="rounded-full border border-[#D4AF57]/40 px-2 py-0.5 text-xs tabular-nums text-[#D4AF57]">
+                                                {n.count}
+                                            </span>
+                                        </Link>
                                     </li>
                                 ))}
                             </ul>

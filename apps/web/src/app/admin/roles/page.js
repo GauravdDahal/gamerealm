@@ -19,6 +19,13 @@ import {
 
 /* Permissions are named "<resource>-<action>", where resource may itself contain
    an underscore (admin_user-view, activity_log-clear). Split on the LAST hyphen. */
+// "admin_user-create" -> "Staff: create". Easier to read than the raw code.
+const RESOURCE_LABELS = { admin_user: 'Staff', activity_log: 'Activity log', banner: 'Banners', chat: 'Chats', message: 'Messages', game: 'Games', money: 'Money tools', player: 'Players', provider: 'Game providers', qr: 'QR codes', referral: 'Referrals', role: 'Roles', site: 'Site content', wheel: 'Lucky wheel' }
+const prettyPermission = name => {
+    const [resource, action = ''] = String(name).split('-')
+    return `${RESOURCE_LABELS[resource] ?? resource}: ${action}`
+}
+
 const splitPermission = name => {
     const i = name.lastIndexOf('-')
     return i === -1
@@ -26,10 +33,7 @@ const splitPermission = name => {
         : { resource: name.slice(0, i), action: name.slice(i + 1) }
 }
 
-const prettyResource = r => {
-    const words = r.replace(/_/g, ' ')
-    return words.charAt(0).toUpperCase() + words.slice(1)
-}
+const prettyResource = r => RESOURCE_LABELS[r] ?? (r.charAt(0).toUpperCase() + r.slice(1)).replace(/_/g, ' ')
 
 const Roles = () => {
     const toast = useToast()
@@ -218,7 +222,7 @@ const Roles = () => {
                                 {role.permissions?.length ? (
                                     <div className="flex flex-wrap gap-1.5">
                                         {role.permissions.map(p => (
-                                            <Badge key={p.id}>{p.name}</Badge>
+                                            <Badge key={p.id}>{prettyPermission(p.name)}</Badge>
                                         ))}
                                     </div>
                                 ) : (

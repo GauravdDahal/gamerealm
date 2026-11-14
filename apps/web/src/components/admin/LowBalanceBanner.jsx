@@ -31,13 +31,13 @@ export default function LowBalanceBanner() {
     if (!low || hidden) return null
     const fmt = n => `$${Number(n).toFixed(2)}`
     return (
-        <div role="alert" className="flex flex-wrap items-center gap-3 border-b border-red-500/40 bg-red-500/15 px-4 py-2 text-sm text-red-200">
+        <div role="alert" className="flex items-center gap-3 border-b border-red-500/40 bg-red-500/15 px-4 py-2 text-xs text-red-200 sm:text-sm">
             <AlertTriangle size={16} className="shrink-0 text-red-400" />
-            <span className="flex-1">
+            <span className="min-w-0 flex-1">
                 <b>Low game balance (under {fmt(low.limit)}):</b> {low.list.map(g => `${g.game_title} ${fmt(g.store_balance)}`).join(', ')}
             </span>
-            <Link href="/admin/providers" className="rounded border border-red-400/50 px-2 py-0.5 text-xs font-bold uppercase hover:bg-red-500/20">View</Link>
-            <button onClick={() => setHidden(true)} aria-label="Dismiss" className="rounded p-1 hover:bg-red-500/20"><X size={14} /></button>
+            <Link href="/admin/providers" className="shrink-0 rounded border border-red-400/50 px-3 py-1.5 text-xs font-bold uppercase hover:bg-red-500/20">View</Link>
+            <button onClick={() => setHidden(true)} aria-label="Dismiss" className="shrink-0 rounded p-2 hover:bg-red-500/20"><X size={14} /></button>
         </div>
     )
 }

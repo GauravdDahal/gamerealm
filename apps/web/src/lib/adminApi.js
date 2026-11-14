@@ -37,14 +37,27 @@ export const adminApi = {
     dashboard: async () => ({
         statCardData: check(await supabase.rpc('dashboard_stats')),
     }),
+    // Everything that is waiting on staff. Each part is optional: a role that
+    // may not see chats or prizes simply doesn't get that line.
     notifications: async () => {
-        const stats = check(await supabase.rpc('dashboard_stats'))
-        const pending = stats?.pendingCount ?? 0
-        return {
-            notifications: pending
-                ? [{ message: `${pending} account${pending === 1 ? '' : 's'} waiting for approval`, count: pending }]
-                : [],
-        }
+        const [stats, chats, spins, rewards] = await Promise.all([
+            supabase.rpc('dashboard_stats'),
+            supabase.rpc('list_staff_chats'),
+            supabase.rpc('list_wheel_spins', { p_limit: 200 }),
+            supabase.rpc('list_referral_rewards', { p_limit: 200 }),
+        ])
+        const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`
+        const unread = (chats.data ?? []).reduce((n, c) => n + (c.unread_count || 0), 0)
+        const wins = (spins.data ?? []).filter(s => s.status === 'pending' && !/try again|better luck/i.test(s.prize_label)).length
+        const owed = (rewards.data ?? []).filter(r => r.status === 'pending').length
+        const pending = stats.data?.pendingCount ?? 0
+        const notifications = [
+            unread && { message: plural(unread, 'unread chat message', 'unread chat messages'), count: unread, href: '/admin/chats' },
+            wins && { message: plural(wins, 'wheel prize to credit', 'wheel prizes to credit'), count: wins, href: '/admin/wheel' },
+            owed && { message: plural(owed, 'referral reward to credit', 'referral rewards to credit'), count: owed, href: '/admin/referrals' },
+            pending && { message: `${plural(pending, 'player has', 'players have')} not finished signing up (date of birth missing)`, count: pending, href: '/admin/players' },
+        ].filter(Boolean)
+        return { notifications, unread, toCredit: wins + owed }
     },
 
     // --- Admin / staff users ---------------------------------------------

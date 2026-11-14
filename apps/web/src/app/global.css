@@ -397,3 +397,32 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 /* Admin back office: dark native controls (date pickers, selects). */
 .admin-root { color-scheme: dark; }
+
+/* ---- Admin: tables become stacked cards on phones ------------------------ */
+@media (max-width: 640px) {
+  .admin-table thead { display: none; }
+  .admin-table tbody, .admin-table { display: block; }
+  .admin-table tr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 12px 16px; }
+  .admin-table td { display: block; padding: 0; white-space: normal !important; min-width: 0; overflow-wrap: anywhere; }
+  .admin-table td:first-child { flex: 1 0 100%; font-weight: 600; }
+  .admin-table td.text-right { margin-left: auto; }
+}
+/* Comfortable tap targets for icon buttons on touch screens. */
+@media (pointer: coarse) {
+  .admin-root button[aria-label], .admin-root a[aria-label] { min-width: 38px; min-height: 38px; display: inline-flex; align-items: center; justify-content: center; }
+  .admin-root .absolute[aria-label] { min-width: 0; min-height: 0; }
+}
+.admin-root select { padding-right: 1.75rem; }
+/* Admin: brand-coloured checkboxes and focus rings; roomier taps on touch. */
+.admin-root input[type=checkbox], .admin-root input[type=radio] { accent-color: #D4AF57; }
+.admin-root :focus-visible { outline: 2px solid #D4AF57; outline-offset: 1px; }
+.admin-root input:focus-visible, .admin-root textarea:focus-visible, .admin-root select:focus-visible { outline: none; border-color: #D4AF57; }
+@media (pointer: coarse) {
+  .admin-root button, .admin-root select { min-height: 34px; }
+  .admin-root input[type=checkbox] { width: 18px; height: 18px; }
+}
+/* The forms plugin paints ticked boxes with the text colour: make that gold. */
+.admin-root input[type=checkbox], .admin-root input[type=radio] { color: #D4AF57; border-color: #7E938B; background-color: transparent; border-radius: 3px; }
+.admin-root input[type=checkbox]:checked, .admin-root input[type=radio]:checked { background-color: #D4AF57; border-color: #D4AF57; }
+.admin-root input[type=checkbox]:focus, .admin-root input[type=radio]:focus { box-shadow: 0 0 0 2px rgba(212,175,87,.35); }
+.admin-root input:not([type=checkbox]):not([type=radio]):focus, .admin-root textarea:focus, .admin-root select:focus { outline: none; box-shadow: none; border-color: #D4AF57; }

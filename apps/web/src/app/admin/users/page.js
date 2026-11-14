@@ -123,7 +123,7 @@ const AdminUsers = () => {
                     <h1
                         className="text-2xl text-[#EFE9DA]"
                         style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                        Admin users
+                        Staff
                     </h1>
                     <p className="mt-1 text-sm text-[#7E938B]">
                         Staff accounts with access to this back office.

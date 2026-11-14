@@ -410,9 +410,12 @@ export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip
                 </span>
                 <div className="min-w-0 flex-1">
                     <p className="truncate text-base font-semibold text-[#EFE9DA]">{chat.client_name}</p>
-                    <p className="truncate text-xs text-[#7E938B]">
-                        {chat.client_email}{chat.client_email ? ' · ' : ''}wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
-                        {Number(wallet?.locked) > 0 && <span> · {money(wallet.locked)} locked</span>}
+                    <p className="flex min-w-0 items-center gap-1 text-xs text-[#7E938B]">
+                        {chat.client_email && <span className="min-w-0 truncate">{chat.client_email}</span>}
+                        <span className="shrink-0 whitespace-nowrap">
+                            {chat.client_email ? '· ' : ''}wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
+                            {Number(wallet?.locked) > 0 && <span> · {money(wallet.locked)} locked</span>}
+                        </span>
                     </p>
                     {chat.referrer_name && (
                         <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-0.5 text-[11px] text-[#D4AF57]">
@@ -450,10 +453,10 @@ export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip
         )
     }
 
-    const btn = 'inline-flex items-center gap-1 rounded px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white disabled:opacity-40'
+    const btn = 'inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] sm:px-2.5 font-bold uppercase tracking-wide text-white disabled:opacity-40'
     return (
         <div className="flex flex-wrap items-center gap-2 border-b border-[#1E322C] bg-[#0C1714]/60 px-4 py-2">
-            <span className="mr-auto flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            <span className="flex min-w-0 basis-full flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                 <span className="text-[#7E938B]">wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
                     {Number(wallet?.locked) > 0 && <span> · {money(wallet.locked)} locked</span>}</span>
                 {chat.referrer_name && (

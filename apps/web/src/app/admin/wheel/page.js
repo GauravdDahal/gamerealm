@@ -210,9 +210,9 @@ const Wheel = () => {
             <Panel
                 title={onlyPending ? `Wins to credit (${pendingCount})` : `Spin results (${spins.length})`}
                 action={
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
                     <input value={spinSearch} onChange={e => setSpinSearch(e.target.value)} placeholder="Search by name, email, prize…"
-                        className="w-52 rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1 text-xs text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
+                        className="w-full rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1.5 text-xs sm:w-52 text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
                     <label className="flex items-center gap-2 text-xs text-[#7E938B]">
                         <input type="checkbox" checked={onlyPending} onChange={e => setOnlyPending(e.target.checked)} className="accent-[#D4AF57]" />
                         Only prizes still to credit

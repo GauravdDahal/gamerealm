@@ -128,7 +128,7 @@ export const Skeleton = ({ rows = 5 }) => (
 
 export const Table = ({ head, children }) => (
     <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
+        <table className="admin-table w-full border-collapse text-sm">
             <thead>
                 <tr className="border-b border-[#1E322C] text-left">
                     {head.map(h => (
