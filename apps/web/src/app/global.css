@@ -426,3 +426,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .admin-root input[type=checkbox]:checked, .admin-root input[type=radio]:checked { background-color: #D4AF57; border-color: #D4AF57; }
 .admin-root input[type=checkbox]:focus, .admin-root input[type=radio]:focus { box-shadow: 0 0 0 2px rgba(212,175,87,.35); }
 .admin-root input:not([type=checkbox]):not([type=radio]):focus, .admin-root textarea:focus, .admin-root select:focus { outline: none; box-shadow: none; border-color: #D4AF57; }
+
+/* Admin chat: the page stays put; only the message list scrolls. */
+html.chat-locked, html.chat-locked body { overflow: hidden; overflow: clip; overscroll-behavior: none; height: 100%; }
+html.chat-locked .admin-root { height: 100dvh; min-height: 0; overflow: hidden; overflow: clip; }
+html.chat-locked .admin-root main { padding-bottom: 0; }

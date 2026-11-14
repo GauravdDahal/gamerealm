@@ -271,6 +271,33 @@ const Inbox = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chats])
 
+    // The chat fills exactly the space left on screen (under the top bar and
+    // any banner), so the page itself never scrolls: only the list or the
+    // messages do. Recalculated when the screen, keyboard or banner changes.
+    const frameRef = useRef(null)
+    const [frameH, setFrameH] = useState(null)
+    useEffect(() => {
+        const fit = () => {
+            const el = frameRef.current
+            if (!el) return
+            const view = window.visualViewport?.height ?? window.innerHeight
+            const top = el.getBoundingClientRect().top + window.scrollY
+            setFrameH(Math.max(320, Math.round(view - top - 12)))
+        }
+        fit()
+        const ro = new ResizeObserver(fit)
+        ro.observe(document.body)
+        window.addEventListener('resize', fit)
+        window.visualViewport?.addEventListener('resize', fit)
+        document.documentElement.classList.add('chat-locked')
+        return () => {
+            ro.disconnect()
+            window.removeEventListener('resize', fit)
+            window.visualViewport?.removeEventListener('resize', fit)
+            document.documentElement.classList.remove('chat-locked')
+        }
+    }, [loading, error])
+
     const activeChat = chats.find(c => c.id === activeId)
     const needle = search.trim().toLowerCase()
     const shownChats = needle
@@ -285,7 +312,7 @@ const Inbox = () => {
     )
 
     return (
-        <div className="flex flex-col lg:h-[calc(100dvh-4rem)]">
+        <div ref={frameRef} style={frameH ? { height: frameH } : undefined} className="flex h-[75dvh] flex-col">
             {error ? (
                 <Panel>
                     <ErrorState message={error} onRetry={loadChats} />
@@ -297,7 +324,7 @@ const Inbox = () => {
             ) : (
                 <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden rounded-xl border border-[#1E322C] bg-[#0C1714] lg:grid-cols-[340px_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)]">
                     {/* ------------------------------------------------ list */}
-                    <section className={`flex min-h-0 min-w-0 flex-col border-[#1E322C] bg-[#132320] lg:border-r ${activeChat ? 'hidden lg:flex' : 'flex h-[80dvh] lg:h-auto'}`}>
+                    <section className={`flex min-h-0 min-w-0 flex-col border-[#1E322C] bg-[#132320] lg:border-r ${activeChat ? 'hidden lg:flex' : 'flex'}`}>
                         <header className="flex items-center gap-2 px-4 pb-3 pt-4">
                             <h1 className="min-w-0 flex-1 truncate text-2xl text-[#D4AF57]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                                 Messages
@@ -323,7 +350,7 @@ const Inbox = () => {
                                     className="w-full rounded-xl border border-[#1E322C] bg-[#0C1714] py-2.5 pl-10 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
                             </div>
                         </div>
-                        <ul className="min-h-0 flex-1 overflow-y-auto border-t border-[#1E322C]">
+                        <ul className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t border-[#1E322C]">
                             {chats.length === 0 && (
                                 <li className="px-4 py-10 text-center text-sm text-[#7E938B]">No conversations yet. Start one with the + button.</li>
                             )}
@@ -373,7 +400,7 @@ const Inbox = () => {
                     </section>
 
                     {/* ------------------------------------------------ thread */}
-                    <section className={`relative min-h-0 min-w-0 flex-col ${activeChat ? 'flex h-[85dvh] lg:h-auto' : 'hidden lg:flex'}`}>
+                    <section className={`relative min-h-0 min-w-0 flex-col ${activeChat ? 'flex' : 'hidden lg:flex'}`}>
                         {qrOpen && activeChat && (
                             <div className="absolute inset-0 z-20 flex flex-col bg-[#0C1714]">
                                 <QrPanel tone="admin" onClose={() => setQrOpen(false)} onSend={sendQr} />
@@ -385,7 +412,7 @@ const Inbox = () => {
                                     <button onClick={() => setActiveId(null)} className="px-4 py-2 text-sm text-[#D4AF57]">← All messages</button>
                                 </div>
                                 <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} variant="header" onQr={() => setQrOpen(true)} />
-                                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-4 py-5 sm:px-6">
+                                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden overscroll-contain px-4 py-5 sm:px-6">
                                     {messages.map(m => {
                                         const mine = m.sender_id === staffId
                                         const hl = m.style ? HIGHLIGHT_STYLES[m.style] : null
