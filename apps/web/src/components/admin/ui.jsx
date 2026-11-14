@@ -87,7 +87,7 @@ export const Panel = ({ title, action, children, className = '' }) => (
     <section
         className={`rounded border border-[#1E322C] bg-[#132320] ${className}`}>
         {(title || action) && (
-            <header className="flex items-center justify-between gap-4 border-b border-[#1E322C] px-4 py-3">
+            <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#1E322C] px-4 py-3">
                 <h2 className="text-sm text-[#EFE9DA]">{title}</h2>
                 {action}
             </header>

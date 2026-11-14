@@ -295,11 +295,11 @@ const Inbox = () => {
                     <Skeleton />
                 </Panel>
             ) : (
-                <div className="grid min-h-0 flex-1 overflow-hidden rounded-xl border border-[#1E322C] bg-[#0C1714] lg:grid-cols-[340px_1fr] lg:grid-rows-[minmax(0,1fr)]">
+                <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden rounded-xl border border-[#1E322C] bg-[#0C1714] lg:grid-cols-[340px_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)]">
                     {/* ------------------------------------------------ list */}
-                    <section className={`flex min-h-0 flex-col border-[#1E322C] bg-[#132320] lg:border-r ${activeChat ? 'hidden lg:flex' : 'flex h-[80dvh] lg:h-auto'}`}>
+                    <section className={`flex min-h-0 min-w-0 flex-col border-[#1E322C] bg-[#132320] lg:border-r ${activeChat ? 'hidden lg:flex' : 'flex h-[80dvh] lg:h-auto'}`}>
                         <header className="flex items-center gap-2 px-4 pb-3 pt-4">
-                            <h1 className="flex-1 text-2xl text-[#D4AF57]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
+                            <h1 className="min-w-0 flex-1 truncate text-2xl text-[#D4AF57]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                                 Messages
                             </h1>
                             <span className={`flex items-center gap-1.5 text-xs ${live ? 'text-emerald-400' : live === false ? 'text-[#C25B45]' : 'text-[#7E938B]'}`}>
@@ -373,7 +373,7 @@ const Inbox = () => {
                     </section>
 
                     {/* ------------------------------------------------ thread */}
-                    <section className={`relative min-h-0 flex-col ${activeChat ? 'flex h-[85dvh] lg:h-auto' : 'hidden lg:flex'}`}>
+                    <section className={`relative min-h-0 min-w-0 flex-col ${activeChat ? 'flex h-[85dvh] lg:h-auto' : 'hidden lg:flex'}`}>
                         {qrOpen && activeChat && (
                             <div className="absolute inset-0 z-20 flex flex-col bg-[#0C1714]">
                                 <QrPanel tone="admin" onClose={() => setQrOpen(false)} onSend={sendQr} />

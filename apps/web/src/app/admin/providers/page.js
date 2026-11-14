@@ -103,7 +103,7 @@ export default function Providers() {
     return (
         <div className="space-y-6">
             <div className="flex flex-wrap items-start gap-4">
-                <div className="flex-1">
+                <div className="min-w-0 flex-1 basis-64">
                     <h1 className="text-2xl text-[#EFE9DA]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>Game providers</h1>
                     <p className="mt-1 max-w-2xl text-sm text-[#7E938B]">
                         Agent credentials the site will use to create player accounts and load or withdraw balances directly. The store balance check reads how much float is left in each game.

@@ -383,3 +383,17 @@ svg {
 .bc-wrap::after { bottom: -13px; transform: scaleY(-1); animation-delay: .25s; }
 @keyframes bc-lick { 0% { opacity: .75; translate: 0 2px; } 100% { opacity: 1; translate: 0 -2px; } }
 @media (prefers-reduced-motion: reduce) { .bc-wrap::before, .bc-wrap::after { animation: none; } }
+
+/* ---- Cross-browser polish ---------------------------------------------- */
+/* iPhone Safari zooms into any field with text under 16px; keep phones steady. */
+@media (max-width: 640px) {
+  input:not([type=checkbox]):not([type=radio]):not([type=range]), select, textarea { font-size: 16px !important; }
+}
+/* Older browsers without dvh units fall back to vh. */
+@supports not (height: 100dvh) {
+  .lg\:h-\[calc\(100dvh-4rem\)\] { height: calc(100vh - 4rem); }
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+
+/* Admin back office: dark native controls (date pickers, selects). */
+.admin-root { color-scheme: dark; }

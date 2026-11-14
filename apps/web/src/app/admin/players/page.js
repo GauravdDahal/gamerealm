@@ -278,6 +278,10 @@ export default function Players() {
                 <select value={referred} onChange={e => setReferred(e.target.value)} className={select} aria-label="Referred">
                     <option value="any">Referred or not</option><option value="yes">Referred</option><option value="no">Not referred</option>
                 </select>
+                <select value={sort.join(':')} onChange={e => setSort(e.target.value.split(':'))} className={`${select} md:hidden`} aria-label="Sort">
+                    <option value="created_at:desc">Newest first</option><option value="created_at:asc">Oldest first</option>
+                    <option value="last_seen_at:desc">Recently seen</option><option value="wallet_balance:desc">Highest wallet</option>
+                </select>
                 <label className="flex items-center gap-1.5 text-sm text-[#7E938B]"><input type="checkbox" checked={onlineOnly} onChange={e => setOnlineOnly(e.target.checked)} className="accent-[#D4AF57]" /> Online now</label>
                 <label className="flex items-center gap-1.5 text-sm text-[#7E938B]"><input type="checkbox" checked={hasAccounts} onChange={e => setHasAccounts(e.target.checked)} className="accent-[#D4AF57]" /> Has game accounts</label>
             </div>
@@ -285,8 +289,30 @@ export default function Players() {
             <Panel title={rows ? `${shown.length} player${shown.length === 1 ? '' : 's'}` : 'Players'}>
                 {error ? <ErrorState message={error} onRetry={load} /> : !rows ? <Skeleton /> : shown.length === 0 ? <EmptyState message="No players match." /> : (
                     <>
-                        <div className="overflow-x-auto">
-                            <table className="w-full min-w-[820px] text-sm">
+                        {/* Phones: one card per player */}
+                        <ul className="divide-y divide-[#1E322C]/60 md:hidden">
+                            {slice.map(r => (
+                                <li key={r.id}>
+                                    <button onClick={() => setOpen(r)} className="flex w-full items-center gap-3 px-4 py-3 text-left active:bg-[#0C1714]/60">
+                                        <Avatar p={r} />
+                                        <span className="min-w-0 flex-1">
+                                            <span className="flex items-center justify-between gap-2">
+                                                <span className="truncate text-[#EFE9DA]">{r.name}</span>
+                                                <span className="shrink-0 text-sm text-emerald-300">{money(r.wallet_balance)}</span>
+                                            </span>
+                                            <span className="block truncate text-xs text-[#7E938B]">{r.email}</span>
+                                            <span className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-[#7E938B]">
+                                                <StatusPill s={r.status} />
+                                                {r.online_status ? <span className="text-emerald-400">Online</span> : <span>Seen {ago(r.last_seen_at)}</span>}
+                                                {r.referrer_name && <span className="text-[#D4AF57]">Ref: {r.referrer_name}</span>}
+                                            </span>
+                                        </span>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        <div className="hidden overflow-x-auto md:block">
+                            <table className="w-full min-w-[720px] text-sm">
                                 <thead className="text-left text-[11px] uppercase tracking-wide text-[#7E938B]">
                                     <tr className="border-b border-[#1E322C]">
                                         <th className="px-4 py-2 font-normal">Player</th><th className="px-2 py-2 font-normal">Status</th>
