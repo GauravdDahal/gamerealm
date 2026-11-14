@@ -6,7 +6,7 @@ import { Gift, Sparkles, Volume2, VolumeX, X, Zap } from 'lucide-react'
 import { useAuth } from '@/hooks/auth'
 import { createClient } from '@/lib/supabase/client'
 import { useSiteContent } from '@/lib/useSiteContent'
-import { lose, setSoundOn, soundOn, tick, unlock, whoosh, win } from '@/lib/wheelSound'
+import { lose, setSoundOn, settle, soundOn, stopSpin, tick, unlock, whoosh, win } from '@/lib/wheelSound'
 
 // Shown until the real segments arrive (and if they can't be loaded).
 const FALLBACK = [
@@ -164,7 +164,7 @@ export default function SpinWheel() {
         const next = base + 360 * 6 + wanted
         rotationRef.current = next
         setRotation(next)
-        whoosh()
+        whoosh(SPIN_MS)
         startTicks(n)
 
         setTimeout(() => {
@@ -172,8 +172,9 @@ export default function SpinWheel() {
             setSpinning(false)
             setResult(data)
             loadStatus()
-            if (/try again|better luck/i.test(data.label)) lose()
-            else win()
+            stopSpin()
+            settle()
+            setTimeout(() => (/try again|better luck/i.test(data.label) ? lose() : win()), 320)
         }, SPIN_MS + 150)
     }
 

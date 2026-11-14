@@ -42,26 +42,71 @@ export const registerWorker = () => {
 }
 
 let audio
-/** A soft two-note chime, generated in the browser (no sound file needed). */
+const getAudio = () => {
+    const Ctx = window.AudioContext || window.webkitAudioContext
+    if (!Ctx) return null
+    audio = audio || new Ctx()
+    if (audio.state === 'suspended') audio.resume()
+    return audio
+}
+
+// One soft, rounded note: a sine with a touch of overtone and a quick fade,
+// like a small glass/marimba hit.
+const note = (ctx, freq, at, { dur = 0.22, gain = 0.2 } = {}) => {
+    ;[[1, gain], [2, gain * 0.18], [3, gain * 0.06]].forEach(([mult, g]) => {
+        const osc = ctx.createOscillator()
+        const amp = ctx.createGain()
+        osc.type = 'sine'
+        osc.frequency.value = freq * mult
+        amp.gain.setValueAtTime(0.0001, at)
+        amp.gain.exponentialRampToValueAtTime(g, at + 0.008)
+        amp.gain.exponentialRampToValueAtTime(0.0001, at + dur / mult)
+        osc.connect(amp).connect(ctx.destination)
+        osc.start(at)
+        osc.stop(at + dur + 0.05)
+    })
+}
+
+/** New message: a bright, friendly two-note "pop-ding" (messenger style), made in the browser. */
 export const ping = () => {
     try {
-        const Ctx = window.AudioContext || window.webkitAudioContext
-        if (!Ctx) return
-        audio = audio || new Ctx()
-        if (audio.state === 'suspended') audio.resume()
-        const now = audio.currentTime
-        ;[660, 880].forEach((freq, i) => {
-            const osc = audio.createOscillator()
-            const gain = audio.createGain()
-            osc.type = 'sine'
-            osc.frequency.value = freq
-            gain.gain.setValueAtTime(0.0001, now + i * 0.14)
-            gain.gain.exponentialRampToValueAtTime(0.18, now + i * 0.14 + 0.02)
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.14 + 0.3)
-            osc.connect(gain).connect(audio.destination)
-            osc.start(now + i * 0.14)
-            osc.stop(now + i * 0.14 + 0.32)
-        })
+        const ctx = getAudio()
+        if (!ctx) return
+        const t = ctx.currentTime
+        // tiny "pop" at the front
+        const pop = ctx.createOscillator()
+        const pg = ctx.createGain()
+        pop.type = 'sine'
+        pop.frequency.setValueAtTime(520, t)
+        pop.frequency.exponentialRampToValueAtTime(1400, t + 0.045)
+        pg.gain.setValueAtTime(0.0001, t)
+        pg.gain.exponentialRampToValueAtTime(0.16, t + 0.01)
+        pg.gain.exponentialRampToValueAtTime(0.0001, t + 0.07)
+        pop.connect(pg).connect(ctx.destination)
+        pop.start(t)
+        pop.stop(t + 0.09)
+        note(ctx, 987.77, t + 0.05, { dur: 0.2, gain: 0.2 }) // B5
+        note(ctx, 1318.51, t + 0.15, { dur: 0.42, gain: 0.22 }) // E6
+    } catch {}
+}
+
+/** Your own message went out: a short, quiet upward "bloop". */
+export const sentPop = () => {
+    try {
+        const ctx = getAudio()
+        if (!ctx) return
+        const t = ctx.currentTime
+        const osc = ctx.createOscillator()
+        const g = ctx.createGain()
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(420, t)
+        osc.frequency.exponentialRampToValueAtTime(880, t + 0.09)
+        g.gain.setValueAtTime(0.0001, t)
+        g.gain.exponentialRampToValueAtTime(0.12, t + 0.015)
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.13)
+        osc.connect(g).connect(ctx.destination)
+        osc.start(t)
+        osc.stop(t + 0.15)
     } catch {}
 }
 

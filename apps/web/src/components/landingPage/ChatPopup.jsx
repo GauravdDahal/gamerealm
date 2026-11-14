@@ -30,7 +30,7 @@ import {
     useSignedUrls,
     useVoiceRecorder,
 } from '@/lib/chatMedia'
-import { alertsEnabled, alertsSupported, enableAlerts, notify, ping, previewOf, registerWorker, setAlertsPref } from '@/lib/chatAlerts'
+import { alertsEnabled, alertsSupported, enableAlerts, notify, ping, sentPop, previewOf, registerWorker, setAlertsPref } from '@/lib/chatAlerts'
 import { FileThumb, HIGHLIGHT_STYLES, MessageMedia, hasMedia } from '@/components/chat/MessageMedia'
 
 /**
@@ -295,6 +295,7 @@ function ChatPopup() {
                 })
                 // Show our own message straight away instead of waiting for the live event.
                 setMessages(prev => mergeMessages(prev, [saved]))
+                sentPop()
                 return true
             } catch (error) {
                 console.error('Failed to send message:', error)
@@ -397,7 +398,14 @@ function ChatPopup() {
     const display = { fontFamily: "'PlayFairlDisplay', Georgia, serif" }
     const brandFont = { fontFamily: "'Aldo', sans-serif" }
     const formatTime = iso =>
-        new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+    // "Today 9:41 PM", "Yesterday 9:41 PM", "Nov 12, 9:41 PM"
+    const formatStamp = iso => {
+        const d = new Date(iso)
+        const days = Math.floor((new Date().setHours(0, 0, 0, 0) - new Date(d).setHours(0, 0, 0, 0)) / 864e5)
+        const day = days === 0 ? 'Today' : days === 1 ? 'Yesterday' : d.toLocaleDateString([], { month: 'short', day: 'numeric' })
+        return `${day} ${formatTime(iso)}`
+    }
 
     return (
         <>
@@ -440,23 +448,20 @@ function ChatPopup() {
                             style={{ background: 'linear-gradient(145deg, rgb(var(--c-surface2)), rgb(var(--c-night)) 55%)' }}
                             className="flex h-full w-full flex-col overflow-hidden sm:rounded-[15px]">
                             {/* Header */}
-                            <div className="flex items-center justify-between gap-3 border-b border-accent/25 bg-black/20 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:pt-3">
+                            <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-black/20 px-3 pb-2.5 pt-[max(0.625rem,env(safe-area-inset-top))] shadow-[0_1px_6px_rgba(0,0,0,.25)] sm:pt-2.5">
                                 <div className="flex min-w-0 items-center gap-3">
-                                    <div
-                                        style={{ border: '1px solid rgb(var(--c-accent) / .65)', boxShadow: '0 0 20px rgb(var(--c-accent) / .12)', ...display }}
-                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] text-xl text-accent"
-                                        aria-hidden="true">
-                                        &spades;&#xFE0E;
+                                    <div className="relative shrink-0">
+                                        <div
+                                            style={{ background: brand, ...display }}
+                                            className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-accent-ink"
+                                            aria-hidden="true">
+                                            &spades;&#xFE0E;
+                                        </div>
+                                        <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-night bg-emerald-400" aria-hidden="true" />
                                     </div>
                                     <div className="min-w-0">
-                                        <h3
-                                            style={brandFont}
-                                            className="truncate text-[15px] leading-tight tracking-[2px] text-ink">
-                                            CASINO PLAY
-                                        </h3>
-                                        <p className="truncate text-[11px] uppercase tracking-[1.5px] text-accent">
-                                            Player support
-                                        </p>
+                                        <h3 className="truncate text-[15px] font-bold leading-tight text-ink">Player support</h3>
+                                        <p className="truncate text-xs text-muted">We usually reply in a few minutes</p>
                                     </div>
                                 </div>
                                 <div className="flex shrink-0 items-center gap-1">
@@ -494,7 +499,7 @@ function ChatPopup() {
                                     {/* Messages */}
                                     <div
                                         style={{ background: 'radial-gradient(circle at 85% 0%, rgb(var(--c-accent) / .08), transparent 45%)' }}
-                                        className="casino-scroll flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4">
+                                        className="casino-scroll flex-1 overflow-y-auto overscroll-contain px-3 py-4">
                                         {messages.length === 0 && (
                                             <div className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center">
                                                 <p className="text-2xl tracking-[10px] text-accent" aria-hidden="true">
@@ -506,55 +511,77 @@ function ChatPopup() {
                                                 </p>
                                             </div>
                                         )}
-                                        {messages.map(msg => {
+                                        {messages.map((msg, i) => {
                                             const mine = msg.sender_id === user.id
                                             const hl = !mine && msg.style ? HIGHLIGHT_STYLES[msg.style] : null
                                             const HlIcon = hl?.icon
                                             const hasText = !!msg.message?.trim()
+                                            // Messenger-style grouping: messages from the same side within
+                                            // a few minutes sit tight together and share one avatar.
+                                            const prev = messages[i - 1]
+                                            const next = messages[i + 1]
+                                            const gap = (a, b) => Math.abs(new Date(a.created_at) - new Date(b.created_at))
+                                            const same = (a, b) => a && b && (a.sender_id === user.id) === (b.sender_id === user.id) && gap(a, b) < 5 * 60000
+                                            const first = !same(prev, msg)
+                                            const last = !same(msg, next)
+                                            const showStamp = !prev || gap(prev, msg) > 15 * 60000
+                                            const isLastMine = mine && !messages.slice(i + 1).some(m => m.sender_id === user.id)
+                                            const special = !mine && (msg.style === 'broadcast' || hl)
+                                            const corners = mine
+                                                ? `rounded-l-[20px] ${first ? 'rounded-tr-[20px]' : 'rounded-tr-[5px]'} ${last ? 'rounded-br-[20px]' : 'rounded-br-[5px]'}`
+                                                : `rounded-r-[20px] ${first ? 'rounded-tl-[20px]' : 'rounded-tl-[5px]'} ${last ? 'rounded-bl-[20px]' : 'rounded-bl-[5px]'}`
                                             return (
-                                                <div
-                                                    key={msg.id}
-                                                    className={`flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
-                                                    {!mine && msg.style === 'broadcast' ? (
-                                                        <BroadcastBubble title={msg.title} text={msg.message} />
-                                                    ) : hl ? (
-                                                        <div
-                                                            style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
-                                                            className="max-w-[88%] space-y-2 break-words rounded-2xl rounded-bl-md border border-white/10 px-3.5 py-2.5 text-[15px] leading-relaxed text-ink">
-                                                            <p
-                                                                style={{ color: hl.bar }}
-                                                                className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide">
-                                                                <HlIcon className="h-4 w-4" />
-                                                                {msg.title || hl.label}
-                                                            </p>
-                                                            {hasText && <p className="whitespace-pre-wrap break-words">{msg.message}</p>}
-                                                            <MessageMedia message={msg} urls={urls} mine={false} />
-                                                        </div>
-                                                    ) : (
-                                                        <div
-                                                            style={mine ? { background: 'linear-gradient(110deg, rgb(var(--c-accent-dim)), rgb(var(--c-accent2)) 48%, rgb(var(--c-accent-dim)))' } : undefined}
-                                                            className={`max-w-[85%] space-y-2 break-words rounded-2xl px-3.5 py-2 text-[15px] leading-relaxed ${
-                                                                mine
-                                                                    ? 'rounded-br-md border border-accent2/40 text-accent-ink'
-                                                                    : 'rounded-bl-md border border-accent/15 bg-surface text-ink'
-                                                            }`}>
-                                                            {hasText && <p className="whitespace-pre-wrap break-words">{msg.message}</p>}
-                                                            {hasMedia(msg) && <MessageMedia message={msg} urls={urls} mine={mine} />}
-                                                        </div>
+                                                <div key={msg.id} className={first ? 'mt-3 first:mt-0' : 'mt-0.5'}>
+                                                    {showStamp && (
+                                                        <p className="mb-2 mt-1 text-center text-[11px] font-medium text-dim">{formatStamp(msg.created_at)}</p>
                                                     )}
-                                                    <div className="mt-1 flex items-center gap-1 px-1 text-[11px] text-dim">
-                                                        <span>{formatTime(msg.created_at)}</span>
-                                                        {mine &&
-                                                            (msg.is_read ? (
-                                                                <span className="flex items-center gap-0.5 text-emerald-400">
-                                                                    <CheckCheck className="h-3.5 w-3.5" /> seen
-                                                                </span>
-                                                            ) : (
-                                                                <span className="flex items-center gap-0.5">
-                                                                    <Check className="h-3.5 w-3.5" /> sent
-                                                                </span>
-                                                            ))}
+                                                    <div className={`flex items-end gap-2 ${mine ? 'justify-end' : 'justify-start'}`}>
+                                                        {!mine && (
+                                                            <span
+                                                                style={last ? { background: brand } : undefined}
+                                                                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm text-accent-ink ${last ? '' : 'invisible'}`}
+                                                                aria-hidden="true">
+                                                                &spades;&#xFE0E;
+                                                            </span>
+                                                        )}
+                                                        {!mine && msg.style === 'broadcast' ? (
+                                                            <BroadcastBubble title={msg.title} text={msg.message} />
+                                                        ) : hl ? (
+                                                            <div
+                                                                style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
+                                                                className="max-w-[80%] space-y-2 break-words rounded-[20px] border border-white/10 px-3.5 py-2.5 text-[15px] leading-snug text-ink">
+                                                                <p style={{ color: hl.bar }} className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide">
+                                                                    <HlIcon className="h-4 w-4" />
+                                                                    {msg.title || hl.label}
+                                                                </p>
+                                                                {hasText && <p className="whitespace-pre-wrap break-words">{msg.message}</p>}
+                                                                <MessageMedia message={msg} urls={urls} mine={false} />
+                                                            </div>
+                                                        ) : (
+                                                            <div
+                                                                title={formatStamp(msg.created_at)}
+                                                                className={`max-w-[75%] space-y-2 break-words px-3.5 py-2 text-[15px] leading-snug ${corners} ${
+                                                                    mine ? 'bg-accent text-accent-ink' : 'bg-surface2 text-ink'
+                                                                }`}>
+                                                                {hasText && <p className="whitespace-pre-wrap break-words">{msg.message}</p>}
+                                                                {hasMedia(msg) && <MessageMedia message={msg} urls={urls} mine={mine} />}
+                                                            </div>
+                                                        )}
                                                     </div>
+                                                    {isLastMine && (
+                                                        <p className="mt-1 flex items-center justify-end gap-1 pr-1 text-[11px] text-dim">
+                                                            {msg.is_read ? (
+                                                                <>
+                                                                    <CheckCheck className="h-3.5 w-3.5 text-accent" /> Seen
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Check className="h-3.5 w-3.5" /> Sent
+                                                                </>
+                                                            )}
+                                                        </p>
+                                                    )}
+                                                    {special && last && <p className="ml-9 mt-1 text-[11px] text-dim">{formatTime(msg.created_at)}</p>}
                                                 </div>
                                             )
                                         })}
@@ -562,7 +589,7 @@ function ChatPopup() {
                                     </div>
 
                                     {/* Input */}
-                                    <div className="border-t border-accent/25 bg-black/25 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
+                                    <div className="border-t border-white/10 bg-black/20 px-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2.5">
                                         {!voice.recording && (
                                             <GameQuickBar
                                                 games={games}
@@ -632,7 +659,7 @@ function ChatPopup() {
                                                     onClick={() => fileInputRef.current?.click()}
                                                     aria-label="Attach photos, GIFs or documents"
                                                     disabled={sending}
-                                                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface2 hover:text-ink disabled:opacity-40">
+                                                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-accent transition-colors hover:bg-surface2 disabled:opacity-40">
                                                     <Paperclip className="h-5 w-5" />
                                                 </button>
                                                 <textarea
@@ -640,26 +667,26 @@ function ChatPopup() {
                                                     value={newMessage}
                                                     onChange={e => setNewMessage(e.target.value)}
                                                     onKeyDown={handleKeyPress}
-                                                    placeholder="Type your message..."
+                                                    placeholder="Aa"
                                                     rows={1}
-                                                    className="max-h-[120px] min-h-[44px] min-w-0 flex-1 resize-none rounded-2xl border border-line bg-surface px-4 py-2.5 text-base text-ink placeholder-dim focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
+                                                    className="max-h-[120px] min-h-[40px] min-w-0 flex-1 resize-none rounded-[20px] border-0 bg-surface2 px-4 py-2 text-base text-ink placeholder-dim focus:outline-none focus:ring-0"
                                                 />
                                                 {!newMessage.trim() && !files.length && voice.supported ? (
                                                     <button
                                                         onClick={startVoice}
                                                         aria-label="Record a voice message"
-                                                        style={{ background: brand }}
-                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-accent-ink transition hover:brightness-110 active:scale-95">
-                                                        <Mic className="h-5 w-5" />
+                                                        
+                                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-accent transition hover:bg-surface2 active:scale-90">
+                                                        <Mic className="h-6 w-6" />
                                                     </button>
                                                 ) : (
                                                     <button
                                                         onClick={handleSendMessage}
                                                         disabled={sending || (!newMessage.trim() && !files.length)}
                                                         aria-label="Send message"
-                                                        style={{ background: brand }}
-                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-accent-ink transition hover:brightness-110 active:scale-95 disabled:opacity-40 disabled:hover:brightness-100">
-                                                        {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+                                                        
+                                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-accent transition hover:bg-surface2 active:scale-90 disabled:opacity-40 disabled:hover:brightness-100">
+                                                        {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-6 w-6 fill-current" />}
                                                     </button>
                                                 )}
                                             </div>
