@@ -33,7 +33,7 @@ const PlayerRow = ({ p, checked, onClick, badge }) => (
     </li>
 )
 
-export default function ChatTools({ supabase, search, onSearch, onOpened }) {
+export default function ChatTools({ supabase, onOpened }) {
     const toast = useToast()
     const [players, setPlayers] = useState(null)
     const [loadError, setLoadError] = useState('')
@@ -133,18 +133,14 @@ export default function ChatTools({ supabase, search, onSearch, onOpened }) {
 
     return (
         <>
-            <div className="flex flex-wrap items-center gap-2">
-                <div className="relative min-w-0 flex-1 basis-56">
-                    <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#7E938B]" />
-                    <input value={search} onChange={e => onSearch(e.target.value)} placeholder="Search conversations…"
-                        className="w-full rounded border border-[#1E322C] bg-[#132320] py-2 pl-9 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
-                </div>
-                <Button onClick={() => open('new')}>
-                    <MessageSquarePlus size={14} className="mr-1 inline" /> New chat
-                </Button>
-                <button onClick={() => open('broadcast')}
-                    className="inline-flex items-center gap-1.5 rounded bg-gradient-to-r from-red-600 via-orange-500 to-amber-400 px-3 py-2 text-sm font-bold text-white shadow-[0_0_14px_rgba(255,90,0,.45)] transition hover:brightness-110">
-                    <Megaphone size={15} /> Broadcast
+            <div className="flex items-center gap-2">
+                <button onClick={() => open('broadcast')} title="Broadcast message" aria-label="Broadcast message"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D4AF57]/50 bg-[#D4AF57]/10 text-[#D4AF57] transition hover:bg-[#D4AF57]/20">
+                    <Megaphone size={16} />
+                </button>
+                <button onClick={() => open('new')} title="Start a new conversation" aria-label="Start a new conversation"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D4AF57]/50 bg-[#D4AF57]/10 text-[#D4AF57] transition hover:bg-[#D4AF57]/20">
+                    <MessageSquarePlus size={16} />
                 </button>
             </div>
 

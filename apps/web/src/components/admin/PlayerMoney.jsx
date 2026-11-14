@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
     ArrowDownToLine, ArrowUpFromLine, Check, Copy, Eye, EyeOff, Gamepad2, Link2, Loader2, Pencil, Plus,
-    RefreshCw, Trash2, Wallet, X,
+    MoreVertical, QrCode, RefreshCw, Trash2, UserPlus, Wallet, X,
 } from 'lucide-react'
 import { Button, Field, Input, Modal, Select, useToast } from '@/components/admin/ui'
 import { errorMessage } from '@/lib/adminApi'
@@ -365,12 +365,13 @@ const GameAccountsDialog = ({ supabase, player, accounts, open, onClose, onDone 
 }
 
 /* ------------------------------------------------------------------ header */
-export default function PlayerMoney({ supabase, chat, onChange }) {
+export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip', onQr }) {
     const player = useMemo(() => ({ id: chat.client_id, name: chat.client_name }), [chat.client_id, chat.client_name])
     const [wallet, setWallet] = useState(null)
     const [accounts, setAccounts] = useState([])
     const [ready, setReady] = useState(true)
     const [dialog, setDialog] = useState(null)
+    const [menu, setMenu] = useState(false)
 
     const load = useCallback(async () => {
         const [w, a] = await Promise.all([
@@ -389,6 +390,65 @@ export default function PlayerMoney({ supabase, chat, onChange }) {
         setAccounts([])
         load()
     }, [load])
+
+    const dialogs = (
+        <>
+            <DepositDialog supabase={supabase} player={player} accounts={accounts} open={dialog === 'deposit'} onClose={() => setDialog(null)} onDone={load} />
+            <WalletDialog supabase={supabase} player={player} wallet={wallet} open={dialog === 'wallet'} onClose={() => setDialog(null)} onDone={load} />
+            <WithdrawDialog supabase={supabase} player={player} accounts={accounts} open={dialog === 'withdraw'} onClose={() => setDialog(null)} onDone={load} />
+            <GameAccountsDialog supabase={supabase} player={player} accounts={accounts} open={dialog === 'accounts'} onClose={() => setDialog(null)} onDone={load} />
+        </>
+    )
+
+    if (variant === 'header') {
+        const pill = 'inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold uppercase tracking-wide transition disabled:opacity-40'
+        const item = 'flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[#EFE9DA] hover:bg-[#0C1714] disabled:opacity-40'
+        return (
+            <div className="flex flex-wrap items-center gap-3 border-b border-[#1E322C] px-4 py-3 sm:px-5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/15 text-lg font-semibold text-[#D4AF57]">
+                    {(chat.client_name || '?').trim()[0]?.toUpperCase()}
+                </span>
+                <div className="min-w-0 flex-1">
+                    <p className="truncate text-base font-semibold text-[#EFE9DA]">{chat.client_name}</p>
+                    <p className="truncate text-xs text-[#7E938B]">
+                        {chat.client_email}{chat.client_email ? ' · ' : ''}wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
+                        {Number(wallet?.locked) > 0 && <span> · {money(wallet.locked)} locked</span>}
+                    </p>
+                    {chat.referrer_name && (
+                        <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-0.5 text-[11px] text-[#D4AF57]">
+                            <UserPlus size={11} /> Referred by <b>{chat.referrer_name}</b>{chat.referrer_code ? ` · code ${chat.referrer_code}` : ''}
+                        </span>
+                    )}
+                </div>
+                <div className="flex items-center gap-2">
+                    <button disabled={!ready} onClick={() => setDialog('deposit')} className={`${pill} border-emerald-500/60 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20`}>
+                        <ArrowDownToLine size={14} /> Deposit
+                    </button>
+                    <button disabled={!ready} onClick={() => setDialog('withdraw')} className={`${pill} border-red-500/60 bg-red-500/10 text-red-300 hover:bg-red-500/20`}>
+                        <ArrowUpFromLine size={14} /> Withdraw
+                    </button>
+                    <div className="relative">
+                        <button onClick={() => setMenu(m => !m)} aria-label="More actions" aria-expanded={menu}
+                            className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#1E322C] text-[#7E938B] hover:border-[#D4AF57] hover:text-[#D4AF57]">
+                            <MoreVertical size={16} />
+                        </button>
+                        {menu && (
+                            <>
+                                <div className="fixed inset-0 z-20" onClick={() => setMenu(false)} aria-hidden />
+                                <div className="absolute right-0 top-full z-30 mt-2 w-52 overflow-hidden rounded-lg border border-[#1E322C] bg-[#132320] py-1 shadow-xl">
+                                    <button disabled={!ready} onClick={() => { setMenu(false); setDialog('wallet') }} className={item}><Wallet size={15} className="text-[#D4AF57]" /> Site wallet</button>
+                                    <button disabled={!ready} onClick={() => { setMenu(false); setDialog('accounts') }} className={item}><Gamepad2 size={15} className="text-[#D4AF57]" /> Game accounts</button>
+                                    {onQr && <button onClick={() => { setMenu(false); onQr() }} className={item}><QrCode size={15} className="text-[#D4AF57]" /> Send payment QR</button>}
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+                {!ready && <span className="w-full text-[11px] text-[#C25B45]">Money tools need the latest database update.</span>}
+                {dialogs}
+            </div>
+        )
+    }
 
     const btn = 'inline-flex items-center gap-1 rounded px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white disabled:opacity-40'
     return (
@@ -409,10 +469,7 @@ export default function PlayerMoney({ supabase, chat, onChange }) {
                 className="rounded border border-[#1E322C] p-1.5 text-[#7E938B] hover:border-[#D4AF57] hover:text-[#D4AF57] disabled:opacity-40"><Gamepad2 size={15} /></button>
             {!ready && <span className="w-full text-[11px] text-[#C25B45]">Money tools need the latest database update (0017).</span>}
 
-            <DepositDialog supabase={supabase} player={player} accounts={accounts} open={dialog === 'deposit'} onClose={() => setDialog(null)} onDone={load} />
-            <WalletDialog supabase={supabase} player={player} wallet={wallet} open={dialog === 'wallet'} onClose={() => setDialog(null)} onDone={load} />
-            <WithdrawDialog supabase={supabase} player={player} accounts={accounts} open={dialog === 'withdraw'} onClose={() => setDialog(null)} onDone={load} />
-            <GameAccountsDialog supabase={supabase} player={player} accounts={accounts} open={dialog === 'accounts'} onClose={() => setDialog(null)} onDone={load} />
+            {dialogs}
         </div>
     )
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, QrCode } from 'lucide-react'
+import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, Search, UserPlus, CheckCheck, Check, MessagesSquare } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
 import {
@@ -19,7 +19,7 @@ import QrPanel from '@/components/chat/QrPanel'
 import BroadcastBubble from '@/components/chat/BroadcastBubble'
 import ChatTools from '@/components/admin/ChatTools'
 import PlayerMoney from '@/components/admin/PlayerMoney'
-import { Badge, EmptyState, ErrorState, Panel, Skeleton } from '@/components/admin/ui'
+import { ErrorState, Panel, Skeleton } from '@/components/admin/ui'
 
 const initials = name =>
     (name || '?')
@@ -28,6 +28,22 @@ const initials = name =>
         .map(w => w[0])
         .join('')
         .toUpperCase()
+
+const timeAgo = iso => {
+    if (!iso) return ''
+    const s = (Date.now() - new Date(iso).getTime()) / 1000
+    if (s < 60) return 'just now'
+    if (s < 3600) return `${Math.floor(s / 60)} min ago`
+    if (s < 86400) return `${Math.floor(s / 3600)} h ago`
+    if (s < 86400 * 7) return `${Math.floor(s / 86400)} d ago`
+    return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+}
+
+const formatStamp = iso => {
+    if (!iso) return ''
+    const d = new Date(iso)
+    return d.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+}
 
 const formatWhen = iso => {
     if (!iso) return ''
@@ -261,31 +277,15 @@ const Inbox = () => {
         ? chats.filter(c => `${c.client_name} ${c.client_email}`.toLowerCase().includes(needle))
         : chats
 
+    const stamp = m => (
+        <p className={`mt-1 flex items-center gap-1 px-1 text-[11px] text-[#7E938B] ${m.sender_id === staffId ? 'justify-end' : ''}`}>
+            {formatStamp(m.created_at)}
+            {m.sender_id === staffId && (m.is_read ? <CheckCheck size={14} className="text-[#D4AF57]" /> : <Check size={14} />)}
+        </p>
+    )
+
     return (
-        <div className="flex flex-col gap-6 lg:h-[calc(100dvh-4rem)]">
-            <div>
-                <h1
-                    className="text-2xl text-[#EFE9DA]"
-                    style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                    Chats
-                </h1>
-                <p className="mt-1 text-sm text-[#7E938B]">Player support conversations.</p>
-            </div>
-
-            {!error && (
-                <ChatTools
-                    supabase={supabase}
-                    search={search}
-                    onSearch={setSearch}
-                    onOpened={async chatId => {
-                        const { data } = await supabase.rpc('list_staff_chats')
-                        setChats(data ?? [])
-                        const c = chatId && (data ?? []).find(x => x.id === chatId)
-                        if (c) openChat(c)
-                    }}
-                />
-            )}
-
+        <div className="flex flex-col lg:h-[calc(100dvh-4rem)]">
             {error ? (
                 <Panel>
                     <ErrorState message={error} onRetry={loadChats} />
@@ -294,76 +294,86 @@ const Inbox = () => {
                 <Panel>
                     <Skeleton />
                 </Panel>
-            ) : chats.length === 0 ? (
-                <Panel>
-                    <EmptyState message="No conversations yet." />
-                </Panel>
             ) : (
-                <div className="grid gap-4 lg:min-h-0 lg:flex-1 lg:grid-cols-[280px_1fr] lg:grid-rows-[minmax(0,1fr)]">
-                    <Panel
-                        title={`${chats.length} conversation${chats.length === 1 ? '' : 's'}`}
-                        action={
+                <div className="grid min-h-0 flex-1 overflow-hidden rounded-xl border border-[#1E322C] bg-[#0C1714] lg:grid-cols-[340px_1fr] lg:grid-rows-[minmax(0,1fr)]">
+                    {/* ------------------------------------------------ list */}
+                    <section className={`flex min-h-0 flex-col border-[#1E322C] bg-[#132320] lg:border-r ${activeChat ? 'hidden lg:flex' : 'flex h-[80dvh] lg:h-auto'}`}>
+                        <header className="flex items-center gap-2 px-4 pb-3 pt-4">
+                            <h1 className="flex-1 text-2xl text-[#D4AF57]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
+                                Messages
+                            </h1>
                             <span className={`flex items-center gap-1.5 text-xs ${live ? 'text-emerald-400' : live === false ? 'text-[#C25B45]' : 'text-[#7E938B]'}`}>
                                 <span className={`h-2 w-2 rounded-full ${live ? 'bg-emerald-400 shadow-[0_0_6px_#34d399]' : live === false ? 'bg-[#C25B45]' : 'bg-[#7E938B]'}`} />
-                                {live ? 'Live' : live === false ? 'Offline' : 'Connecting'}
+                                {live ? 'Live' : live === false ? 'Offline' : '…'}
                             </span>
-                        }
-                        className="flex h-[70dvh] min-h-0 flex-col overflow-hidden lg:h-full">
-                        <ul className="flex-1 divide-y divide-[#1E322C]/60 overflow-y-auto">
-                            {shownChats.length === 0 && (
+                            <ChatTools
+                                supabase={supabase}
+                                onOpened={async chatId => {
+                                    const { data } = await supabase.rpc('list_staff_chats')
+                                    setChats(data ?? [])
+                                    const c = chatId && (data ?? []).find(x => x.id === chatId)
+                                    if (c) openChat(c)
+                                }}
+                            />
+                        </header>
+                        <div className="px-4 pb-3">
+                            <div className="relative">
+                                <Search size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7E938B]" />
+                                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search users…"
+                                    className="w-full rounded-xl border border-[#1E322C] bg-[#0C1714] py-2.5 pl-10 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
+                            </div>
+                        </div>
+                        <ul className="min-h-0 flex-1 overflow-y-auto border-t border-[#1E322C]">
+                            {chats.length === 0 && (
+                                <li className="px-4 py-10 text-center text-sm text-[#7E938B]">No conversations yet. Start one with the + button.</li>
+                            )}
+                            {chats.length > 0 && shownChats.length === 0 && (
                                 <li className="px-4 py-6 text-center text-sm text-[#7E938B]">No conversations match “{search}”.</li>
                             )}
-                            {shownChats.map(c => (
-                                <li key={c.id}>
-                                    <button
-                                        onClick={() => openChat(c)}
-                                        className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
-                                            activeId === c.id ? 'bg-[#0C1714]' : 'hover:bg-[#0C1714]/50'
-                                        }`}>
-                                        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-[#1E322C] bg-[#0C1714] text-xs text-[#7E938B]">
-                                            {initials(c.client_name)}
-                                        </span>
-                                        <span className="min-w-0 flex-1">
-                                            <span className="flex items-center justify-between gap-2">
-                                                <span className="truncate text-sm text-[#EFE9DA]">
-                                                    {c.client_name}
+                            {shownChats.map(c => {
+                                const active = activeId === c.id
+                                return (
+                                    <li key={c.id} className="border-b border-[#1E322C]/70">
+                                        <button
+                                            onClick={() => openChat(c)}
+                                            className={`flex w-full items-start gap-3 border-l-2 px-4 py-3.5 text-left transition-colors ${
+                                                active ? 'border-[#D4AF57] bg-[#D4AF57]/10' : 'border-transparent hover:bg-[#0C1714]/60'
+                                            }`}>
+                                            <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-semibold ${
+                                                active ? 'bg-[#D4AF57] text-[#0C1714]' : 'border border-[#D4AF57]/30 bg-[#D4AF57]/10 text-[#D4AF57]'
+                                            }`}>
+                                                {(c.client_name || '?').trim()[0]?.toUpperCase()}
+                                            </span>
+                                            <span className="min-w-0 flex-1">
+                                                <span className="flex items-baseline justify-between gap-2">
+                                                    <span className="truncate font-semibold text-[#EFE9DA]">{c.client_name}</span>
+                                                    <span className="shrink-0 text-[11px] text-[#7E938B]">{timeAgo(c.last_message_at)}</span>
                                                 </span>
-                                                <span className="flex-shrink-0 text-xs text-[#7E938B]">
-                                                    {formatWhen(c.last_message_at)}
+                                                {c.referrer_name && (
+                                                    <span className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-[#D4AF57]">
+                                                        <UserPlus size={11} /> Ref: {c.referrer_name}
+                                                    </span>
+                                                )}
+                                                <span className="mt-0.5 flex items-center gap-2">
+                                                    <span className={`min-w-0 flex-1 truncate text-sm ${c.unread_count > 0 ? 'text-[#EFE9DA]' : 'text-[#7E938B]'}`}>
+                                                        {c.last_message ?? c.client_email}
+                                                    </span>
+                                                    {c.unread_count > 0 && (
+                                                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF57] px-1.5 text-[11px] font-bold text-[#0C1714]">
+                                                            {c.unread_count > 99 ? '99+' : c.unread_count}
+                                                        </span>
+                                                    )}
                                                 </span>
                                             </span>
-                                            {c.referrer_name && (
-                                                <span className="mt-0.5 inline-block rounded bg-[#D4AF57]/10 px-1.5 text-[10px] text-[#D4AF57]">
-                                                    Ref: {c.referrer_name}
-                                                </span>
-                                            )}
-                                            <span className="block truncate text-xs text-[#7E938B]">
-                                                {c.last_message ?? c.client_email}
-                                            </span>
-                                        </span>
-                                        {c.unread_count > 0 && (
-                                            <Badge tone="brass">{c.unread_count}</Badge>
-                                        )}
-                                    </button>
-                                </li>
-                            ))}
+                                        </button>
+                                    </li>
+                                )
+                            })}
                         </ul>
-                    </Panel>
+                    </section>
 
-                    <Panel
-                        title={activeChat ? activeChat.client_name : 'Select a conversation'}
-                        action={
-                            activeChat && (
-                                <button
-                                    onClick={() => setQrOpen(true)}
-                                    aria-label="Send a payment QR code"
-                                    title="Send a payment QR code"
-                                    className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#D4AF57]">
-                                    <QrCode size={18} />
-                                </button>
-                            )
-                        }
-                        className="relative flex h-[80dvh] min-h-0 flex-col overflow-hidden lg:h-full">
+                    {/* ------------------------------------------------ thread */}
+                    <section className={`relative min-h-0 flex-col ${activeChat ? 'flex h-[85dvh] lg:h-auto' : 'hidden lg:flex'}`}>
                         {qrOpen && activeChat && (
                             <div className="absolute inset-0 z-20 flex flex-col bg-[#0C1714]">
                                 <QrPanel tone="admin" onClose={() => setQrOpen(false)} onSend={sendQr} />
@@ -371,54 +381,46 @@ const Inbox = () => {
                         )}
                         {activeChat ? (
                             <>
-                                <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} />
-                                <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4">
+                                <div className="flex items-center border-b border-[#1E322C] lg:hidden">
+                                    <button onClick={() => setActiveId(null)} className="px-4 py-2 text-sm text-[#D4AF57]">← All messages</button>
+                                </div>
+                                <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} variant="header" onQr={() => setQrOpen(true)} />
+                                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden px-4 py-5 sm:px-6">
                                     {messages.map(m => {
                                         const mine = m.sender_id === staffId
                                         const hl = m.style ? HIGHLIGHT_STYLES[m.style] : null
                                         const HlIcon = hl?.icon
                                         const hasText = !!m.message?.trim()
                                         return (
-                                            <div
-                                                key={m.id}
-                                                className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
+                                            <div key={m.id} className={`flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
                                                 {m.style === 'broadcast' ? (
-                                                    <BroadcastBubble title={m.title} text={m.message} time={formatWhen(m.created_at)} compact />
+                                                    <BroadcastBubble title={m.title} text={m.message} compact />
                                                 ) : hl ? (
                                                     <div
-                                                        style={{ background: hl.tint, borderLeft: `3px solid ${hl.bar}` }}
-                                                        className="max-w-[80%] space-y-2 rounded-lg border border-[#1E322C] px-3 py-2 text-sm text-[#EFE9DA]">
-                                                        <p
-                                                            style={{ color: hl.bar }}
-                                                            className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide">
+                                                        style={{ background: hl.tint, borderColor: hl.bar, boxShadow: `0 0 18px ${hl.tint}` }}
+                                                        className="max-w-[78%] space-y-1.5 rounded-2xl border px-4 py-3 text-[15px] font-semibold text-[#EFE9DA]">
+                                                        <p style={{ color: hl.bar }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide">
                                                             <HlIcon size={14} />
                                                             {m.title || hl.label}
                                                         </p>
                                                         {hasText && <p className="whitespace-pre-wrap break-words">{m.message}</p>}
-                                                        <p className="text-[10px] text-[#7E938B]">{formatWhen(m.created_at)}</p>
                                                     </div>
                                                 ) : (
                                                     <div
-                                                        className={`max-w-[80%] space-y-2 rounded-lg px-3 py-2 text-sm ${
-                                                            mine ? 'bg-[#D4AF57] text-[#0C1714]' : 'bg-[#0C1714] text-[#EFE9DA]'
+                                                        className={`max-w-[78%] space-y-2 rounded-2xl px-4 py-2.5 text-[15px] ${
+                                                            mine ? 'rounded-br-md bg-[#D4AF57] text-[#0C1714]' : 'rounded-bl-md bg-[#1E322C] text-[#EFE9DA]'
                                                         }`}>
                                                         {hasText && <p className="whitespace-pre-wrap break-words">{m.message}</p>}
                                                         {hasMedia(m) && <MessageMedia message={m} urls={urls} mine={mine} />}
-                                                        <p
-                                                            className={`text-[10px] ${
-                                                                mine ? 'text-[#0C1714]/60' : 'text-[#7E938B]'
-                                                            }`}>
-                                                            {formatWhen(m.created_at)}
-                                                            {mine && m.is_read ? ' · seen' : ''}
-                                                        </p>
                                                     </div>
                                                 )}
+                                                {stamp(m)}
                                             </div>
                                         )
                                     })}
                                     <div ref={messagesEndRef} />
                                 </div>
-                                <div className="relative border-t border-[#1E322C] p-3">
+                                <div className="relative border-t border-[#1E322C] px-4 py-3 sm:px-5">
                                     {quickOpen && (
                                         <div className="absolute bottom-full left-3 right-3 z-10 mb-2 max-h-72 overflow-y-auto rounded border border-[#1E322C] bg-[#132320] shadow-xl">
                                             <div className="flex items-center justify-between border-b border-[#1E322C] px-3 py-2">
@@ -491,7 +493,7 @@ const Inbox = () => {
                                         </div>
                                     ) : (
                                         <>
-                                            <div className="flex items-end gap-2">
+                                            <div className="flex items-center gap-1.5">
                                                 <input ref={fileInputRef} type="file" multiple accept={ATTACH_ACCEPT} onChange={pickFiles} className="hidden" />
                                                 <button
                                                     onClick={() => setQuickOpen(v => !v)}
@@ -517,11 +519,11 @@ const Inbox = () => {
                                                         }
                                                     }}
                                                     rows={1}
-                                                    placeholder="Reply…"
-                                                    className="max-h-32 min-w-0 flex-1 resize-none rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none"
+                                                    placeholder="Reply to user…"
+                                                    className="max-h-32 min-w-0 flex-1 resize-none rounded-2xl border border-[#1E322C] bg-[#132320] px-4 py-2.5 text-sm text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none"
                                                 />
                                                 {!draft.trim() && !files.length && voice.supported ? (
-                                                    <button onClick={startVoice} aria-label="Record a voice message" className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110">
+                                                    <button onClick={startVoice} aria-label="Record a voice message" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#D4AF57] text-[#0C1714] hover:brightness-110">
                                                         <Mic size={16} />
                                                     </button>
                                                 ) : (
@@ -529,12 +531,12 @@ const Inbox = () => {
                                                         onClick={send}
                                                         disabled={sending}
                                                         aria-label="Send"
-                                                        className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110 disabled:opacity-50">
+                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#D4AF57] text-[#0C1714] hover:brightness-110 disabled:opacity-50">
                                                         {sending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                                                     </button>
                                                 )}
                                             </div>
-                                            <div className="mt-2 flex items-center gap-2 text-xs text-[#7E938B]">
+                                            <div className="mt-2 flex items-center gap-2 pl-1 text-[11px] text-[#7E938B]">
                                                 <label htmlFor="hl-style">Highlight this message:</label>
                                                 <select
                                                     id="hl-style"
@@ -552,13 +554,15 @@ const Inbox = () => {
                                 </div>
                             </>
                         ) : (
-                            <div className="flex flex-1 items-center justify-center">
-                                <p className="text-sm text-[#7E938B]">
-                                    Pick a conversation on the left.
-                                </p>
+                            <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
+                                <span className="flex h-16 w-16 items-center justify-center rounded-full border border-[#D4AF57]/30 bg-[#D4AF57]/10 text-[#D4AF57]">
+                                    <MessagesSquare size={28} />
+                                </span>
+                                <p className="text-lg text-[#EFE9DA]">Select a conversation</p>
+                                <p className="text-sm text-[#7E938B]">Choose a player on the left to view messages.</p>
                             </div>
                         )}
-                    </Panel>
+                    </section>
                 </div>
             )}
         </div>
