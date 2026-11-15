@@ -2,7 +2,6 @@
 
 import {
         X,
-    MessageCircle,
     Send,
     Check,
     CheckCheck,
@@ -427,7 +426,7 @@ function ChatPopup() {
                 className={`fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-accent-ink transition hover:scale-105 active:scale-95 ${
                     isOpen ? 'pointer-events-none opacity-0' : 'opacity-100'
                 }`}>
-                <MessageCircle className="h-6 w-6" />
+                <img src="/assets/images/brand/messenger.svg" alt="" width="32" height="32" className="h-8 w-8" aria-hidden="true" />
                 {unreadCount > 0 && (
                     <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-night bg-danger px-1 text-[11px] font-bold leading-none text-ink">
                         {unreadCount > 9 ? '9+' : unreadCount}
