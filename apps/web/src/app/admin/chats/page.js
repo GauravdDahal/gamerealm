@@ -86,6 +86,7 @@ const Inbox = () => {
     const voice = useVoiceRecorder()
     const urls = useSignedUrls(supabase, messages)
     const messagesEndRef = useRef(null)
+    const threadRef = useRef(null)
     const activeIdRef = useRef(null)
 
     const loadChats = useCallback(async () => {
@@ -169,9 +170,12 @@ const Inbox = () => {
         }
     }, [supabase, loadChats, resync])
 
+    // Only follow the bottom when a new message actually arrives, so refreshes,
+    // pins and jumping to a pinned message do not get pulled back down.
+    const lastId = messages.length ? messages[messages.length - 1].id : null
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, [messages])
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }, [lastId, activeId])
 
     const openChat = async chat => {
         activeIdRef.current = chat.id
@@ -315,7 +319,17 @@ const Inbox = () => {
             alert(errorMessage(e))
         }
     }
-    const jumpTo = id => document.getElementById(`msg-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const [flashId, setFlashId] = useState(null)
+    const jumpTo = id => {
+        const box = threadRef.current
+        const el = document.getElementById(`msg-${id}`)
+        if (!box || !el) return
+        const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop
+        box.scrollTo({ top: Math.max(0, top - box.clientHeight / 2 + el.offsetHeight / 2), behavior: 'smooth' })
+        setPinOpen(false)
+        setFlashId(id)
+        setTimeout(() => setFlashId(f => (f === id ? null : f)), 1800)
+    }
     const pinLabel = m => m.message?.trim() || (m.title ? m.title : 'Attachment')
 
     const stamp = m => (
@@ -428,13 +442,17 @@ const Inbox = () => {
                                 <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} variant="header" onQr={() => setQrOpen(true)} />
                                 {pinned.length > 0 && (
                                     <div className="border-b border-[#1E322C] bg-[#132320] px-4 py-2">
-                                        <button
-                                            onClick={() => (pinned.length > 1 ? setPinOpen(v => !v) : jumpTo(pinned[0].id))}
-                                            className="flex w-full items-center gap-2 text-left text-sm text-[#EFE9DA]">
-                                            <Pin size={14} className="shrink-0 text-[#D4AF57]" />
-                                            <span className="min-w-0 flex-1 truncate">{pinLabel(pinned[0])}</span>
-                                            {pinned.length > 1 && <span className="shrink-0 text-xs text-[#D4AF57]">{pinned.length} pinned</span>}
-                                        </button>
+                                        <div className="flex w-full items-center gap-2 text-sm text-[#EFE9DA]">
+                                            <button onClick={() => jumpTo(pinned[0].id)} className="flex min-w-0 flex-1 items-center gap-2 py-1 text-left">
+                                                <Pin size={14} className="shrink-0 text-[#D4AF57]" />
+                                                <span className="min-w-0 flex-1 truncate">{pinLabel(pinned[0])}</span>
+                                            </button>
+                                            {pinned.length > 1 && (
+                                                <button onClick={() => setPinOpen(v => !v)} className="shrink-0 rounded px-2 py-1 text-xs text-[#D4AF57] hover:bg-[#0C1714]">
+                                                    {pinned.length} pinned {pinOpen ? '▴' : '▾'}
+                                                </button>
+                                            )}
+                                        </div>
                                         {pinOpen && pinned.length > 1 && (
                                             <ul className="mt-2 space-y-1">
                                                 {pinned.map(m => (
@@ -448,14 +466,14 @@ const Inbox = () => {
                                         )}
                                     </div>
                                 )}
-                                <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden overscroll-contain px-4 py-5 sm:px-6">
+                                <div ref={threadRef} className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden overscroll-contain px-4 py-5 sm:px-6">
                                     {messages.map(m => {
                                         const mine = m.sender_id === staffId
                                         const hl = m.style ? HIGHLIGHT_STYLES[m.style] : null
                                         const HlIcon = hl?.icon
                                         const hasText = !!m.message?.trim()
                                         return (
-                                            <div id={`msg-${m.id}`} key={m.id} className={`group/msg flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
+                                            <div id={`msg-${m.id}`} key={m.id} className={`group/msg flex flex-col rounded-xl transition-colors duration-700 ${mine ? 'items-end' : 'items-start'} ${flashId === m.id ? 'bg-[#D4AF57]/20 ring-2 ring-[#D4AF57]/60' : ''}`}>
                                                 {m.style === 'broadcast' ? (
                                                     <BroadcastBubble title={m.title} text={m.message} compact />
                                                 ) : hl ? (
