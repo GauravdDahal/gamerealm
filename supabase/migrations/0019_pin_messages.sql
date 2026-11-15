@@ -1,7 +1,7 @@
 -- Staff can pin messages in a chat (shown as a bar at the top of the admin thread).
 alter table public.messages add column if not exists pinned_at timestamptz;
 
-create or replace function public.staff_pin_message(p_message uuid, p_pin boolean)
+create or replace function public.staff_pin_message(p_message bigint, p_pin boolean)
 returns void
 language plpgsql
 security definer
@@ -17,5 +17,5 @@ begin
 end;
 $$;
 
-revoke all on function public.staff_pin_message(uuid, boolean) from public, anon;
-grant execute on function public.staff_pin_message(uuid, boolean) to authenticated;
+revoke all on function public.staff_pin_message(bigint, boolean) from public, anon;
+grant execute on function public.staff_pin_message(bigint, boolean) to authenticated;
