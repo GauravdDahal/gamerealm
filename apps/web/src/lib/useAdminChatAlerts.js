@@ -58,8 +58,7 @@ export const useAdminChatAlerts = ({ staffId, onChatsPage }) => {
                     payload => {
                         if (payload.new.sender_id === staffId) return
                         loadUnread()
-                        const watching = onChatsRef.current && !document.hidden
-                        if (!watching) ping()
+                        ping() // always, even while watching the chat
                         if (document.hidden) {
                             notify('New player message', previewOf(payload.new), '/admin/chats')
                         }

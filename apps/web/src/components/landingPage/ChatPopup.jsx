@@ -210,8 +210,8 @@ function ChatPopup() {
                     setMessages(prev => mergeMessages(prev, [payload.new]))
                     if (payload.new.sender_id !== user.id) {
                         if (!isOpenRef.current) setUnreadCount(c => c + 1)
-                        // Chime unless they are looking right at the open chat.
-                        if (!isOpenRef.current || document.hidden) ping()
+                        // Always chime, whether the chat is open or minimized.
+                        ping()
                         if (document.hidden) notify('Support replied', previewOf(payload.new), '/')
                     }
                 },

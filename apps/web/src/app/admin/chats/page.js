@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, Search, UserPlus, CheckCheck, Check, MessagesSquare } from 'lucide-react'
+import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, Search, UserPlus, CheckCheck, Check, MessagesSquare, Pin, PinOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
 import {
@@ -304,6 +304,20 @@ const Inbox = () => {
         ? chats.filter(c => `${c.client_name} ${c.client_email}`.toLowerCase().includes(needle))
         : chats
 
+    const pinned = messages.filter(m => m.pinned_at).sort((a, b) => new Date(b.pinned_at) - new Date(a.pinned_at))
+    const [pinOpen, setPinOpen] = useState(false)
+    const togglePin = async m => {
+        const next = !m.pinned_at
+        setMessages(prev => prev.map(x => (x.id === m.id ? { ...x, pinned_at: next ? new Date().toISOString() : null } : x)))
+        const { error: e } = await supabase.rpc('staff_pin_message', { p_message: m.id, p_pin: next })
+        if (e) {
+            setMessages(prev => prev.map(x => (x.id === m.id ? { ...x, pinned_at: m.pinned_at } : x)))
+            alert(errorMessage(e))
+        }
+    }
+    const jumpTo = id => document.getElementById(`msg-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const pinLabel = m => m.message?.trim() || (m.title ? m.title : 'Attachment')
+
     const stamp = m => (
         <p className={`mt-1 flex items-center gap-1 px-1 text-[11px] text-[#7E938B] ${m.sender_id === staffId ? 'justify-end' : ''}`}>
             {formatStamp(m.created_at)}
@@ -412,6 +426,28 @@ const Inbox = () => {
                                     <button onClick={() => setActiveId(null)} className="px-4 py-2 text-sm text-[#D4AF57]">← All messages</button>
                                 </div>
                                 <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} variant="header" onQr={() => setQrOpen(true)} />
+                                {pinned.length > 0 && (
+                                    <div className="border-b border-[#1E322C] bg-[#132320] px-4 py-2">
+                                        <button
+                                            onClick={() => (pinned.length > 1 ? setPinOpen(v => !v) : jumpTo(pinned[0].id))}
+                                            className="flex w-full items-center gap-2 text-left text-sm text-[#EFE9DA]">
+                                            <Pin size={14} className="shrink-0 text-[#D4AF57]" />
+                                            <span className="min-w-0 flex-1 truncate">{pinLabel(pinned[0])}</span>
+                                            {pinned.length > 1 && <span className="shrink-0 text-xs text-[#D4AF57]">{pinned.length} pinned</span>}
+                                        </button>
+                                        {pinOpen && pinned.length > 1 && (
+                                            <ul className="mt-2 space-y-1">
+                                                {pinned.map(m => (
+                                                    <li key={m.id}>
+                                                        <button onClick={() => jumpTo(m.id)} className="w-full truncate rounded bg-[#0C1714] px-2 py-1 text-left text-xs text-[#EFE9DA]">
+                                                            {pinLabel(m)}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                )}
                                 <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overflow-x-hidden overscroll-contain px-4 py-5 sm:px-6">
                                     {messages.map(m => {
                                         const mine = m.sender_id === staffId
@@ -419,7 +455,7 @@ const Inbox = () => {
                                         const HlIcon = hl?.icon
                                         const hasText = !!m.message?.trim()
                                         return (
-                                            <div key={m.id} className={`flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
+                                            <div id={`msg-${m.id}`} key={m.id} className={`group/msg flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
                                                 {m.style === 'broadcast' ? (
                                                     <BroadcastBubble title={m.title} text={m.message} compact />
                                                 ) : hl ? (
@@ -441,7 +477,18 @@ const Inbox = () => {
                                                         {hasMedia(m) && <MessageMedia message={m} urls={urls} mine={mine} />}
                                                     </div>
                                                 )}
-                                                {stamp(m)}
+                                                <div className="flex items-center gap-2">
+                                                    {stamp(m)}
+                                                    <button
+                                                        onClick={() => togglePin(m)}
+                                                        aria-label={m.pinned_at ? 'Unpin message' : 'Pin message'}
+                                                        title={m.pinned_at ? 'Unpin' : 'Pin'}
+                                                        className={`mt-1 flex h-7 w-7 items-center justify-center rounded-full ${
+                                                            m.pinned_at ? 'text-[#D4AF57]' : 'text-[#7E938B] hover:text-[#D4AF57]'
+                                                        }`}>
+                                                        {m.pinned_at ? <PinOff size={14} /> : <Pin size={14} />}
+                                                    </button>
+                                                </div>
                                             </div>
                                         )
                                     })}

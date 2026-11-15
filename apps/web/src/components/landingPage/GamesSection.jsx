@@ -66,7 +66,7 @@ export default function GamesSection({ bare = false, all = false }) {
                 </p>
                     </>
                 )}
-                <div className="grid grid-cols-1 min-[560px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 sm:gap-y-14 mx-auto max-w-7xl place-items-center">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-5 sm:gap-x-6 sm:gap-y-14 mx-auto max-w-7xl place-items-center">
                     {displayedGames.map((game, index) => (
                         <div
                             key={game.id}
@@ -106,14 +106,14 @@ export default function GamesSection({ bare = false, all = false }) {
                                 )}
                             </div>
 
-                            <div className="flex items-center justify-between gap-3 bg-gray-900 px-4 py-3 sm:px-5">
+                            <div className="flex flex-col items-stretch gap-1.5 bg-gray-900 px-2.5 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-5 sm:py-3">
                                 <div className="min-w-0">
-                                    <h3 className="text-base sm:text-lg leading-tight font-aldo">{game.title}</h3>
+                                    <h3 className="truncate text-sm sm:text-lg leading-tight font-aldo">{game.title}</h3>
                                     {game.players && (
-                                        <p className="text-gray-400 text-sm">{game.players} Active Players</p>
+                                        <p className="hidden text-gray-400 text-sm sm:block">{game.players} Active Players</p>
                                     )}
                                 </div>
-                                <span className="shrink-0 rounded-lg bg-accent px-4 py-1.5 text-sm font-bold text-accent-ink transition group-hover:bg-accent2">
+                                <span className="shrink-0 rounded-lg bg-accent px-3 py-1 text-center text-xs sm:px-4 sm:py-1.5 sm:text-sm font-bold text-accent-ink transition group-hover:bg-accent2">
                                     {c.play_label}
                                 </span>
                             </div>
