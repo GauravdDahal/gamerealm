@@ -419,14 +419,13 @@ function ChatPopup() {
                 onClick={() => setIsOpen(true)}
                 aria-label={unreadCount > 0 ? `Open support chat, ${unreadCount} unread` : 'Open support chat'}
                 style={{
-                    background: 'rgb(var(--c-accent-dim))',
-                    border: '5px dashed rgb(var(--c-accent2))',
-                    boxShadow: '0 8px 22px rgba(0,0,0,.6), 0 0 24px rgb(var(--c-accent) / .25)',
+                    background: 'transparent',
+                    filter: 'drop-shadow(0 6px 12px rgba(0,0,0,.55))',
                 }}
-                className={`fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-accent-ink transition hover:scale-105 active:scale-95 ${
+                className={`fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:right-6 sm:bottom-6 z-50 flex h-16 w-16 items-center justify-center rounded-full text-accent-ink transition hover:scale-105 active:scale-95 ${
                     isOpen ? 'pointer-events-none opacity-0' : 'opacity-100'
                 }`}>
-                <img src="/assets/images/brand/messenger.svg" alt="" width="32" height="32" className="h-8 w-8" aria-hidden="true" />
+                <img src="/assets/images/brand/messenger.svg" alt="" width="64" height="64" className="h-16 w-16" aria-hidden="true" />
                 {unreadCount > 0 && (
                     <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-night bg-danger px-1 text-[11px] font-bold leading-none text-ink">
                         {unreadCount > 9 ? '9+' : unreadCount}
