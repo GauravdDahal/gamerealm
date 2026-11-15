@@ -451,12 +451,7 @@ function ChatPopup() {
                             <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-black/20 px-3 pb-2.5 pt-[max(0.625rem,env(safe-area-inset-top))] shadow-[0_1px_6px_rgba(0,0,0,.25)] sm:pt-2.5">
                                 <div className="flex min-w-0 items-center gap-3">
                                     <div className="relative shrink-0">
-                                        <div
-                                            style={{ background: brand, ...display }}
-                                            className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-accent-ink"
-                                            aria-hidden="true">
-                                            &spades;&#xFE0E;
-                                        </div>
+                                        <img src="/assets/images/brand/messenger.svg" alt="" width="40" height="40" className="h-10 w-10 rounded-full" aria-hidden="true" />
                                         <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-night bg-emerald-400" aria-hidden="true" />
                                     </div>
                                     <div className="min-w-0">

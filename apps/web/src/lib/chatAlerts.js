@@ -68,7 +68,22 @@ const note = (ctx, freq, at, { dur = 0.22, gain = 0.2 } = {}) => {
 }
 
 /** New message: a bright, friendly two-note "pop-ding" (messenger style), made in the browser. */
+let pingFile = null
 export const ping = () => {
+    try {
+        if (typeof Audio !== 'undefined') {
+            pingFile = pingFile || new Audio('/assets/sounds/messenger.mp3')
+            pingFile.currentTime = 0
+            pingFile.volume = 0.7
+            const r = pingFile.play()
+            if (r && r.catch) r.catch(() => synthPing())
+            return
+        }
+    } catch {}
+    synthPing()
+}
+
+const synthPing = () => {
     try {
         const ctx = getAudio()
         if (!ctx) return
