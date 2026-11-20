@@ -128,7 +128,7 @@ export const sentPop = () => {
 /** A system notification. Silently does nothing if the person hasn't allowed it. */
 export const notify = async (title, body, url = '/') => {
     if (!alertsEnabled()) return
-    const options = { body, icon: '/favicon.ico', tag: 'chat-message', renotify: true, data: { url } }
+    const options = { body, icon: '/ts-icon-192.png', tag: 'chat-message', renotify: true, data: { url } }
     try {
         const reg = await navigator.serviceWorker?.getRegistration?.()
         if (reg?.showNotification) return reg.showNotification(title, options)

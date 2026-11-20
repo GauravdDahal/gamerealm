@@ -21,16 +21,16 @@ export const metadata = {
     title: { default: 'Thunder Sweeps | Online Games, Bonuses & Lucky Wheel', template: `%s | ${SITE}` },
     description: DESCRIPTION,
     applicationName: SITE,
-    manifest: '/manifest.webmanifest',
+    manifest: '/manifest.webmanifest?v=ts1',
     icons: {
         icon: [
-            { url: '/favicon.ico', sizes: 'any' },
-            { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+            { url: '/ts-favicon.ico', sizes: 'any' },
+            { url: '/ts-icon-192.png', sizes: '192x192', type: 'image/png' },
         ],
-        shortcut: '/favicon.ico',
-        apple: '/apple-touch-icon.png',
+        shortcut: '/ts-favicon.ico',
+        apple: '/ts-apple-touch-icon.png',
     },
-    openGraph: { title: SITE, description: DESCRIPTION, siteName: SITE, type: 'website', images: ['/icon-512.png'] },
+    openGraph: { title: SITE, description: DESCRIPTION, siteName: SITE, type: 'website', images: ['/ts-icon-512.png'] },
     twitter: { card: 'summary', title: SITE, description: DESCRIPTION },
     appleWebApp: { capable: true, title: 'Thunder Sweeps', statusBarStyle: 'black-translucent' },
 }

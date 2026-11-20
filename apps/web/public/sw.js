@@ -1,3 +1,4 @@
+// v2 Thunder Sweeps icons
 // Lets notifications work on phones, and brings the site to the front when one is tapped.
 self.addEventListener('install', () => self.skipWaiting())
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()))
