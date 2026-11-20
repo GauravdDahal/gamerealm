@@ -1,6 +1,6 @@
 export const metadata = {
     title: 'Join',
-    description: 'Sign in or create your Casino Play account.',
+    description: 'Sign in or create your Thunder Sweeps account.',
 }
 
 export default function Layout({ children }) {

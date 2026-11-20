@@ -12,13 +12,13 @@ const nunitoFont = Nunito({
     display: 'swap',
 })
 
-const SITE = 'Casino Play'
+const SITE = 'Thunder Sweeps'
 const DESCRIPTION =
-    'Casino Play: spin the lucky wheel, play your favourite games, chat live with support and earn rewards and referral bonuses.'
+    'Thunder Sweeps: spin the lucky wheel, play your favourite games, chat live with support and earn rewards and referral bonuses.'
 
 export const metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://gamerealm-rust.vercel.app'),
-    title: { default: 'Casino Play | Online Games, Bonuses & Lucky Wheel', template: `%s | ${SITE}` },
+    title: { default: 'Thunder Sweeps | Online Games, Bonuses & Lucky Wheel', template: `%s | ${SITE}` },
     description: DESCRIPTION,
     applicationName: SITE,
     manifest: '/manifest.webmanifest',
@@ -32,7 +32,7 @@ export const metadata = {
     },
     openGraph: { title: SITE, description: DESCRIPTION, siteName: SITE, type: 'website', images: ['/icon-512.png'] },
     twitter: { card: 'summary', title: SITE, description: DESCRIPTION },
-    appleWebApp: { capable: true, title: 'Casino Play', statusBarStyle: 'black-translucent' },
+    appleWebApp: { capable: true, title: 'Thunder Sweeps', statusBarStyle: 'black-translucent' },
 }
 
 export const viewport = {

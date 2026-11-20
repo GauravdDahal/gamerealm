@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { Dice6, Spade, Club, Diamond, Sparkles, ShieldCheck } from 'lucide-react'
+import { Spade, Club, Diamond, Sparkles, ShieldCheck } from 'lucide-react'
 
 export const metadata = {
-    title: { absolute: 'Join Casino Play' },
-    description: 'Sign in or create your Casino Play account.',
+    title: { absolute: 'Join Thunder Sweeps' },
+    description: 'Sign in or create your Thunder Sweeps account.',
 }
 
 const Layout = ({ children }) => (
@@ -13,9 +13,9 @@ const Layout = ({ children }) => (
         <div className="auth-grain" />
 
         <header className="auth-topbar">
-            <Link href="/" className="auth-brand" aria-label="Casino Play home">
-                <span className="auth-brand-mark"><Dice6 size={27} strokeWidth={1.8} /></span>
-                <span>CASINO <b>PLAY</b></span>
+            <Link href="/" className="auth-brand" aria-label="Thunder Sweeps home">
+                <img src="/assets/images/brand/thunder-sweeps-mark.svg" alt="" width="44" height="44" style={{ width: 44, height: 44 }} />
+                <span>THUNDER <b>SWEEPS</b></span>
             </Link>
             <Link href="/" className="auth-back-link">Back to the tables <span>↗</span></Link>
         </header>
@@ -47,7 +47,7 @@ const Layout = ({ children }) => (
                 <p className="auth-panel-foot">PLAY SMART. ENJOY THE EXPERIENCE.</p>
             </div>
         </section>
-        <footer className="auth-footer">© {new Date().getFullYear()} CASINO PLAY <span>•</span> ALL RIGHTS RESERVED</footer>
+        <footer className="auth-footer">© {new Date().getFullYear()} THUNDER SWEEPS <span>•</span> ALL RIGHTS RESERVED</footer>
     </main>
 )
 

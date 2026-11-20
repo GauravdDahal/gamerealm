@@ -1,8 +1,8 @@
 import AdminShell from '@/components/admin/AdminShell'
 
 export const metadata = {
-    title: { absolute: 'Admin | Casino Play' },
-    description: 'Casino Play administration.',
+    title: { absolute: 'Admin | Thunder Sweeps' },
+    description: 'Thunder Sweeps administration.',
     robots: { index: false, follow: false },
 }
 

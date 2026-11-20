@@ -54,7 +54,7 @@ export default function Navigation({ isScrolled }) {
                     <Link href="/" aria-label={`${brand.name} home`} className="flex items-center gap-2">
                         {brand.logo ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={brand.logo} alt={brand.name} className="w-9 h-9 object-contain" />
+                            <img src={brand.logo} alt={brand.name} className="w-11 h-11 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,.5)]" />
                         ) : (
                             <Dice6 className="w-9 h-9 text-accent animate-float" />
                         )}

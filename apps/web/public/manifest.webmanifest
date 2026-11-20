@@ -1,13 +1,13 @@
 {
-  "name": "CASINO PLAY",
-  "short_name": "Casino Play",
+  "name": "THUNDER SWEEPS",
+  "short_name": "Thunder Sweeps",
   "description": "Play, chat with support and get rewards.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#10110e",
-  "theme_color": "#10110e",
+  "background_color": "#0C2A1F",
+  "theme_color": "#0C2A1F",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },

@@ -5,8 +5,8 @@
  */
 export const siteDefaults = {
     brand: {
-        name: 'CASINO PLAY',
-        logo: '',
+        name: 'THUNDER SWEEPS',
+        logo: '/assets/images/brand/thunder-sweeps-mark.svg',
         join_label: 'JOIN NOW',
         nav: [
             { label: 'Home', href: '/' },
@@ -217,7 +217,7 @@ export const siteDefaults = {
     footer: {
         description:
             'Experience the thrill of the game anytime, anywhere! Spin the reels, place your bets, and chase big wins with the ultimate online casino adventure. Luck is just a click away! 🎰💰🔥',
-        copyright_name: 'CASINO PLAY',
+        copyright_name: 'THUNDER SWEEPS',
         social: [
             { platform: 'twitch', url: '' },
             { platform: 'youtube', url: '' },

@@ -185,7 +185,7 @@
     animation-delay: 0.6s;
 }
 
-/* Casino Play authentication experience */
+/* Thunder Sweeps authentication experience */
 .auth-experience {
   --auth-gold: rgb(var(--c-accent));
   --auth-gold-bright: rgb(var(--c-accent2));

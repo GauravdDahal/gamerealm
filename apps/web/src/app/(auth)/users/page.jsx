@@ -120,7 +120,7 @@ const SignIn = () => {
             </form>
 
             <div className="auth-switch">
-                New to Casino Play? <Link href="/register">Create an account <span>→</span></Link>
+                New to Thunder Sweeps? <Link href="/register">Create an account <span>→</span></Link>
             </div>
         </div>
     )
