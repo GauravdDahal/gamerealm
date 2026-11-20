@@ -54,13 +54,19 @@ export default function Navigation({ isScrolled }) {
                     <Link href="/" aria-label={`${brand.name} home`} className="flex items-center gap-2">
                         {brand.logo ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={brand.logo} alt={brand.name} className="w-11 h-11 object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,.5)]" />
+                            <img src={brand.logo} alt="" className="ts-logo-mark w-11 h-11 sm:w-12 sm:h-12 object-contain" />
                         ) : (
                             <Dice6 className="w-9 h-9 text-accent animate-float" />
                         )}
-                        <span className="text-base sm:text-xl whitespace-nowrap bg-clip-text font-FontMarquee bg-gradient-to-r font-test from-accent2 via-accent to-accent2 text-transparent">
-                            {brand.name}
-                        </span>
+                        {(() => {
+                            const [first, ...rest] = (brand.name || '').trim().split(/\s+/)
+                            return (
+                                <span className="ts-wordmark whitespace-nowrap text-[22px] sm:text-[30px]" aria-label={brand.name}>
+                                    <span className="ts-word-1">{first}</span>
+                                    {rest.length > 0 && <span className="ts-word-2"> {rest.join(' ')}</span>}
+                                </span>
+                            )
+                        })()}
                     </Link>
 
                     {/* Center Navigation Links */}

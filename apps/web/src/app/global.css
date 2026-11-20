@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@fontsource/anton/latin-400.css";
 @config "../../tailwind.config.js";
 
 
@@ -431,3 +432,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
 html.chat-locked, html.chat-locked body { overflow: hidden; overflow: clip; overscroll-behavior: none; height: 100%; }
 html.chat-locked .admin-root { height: 100dvh; min-height: 0; overflow: hidden; overflow: clip; }
 html.chat-locked .admin-root main { padding-bottom: 0; }
+
+/* ---------- Thunder Sweeps header wordmark ---------- */
+.ts-wordmark{font-family:Anton,Impact,'Arial Narrow',sans-serif;letter-spacing:.04em;line-height:1;display:inline-block;transform:skewX(-8deg);text-transform:uppercase}
+.ts-word-1{color:#fff;text-shadow:2px 2px 0 #D62839;animation:ts-flicker 6s infinite}
+.ts-word-2{background:linear-gradient(100deg,#B8860B 0%,#F5C542 30%,#FFF4C2 45%,#F5C542 60%,#B8860B 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(2px 2px 0 #D62839);animation:ts-shine 3.2s linear infinite}
+.ts-logo-mark{animation:ts-glow 6s infinite;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+@keyframes ts-shine{0%{background-position:150% 0}100%{background-position:-100% 0}}
+@keyframes ts-flicker{0%,88%,100%{opacity:1;text-shadow:2px 2px 0 #D62839}89%{opacity:.55}90%{opacity:1;text-shadow:2px 2px 0 #D62839,0 0 14px #FFE38A}91%{opacity:.7}92%{opacity:1;text-shadow:2px 2px 0 #D62839,0 0 22px #FFE38A}94%{text-shadow:2px 2px 0 #D62839}}
+@keyframes ts-glow{0%,88%,100%{filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));transform:rotate(0) scale(1)}90%{filter:drop-shadow(0 0 10px #FFE38A) brightness(1.35);transform:rotate(-6deg) scale(1.08)}92%{filter:drop-shadow(0 0 4px #F5C542);transform:rotate(4deg) scale(1.04)}95%{filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));transform:rotate(0) scale(1)}}
+@media (prefers-reduced-motion: reduce){.ts-word-1,.ts-word-2,.ts-logo-mark{animation:none}}
