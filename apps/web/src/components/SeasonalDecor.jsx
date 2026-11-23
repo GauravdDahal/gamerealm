@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
+
+// Pages without the site's top bar: the hanging strip has nothing to hang from there.
+const AUTH_ROUTES = ['/users', '/register', '/login', '/forgot-password', '/password-reset', '/verify-email', '/complete-profile', '/account-pending']
 import { useThemeSetting } from '@/lib/useSiteContent'
 import { THEMES } from '@/lib/themes.mjs'
 import Art from '@/components/decorArt'
@@ -127,7 +130,7 @@ const SeasonalDecor = () => {
                             <Art kind={fall.art} />
                         </span>
                     ))}
-                <Strip type={spec.strip} still={still} />
+                {!AUTH_ROUTES.some(r => pathname?.startsWith(r)) && <Strip type={spec.strip} still={still} />}
             </div>
         </>
     )

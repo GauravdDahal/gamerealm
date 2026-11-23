@@ -70,7 +70,7 @@ export default function Navigation({ isScrolled }) {
                     </Link>
 
                     {/* Center Navigation Links */}
-                    <div className="hidden md:flex items-center gap-9 my-1 absolute left-1/2 transform -translate-x-1/2">
+                    <div className="hidden xl:flex items-center gap-9 my-1 absolute left-1/2 transform -translate-x-1/2">
                         {brand.nav.map((link, i) => (
                             <Link
                                 key={i}
@@ -104,12 +104,12 @@ export default function Navigation({ isScrolled }) {
                             <Link
                                 href="/admin"
                                 aria-label="Admin panel"
-                                className="flex h-10 min-w-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2 sm:h-auto sm:px-2.5 sm:py-1 md:hidden">
+                                className="flex h-10 min-w-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2 sm:h-auto sm:px-2.5 sm:py-1  xl:hidden">
                                 <ShieldCheck className="h-4 w-4" />
                                 <span className="hidden sm:inline">Admin</span>
                             </Link>
                         )}
-                        <div className="md:hidden">
+                        <div className="xl:hidden">
                             <button
                                 onClick={() =>
                                     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -188,7 +188,7 @@ export default function Navigation({ isScrolled }) {
                 </div>
 
                 {isMobileMenuOpen && (
-                    <div className="md:hidden bg-surface border border-line mt-4 p-4 rounded-lg">
+                    <div className="xl:hidden bg-surface border border-line mt-4 p-4 rounded-lg">
                         {user && (
                             <div className="flex items-center bg-surface2 rounded-lg shadow-md justify-between relative">
                                 <p className="text-center font-semibold text-ink px-4 py-2">
