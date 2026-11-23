@@ -298,7 +298,11 @@ function ChatPopup() {
                 return true
             } catch (error) {
                 console.error('Failed to send message:', error)
-                setNotice('Could not send. Check your connection and try again.')
+                setNotice(
+                    String(error?.message || '').includes('too quickly')
+                        ? 'You are sending messages too quickly. Please wait a moment.'
+                        : 'Could not send. Check your connection and try again.',
+                )
                 return false
             } finally {
                 setSending(false)
