@@ -48,20 +48,20 @@ export default function Navigation({ isScrolled }) {
     return (
         <nav
             className={'fixed top-0 left-0 right-0 z-50 transition bg-gradient-to-r from-night via-surface to-night border-b border-line/70 backdrop-blur duration-300 w-full px-4 py-5'}>
-            <div className="max-w-8xl mx-auto px-4">
+            <div className="max-w-8xl mx-auto px-0 sm:px-4">
                 <div className="flex items-center justify-between w-full">
                     {/* Logo - Far Left */}
-                    <Link href="/" aria-label={`${brand.name} home`} className="flex items-center gap-2">
+                    <Link href="/" aria-label={`${brand.name} home`} className="flex min-w-0 items-center gap-2">
                         {brand.logo ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={brand.logo} alt="" className="ts-logo-mark w-11 h-11 sm:w-12 sm:h-12 object-contain" />
+                            <img src={brand.logo} alt="" className="ts-logo-mark w-9 h-9 min-[360px]:w-10 min-[360px]:h-10 shrink-0 sm:w-12 sm:h-12 object-contain" />
                         ) : (
                             <Dice6 className="w-9 h-9 text-accent animate-float" />
                         )}
                         {(() => {
                             const [first, ...rest] = (brand.name || '').trim().split(/\s+/)
                             return (
-                                <span className="ts-wordmark whitespace-nowrap text-[22px] sm:text-[30px]" aria-label={brand.name}>
+                                <span className="ts-wordmark whitespace-nowrap text-[clamp(15px,5.2vw,22px)] sm:text-[30px]" aria-label={brand.name}>
                                     <span className="ts-word-1">{first}</span>
                                     {rest.length > 0 && <span className="ts-word-2"> {rest.join(' ')}</span>}
                                 </span>
@@ -82,15 +82,15 @@ export default function Navigation({ isScrolled }) {
                     </div>
 
                     {/* Profile/Join Button - Far Right */}
-                    <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+                    <div className="flex shrink-0 items-center gap-1 min-[360px]:gap-1.5 sm:gap-4 ml-auto pl-2">
                         {(app.canInstall || app.showIosHint) && (
                             <div className="relative">
                                 <button
                                     onClick={() => (app.canInstall ? app.install() : setIosHint(v => !v))}
                                     aria-label="Get the app"
-                                    className="flex items-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2.5 py-1 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2">
+                                    className="flex h-10 min-w-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2 sm:h-auto sm:px-2.5 sm:py-1">
                                     <Download className="h-4 w-4" />
-                                    <span>Get app</span>
+                                    <span className="hidden sm:inline">Get app</span>
                                 </button>
                                 {iosHint && (
                                     <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-accent/40 bg-night p-3 text-xs text-muted shadow-xl">
@@ -104,9 +104,9 @@ export default function Navigation({ isScrolled }) {
                             <Link
                                 href="/admin"
                                 aria-label="Admin panel"
-                                className="flex items-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2.5 py-1 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2 md:hidden">
+                                className="flex h-10 min-w-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border-2 border-accent2 bg-accent px-2 font-aldo text-sm text-accent-ink transition-transform hover:scale-105 hover:bg-accent2 sm:h-auto sm:px-2.5 sm:py-1 md:hidden">
                                 <ShieldCheck className="h-4 w-4" />
-                                <span>Admin</span>
+                                <span className="hidden sm:inline">Admin</span>
                             </Link>
                         )}
                         <div className="md:hidden">
@@ -116,7 +116,7 @@ export default function Navigation({ isScrolled }) {
                                 }
                                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                                 aria-expanded={isMobileMenuOpen}
-                                className="text-white p-2">
+                                className="flex h-10 w-10 items-center justify-center text-white">
                                 {isMobileMenuOpen ? <X /> : <Menu />}
                             </button>
                         </div>
