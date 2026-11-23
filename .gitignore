@@ -18,3 +18,8 @@ dist/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Claude / Impeccable per-developer files
+.claude/settings.local.json
+.impeccable/config.local.json
+.impeccable/cache/

@@ -58,7 +58,7 @@ export const siteDefaults = {
     },
     about: {
         title: 'About US',
-        body: 'A casino is a facility for certain types of gambling. Casinos are often built near or combined with hotels, resorts, restaurants, retail shopping, cruise ships, and other tourist attractions. Our players get a friendly team, quick support through live chat, and a regular schedule of games, events and rewards.',
+        body: 'Thunder Sweeps puts your favourite sweepstakes games and a real support team in one place. Tell us in live chat which game you want, and we set up your account and load your points. Spin the lucky wheel once a day for freeplay, claim deposit bonuses, and earn extra every time a friend joins with your link.',
         button: 'Learn More',
     },
     cta: {
@@ -95,29 +95,29 @@ export const siteDefaults = {
         ],
     },
     why: {
-        title: 'Why Play Our Casino',
-        intro: 'Experience the thrill of premium online gaming with industry-leading security and endless entertainment options.',
-        body: 'Join thousands of players worldwide who trust our platform for its reliability, fairness, and exceptional gaming experience. Our commitment to transparency and player satisfaction has made us a leading choice in the online gaming community, with a track record of creating memorable gaming moments and lasting player relationships.',
+        title: 'Why Play With Thunder Sweeps',
+        intro: 'Real people on live chat, fast game loads and something to win every day.',
+        body: 'Every message reaches a real member of our team, not a bot. Pick a game and we handle the account, the deposit and the cashout for you, with every step right there in your chat. A free spin each day, regular deposit bonuses and referral levels mean there is always something extra to play for.',
         features: [
             {
-                title: 'Secure & Fair Gaming',
+                title: 'Live Chat Support',
                 description:
-                    'Advanced encryption and certified RNG technology ensure your gaming experience is both safe and fair.',
+                    'Ask anything in chat and a real team member answers. Deposits, cashouts and game problems are all sorted right there.',
             },
             {
-                title: 'Premium Game Selection',
+                title: 'Popular Sweepstakes Games',
                 description:
-                    'Access hundreds of high-quality casino games from top providers, updated regularly with new releases.',
+                    'Your favourite sweepstakes games in one place. Pick one and we set up your game account for you.',
             },
             {
-                title: 'Competitive Rewards',
+                title: 'Daily Rewards',
                 description:
-                    'Enjoy industry-leading winning rates and exclusive bonus programs designed to maximize your chances.',
+                    'One free spin on the lucky wheel every day, plus deposit bonuses you can claim from the Bonuses page.',
             },
             {
-                title: 'Smart Investment Gaming',
+                title: 'Refer and Level Up',
                 description:
-                    'Strategic gaming options with real earning potential through our innovative reward systems.',
+                    'Invite friends with your link and unlock a bigger reward at every referral level, up to $50 and a 20% deposit bonus.',
             },
         ],
     },
@@ -153,11 +153,11 @@ export const siteDefaults = {
     },
     faq: {
         title: 'Frequently Asked Questions',
-        intro: 'A casino is a facility for certain types of gambling. Casinos are often found in or alongside hotels and resorts.',
+        intro: 'Quick answers about accounts, deposits, cashouts and bonuses. Can’t find yours? Ask us in live chat.',
         background: '',
         items: [
             {
-                question: 'How do I create a Casino Account?',
+                question: 'How do I create an account?',
                 answer: 'Creating a casino account is simple and secure. Visit our registration page, fill in your personal details, verify your email address, and complete the identity verification process.',
             },
             {
@@ -216,7 +216,7 @@ export const siteDefaults = {
     theme: { active: 'casino', decor: true },
     footer: {
         description:
-            'Experience the thrill of the game anytime, anywhere! Spin the reels, place your bets, and chase big wins with the ultimate online casino adventure. Luck is just a click away! 🎰💰🔥',
+            'Sweepstakes games, a free daily spin and a team on live chat whenever you play. 18+ only. Please play responsibly.',
         copyright_name: 'THUNDER SWEEPS',
         social: [
             { platform: 'twitch', url: '' },
