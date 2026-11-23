@@ -1,11 +1,10 @@
 'use client'
 
-import Button from '@/components/Button'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
+import Link from 'next/link'
+
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'
+import Field from '@/components/auth/Field'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
 
 const Page = () => {
@@ -25,39 +24,35 @@ const Page = () => {
     }
 
     return (
-        <>
-            <div className="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email
-                address and we will email you a password reset link that
-                will allow you to choose a new one.
+        <div className="auth-content">
+            <div className="auth-heading">
+                <h1>Reset your password</h1>
+                <p>Enter your email and we&rsquo;ll send you a link to choose a new password.</p>
             </div>
 
-            {/* Session Status */}
-            <AuthSessionStatus className="mb-4" status={status} />
+            <AuthSessionStatus className="auth-flash" status={status} />
 
-            <form onSubmit={submitForm}>
-                {/* Email Address */}
-                <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={email}
-                        className="block mt-1 w-full"
-                        onChange={event => setEmail(event.target.value)}
-                        required
-                        autoFocus
-                    />
-
-                    <InputError messages={errors.email} className="mt-2" />
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    <Button>Email Password Reset Link</Button>
-                </div>
+            <form className="auth-form" onSubmit={submitForm}>
+                <Field
+                    label="Email"
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={event => setEmail(event.target.value)}
+                    required
+                    autoFocus
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder="you@example.com"
+                    error={errors.email?.[0]}
+                />
+                <button type="submit" className="auth-submit">Send reset link</button>
             </form>
-        </>
+
+            <p className="auth-switch">
+                Remembered it? <Link href="/users">Back to sign in</Link>
+            </p>
+        </div>
     )
 }
 

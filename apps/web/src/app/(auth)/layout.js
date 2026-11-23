@@ -1,53 +1,63 @@
 import Link from 'next/link'
-import { Spade, Club, Diamond, Sparkles, ShieldCheck } from 'lucide-react'
+import { ArrowLeft, Club, Diamond, Heart, Spade } from 'lucide-react'
 
 export const metadata = {
     title: { absolute: 'Join Thunder Sweeps' },
     description: 'Sign in or create your Thunder Sweeps account.',
 }
 
-const Layout = ({ children }) => (
-    <main className="auth-experience">
-        <div className="auth-ambient auth-ambient-one" />
-        <div className="auth-ambient auth-ambient-two" />
-        <div className="auth-grain" />
+const PERKS = [
+    { Icon: Spade, text: 'A free spin on the lucky wheel every day' },
+    { Icon: Heart, text: 'Our live chat team sets up and loads your games' },
+    { Icon: Diamond, text: 'Rewards every time a friend joins with your link' },
+]
 
-        <header className="auth-topbar">
+const Layout = ({ children }) => (
+    <main className="auth">
+        <header className="auth-bar">
             <Link href="/" className="auth-brand" aria-label="Thunder Sweeps home">
-                <img src="/assets/images/brand/thunder-sweeps-mark.svg" alt="" width="44" height="44" style={{ width: 44, height: 44 }} />
-                <span>THUNDER <b>SWEEPS</b></span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/images/brand/thunder-sweeps-mark.svg" alt="" width="44" height="44" />
+                <span className="ts-wordmark" aria-hidden="true">
+                    <span className="ts-word-1">THUNDER</span>
+                    <span className="ts-word-2"> SWEEPS</span>
+                </span>
             </Link>
-            <Link href="/" className="auth-back-link">Back to the tables <span>↗</span></Link>
+            <Link href="/" className="auth-back">
+                <ArrowLeft aria-hidden="true" />
+                <span>Back to site</span>
+            </Link>
         </header>
 
-        <section className="auth-stage">
-            <aside className="auth-showcase">
-                <div className="auth-kicker"><span /> THE HOUSE OF GOOD TIMES</div>
-                <h1>MAKE<br /><em>YOUR</em> MOVE.</h1>
-                <p className="auth-showcase-copy">Your seat is waiting. Step into the game, explore the tables and make every moment count.</p>
-                <div className="auth-showcase-art" aria-hidden="true">
-                    <div className="auth-orbit auth-orbit-outer" />
-                    <div className="auth-orbit auth-orbit-inner" />
-                    <div className="auth-playing-card auth-card-back"><span>♠</span><small>ACE</small></div>
-                    <div className="auth-playing-card auth-card-front"><span>♦</span><small>21</small></div>
-                    <div className="auth-chip auth-chip-one">♣</div>
-                    <div className="auth-chip auth-chip-two">♦</div>
-                    <div className="auth-spark auth-spark-one"><Sparkles size={20} /></div>
-                    <div className="auth-spark auth-spark-two">✦</div>
-                </div>
-                <div className="auth-trust"><ShieldCheck size={17} /><span>Secure account access</span><i /> <span>18+ only</span></div>
-                <div className="auth-suits" aria-hidden="true"><Spade /><Club /><Diamond /></div>
-            </aside>
-
-            <div className="auth-panel-wrap">
-                <div className="auth-panel-glow" />
-                <div className="auth-panel">
-                    {children}
-                </div>
-                <p className="auth-panel-foot">PLAY SMART. ENJOY THE EXPERIENCE.</p>
+        <div className="auth-grid">
+            <div className="auth-card">
+                <div className="auth-card-edge" aria-hidden="true" />
+                <div className="auth-card-body">{children}</div>
             </div>
-        </section>
-        <footer className="auth-footer">© {new Date().getFullYear()} THUNDER SWEEPS <span>•</span> ALL RIGHTS RESERVED</footer>
+
+            <section className="auth-pitch" aria-label="Why join">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="auth-pitch-mark" src="/assets/images/brand/thunder-sweeps-mark.svg" alt="" width="220" height="220" />
+                <p className="auth-pitch-title">
+                    One free spin.
+                    <br />
+                    <span>Every day.</span>
+                </p>
+                <ul className="auth-perks">
+                    {PERKS.map(({ Icon, text }) => (
+                        <li key={text}>
+                            <Icon aria-hidden="true" />
+                            <span>{text}</span>
+                        </li>
+                    ))}
+                </ul>
+                <p className="auth-legal">
+                    <Club aria-hidden="true" /> 18+ only. Please play responsibly.
+                </p>
+            </section>
+        </div>
+
+        <footer className="auth-foot">© {new Date().getFullYear()} Thunder Sweeps. All rights reserved.</footer>
     </main>
 )
 

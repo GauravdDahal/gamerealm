@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { CircleCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import GoogleButton from '@/components/auth/GoogleButton'
+import Field from '@/components/auth/Field'
 
 /**
  * Sign in. Replaces the previous Facebook/Google social login screen —
@@ -70,58 +71,51 @@ const SignIn = () => {
     return (
         <div className="auth-content">
             <div className="auth-heading">
-                <span className="auth-eyebrow">WELCOME BACK</span>
-                <h2>Good to see you<span>.</span></h2>
-                <p>Sign in to pick up where the excitement left off.</p>
+                <h1>Back at the table</h1>
+                <p>Sign in to spin the wheel, chat with our team and play.</p>
             </div>
 
             {flash && (
-                <p role="status" className="mb-4 flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-300">
-                    <CircleCheck size={16} /> {flash}
+                <p role="status" className="auth-flash">
+                    <CircleCheck aria-hidden="true" /> {flash}
                 </p>
             )}
 
             <GoogleButton />
 
             <form onSubmit={submit} className="auth-form">
-                <div>
-                    <label htmlFor="email">Email address</label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        required
-                        autoFocus
-                        autoComplete="email"
-                    />
-                    {errors.email && <p className="mt-2 text-sm text-red-400">{errors.email[0]}</p>}
+                <Field
+                    label="Email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                    autoFocus
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder="you@example.com"
+                    error={errors.email?.[0]}
+                />
+                <Field
+                    label="Password"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                    autoComplete="current-password"
+                    error={errors.password?.[0]}
+                />
+                <div className="auth-row-end">
+                    <Link href="/forgot-password" className="auth-link">Forgot password?</Link>
                 </div>
-
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                        required
-                        autoComplete="current-password"
-                    />
-                    {errors.password && <p className="mt-2 text-sm text-red-400">{errors.password[0]}</p>}
-                </div>
-
-                <div className="auth-login-actions">
-                    <Link href="/forgot-password">Forgot your password?</Link>
-                    <button type="submit" disabled={submitting}>
-                        {submitting ? 'Signing in…' : 'Sign in'}
-                    </button>
-                </div>
+                <button type="submit" className="auth-submit" disabled={submitting}>
+                    {submitting ? 'Signing in…' : 'Sign in'}
+                </button>
             </form>
 
-            <div className="auth-switch">
-                New to Thunder Sweeps? <Link href="/register">Create an account <span>→</span></Link>
-            </div>
+            <p className="auth-switch">
+                New to Thunder Sweeps? <Link href="/register">Create an account</Link>
+            </p>
         </div>
     )
 }

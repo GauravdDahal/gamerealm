@@ -39,18 +39,18 @@ export default function GoogleButton({ label = 'Continue with Google' }) {
     }
 
     return (
-        <div className="mb-5">
+        <div className="auth-google">
             <button
                 type="button"
                 onClick={go}
                 disabled={busy}
-                className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/15 bg-white px-4 py-3 text-sm font-semibold text-gray-800 shadow transition hover:bg-gray-100 disabled:opacity-60">
+                className="auth-google-btn">
                 <GoogleIcon />
                 {busy ? 'Opening Google…' : label}
             </button>
-            {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
-            <div className="mt-5 flex items-center gap-3 text-xs uppercase tracking-widest text-gray-500">
-                <span className="h-px flex-1 bg-white/10" /> or use email <span className="h-px flex-1 bg-white/10" />
+            {error && <p className="auth-error">{error}</p>}
+            <div className="auth-or">
+                <span /> or use your email <span />
             </div>
         </div>
     )
