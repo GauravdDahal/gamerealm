@@ -17,7 +17,7 @@ export default function RulesSection() {
               </h2>
               <p
                   data-aos="fade-down"
-                  data-aos-delay="100"
+                  data-aos-delay="25"
                   className="text-gray-400 text-center mb-16 max-w-2xl mx-auto">
                   {c.intro}
               </p>
@@ -29,11 +29,11 @@ export default function RulesSection() {
                           key={index}
                           className="gradient-border p-1"
                           data-aos={index % 2 ? "fade-left" : "fade-right"}
-                          data-aos-delay={index * 200}>
+                          data-aos-delay={Math.min(index, 6) * 50}>
                           <div className="bg-gray-900 p-8 rounded-lg h-full">
                               <div className="flex items-start gap-4">
                                   <div
-                                      className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                                      className={`w-12 h-12 shrink-0 rounded-lg flex items-center justify-center ${
                                           rule.type === 'critical'
                                               ? 'bg-red-500/10 text-red-500'
                                               : rule.type === 'warning'

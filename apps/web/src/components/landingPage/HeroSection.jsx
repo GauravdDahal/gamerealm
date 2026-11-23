@@ -106,21 +106,21 @@ export default function HeroSection() {
                                 </div>
                                 <div className="relative z-20 h-full container mx-auto px-4 sm:px-6 py-6 flex items-center">
                                     <div className="max-w-3xl">
-                                        <h1
+                                        <h2
                                             className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-aldo leading-tight mb-3 sm:mb-4 md:mb-6"
                                             data-aos="fade-up">
                                             {slide.title}
-                                        </h1>
+                                        </h2>
                                         <p
                                             className="text-white text-sm sm:text-base md:text-lg mb-4 sm:mb-6 md:mb-8 max-w-md sm:max-w-xl"
                                             data-aos="fade-up"
-                                            data-aos-delay="500">
+                                            data-aos-delay="120">
                                             {slide.description || slide.subtitle}
                                         </p>
                                         <div
                                             className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4"
                                             data-aos="fade-up"
-                                            data-aos-delay="700">
+                                            data-aos-delay="120">
                                             <button
                                                 onClick={handleJoinClick}
                                                 className="text-white gradient-border bg-gray-900/50 backdrop-blur-sm px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium transition-transform hover:scale-105 flex items-center justify-center gap-1 sm:gap-2">

@@ -169,7 +169,7 @@ export default function SupportPage() {
                                 {footer.contact.map((l, i) => <li key={i}><ContactLine text={l.text} /></li>)}
                             </ul>
                         )}
-                        <p className="mt-5 border-t border-line/60 pt-4 text-xs text-dim">
+                        <p className="mt-5 border-t border-line/60 pt-4 text-xs text-muted">
                             Please read our <Link href="/#rules" className="text-accent underline">community rules</Link> before you play.
                         </p>
                     </aside>

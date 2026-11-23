@@ -18,7 +18,7 @@ const AccordionItem = ({
             data-aos={aos}
             data-aos-delay={aosDelay}>
             <button
-                className="w-full px-6 py-4 text-left flex justify-between items-center transition-all duration-300 ease-in-out"
+                className="w-full px-6 py-4 text-left flex justify-between items-center transition duration-300 ease-in-out"
                 onClick={onToggle}
                 aria-expanded={isOpen}>
                 <span className="text-lg font-semibold">{question}</span>
@@ -29,7 +29,7 @@ const AccordionItem = ({
                 )}
             </button>
             <div
-                className={`transition-all duration-300 ease-in-out ${
+                className={`transition duration-300 ease-in-out ${
                     isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                 }`}>
                 <div className="px-6 py-4">
@@ -56,14 +56,14 @@ export default function FAQSection() {
                 backgroundSize: 'cover !important',
             }}>
             <div className="max-w-7xl mx-auto">
-                <h1
+                <h2
                     data-aos="fade-down"
                     className="text-4xl sm:text-9xl md:text-4xl lg:text-6xl font-godofwar text-center mb-4">
                     {c.title}
-                </h1>
+                </h2>
                 <p
                     data-aos="fade-down"
-                    data-aos-delay="100"
+                    data-aos-delay="25"
                     className="text-center text-gray-300 mb-12 max-w-2xl mx-auto">
                     {c.intro}
                 </p>

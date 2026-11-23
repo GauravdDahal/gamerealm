@@ -36,20 +36,20 @@ export default function WhyChooseUs() {
           <div className="container mx-auto px-4">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                   <div className="w-full space-y-6">
-                      <h1
+                      <h2
                           data-aos="fade-down"
                           className="text-5xl sm:text-4xl font-glance leading-tight sm:pt-3">
                           {c.title}
-                      </h1>
+                      </h2>
                       <p
                           data-aos="fade-down"
-                          data-aos-delay="100"
+                          data-aos-delay="25"
                           className="text-lg text-gray-300 max-w-xl">
                           {c.intro}
                       </p>
                       <p
                           data-aos="fade-down"
-                          data-aos-delay="200"
+                          data-aos-delay="50"
                           className="text-gray-400">
                           {c.body}
                       </p>
@@ -67,7 +67,7 @@ export default function WhyChooseUs() {
                                           key={index}
                                           className="space-y-4 last:mb-8"
                                           data-aos="fade-left"
-                                          data-aos-delay={index * 200}>
+                                          data-aos-delay={Math.min(index, 6) * 50}>
                                           <div className="w-20 h-20 flex  items-center justify-center">
                                               <LazyLottie src={animations[index % animations.length]} className="w-20 h-20" />
                                           </div>

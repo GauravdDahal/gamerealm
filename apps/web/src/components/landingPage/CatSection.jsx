@@ -68,7 +68,7 @@ function App() {
                 <div className="inline-flex w-full sm:w-auto justify-center">
                   <button
                     onClick={() => router.push('/users')}
-                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50 hover:transform hover:scale-105 transition-all duration-200 shadow-lg">
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50 hover:transform hover:scale-105 transition duration-200 shadow-lg">
                     <Gift className="w-5 h-5 mr-2" />
                     {cta.signin_label}
                   </button>

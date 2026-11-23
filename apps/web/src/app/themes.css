@@ -24,7 +24,7 @@ html[data-theme="casino"] {
   --color-gray-100: #eae6ef;
   --color-gray-200: #d7d0e1;
   --color-gray-300: #baaecb;
-  --color-gray-400: #9583af;
+  --color-gray-400: #a08fb7;
   --color-gray-500: #715b8f;
   --color-gray-600: #54446a;
   --color-gray-700: #3d324e;
@@ -133,7 +133,7 @@ html[data-theme="halloween"] {
   --color-gray-100: #efeae6;
   --color-gray-200: #e1d7d0;
   --color-gray-300: #cbbaae;
-  --color-gray-400: #af9583;
+  --color-gray-400: #b7a08f;
   --color-gray-500: #8f715b;
   --color-gray-600: #6a5444;
   --color-gray-700: #4e3d32;
@@ -242,7 +242,7 @@ html[data-theme="christmas"] {
   --color-gray-100: #e1f4eb;
   --color-gray-200: #c6ebda;
   --color-gray-300: #9dddbf;
-  --color-gray-400: #68ca9c;
+  --color-gray-400: #77cfa6;
   --color-gray-500: #3dae79;
   --color-gray-600: #2d8059;
   --color-gray-700: #215e42;
@@ -351,7 +351,7 @@ html[data-theme="newyear"] {
   --color-gray-100: #e6e7f0;
   --color-gray-200: #cfd2e2;
   --color-gray-300: #acb2cd;
-  --color-gray-400: #8088b3;
+  --color-gray-400: #8c94ba;
   --color-gray-500: #586293;
   --color-gray-600: #41486c;
   --color-gray-700: #303550;
@@ -460,7 +460,7 @@ html[data-theme="independence"] {
   --color-gray-100: #e4e8f1;
   --color-gray-200: #cdd3e4;
   --color-gray-300: #a9b3d1;
-  --color-gray-400: #7a8ab8;
+  --color-gray-400: #8895bf;
   --color-gray-500: #526498;
   --color-gray-600: #3d4a71;
   --color-gray-700: #2d3653;
@@ -569,7 +569,7 @@ html[data-theme="thanksgiving"] {
   --color-gray-100: #efeae6;
   --color-gray-200: #e2d8d0;
   --color-gray-300: #cdbcad;
-  --color-gray-400: #b19781;
+  --color-gray-400: #b9a28d;
   --color-gray-500: #917359;
   --color-gray-600: #6c5542;
   --color-gray-700: #4f3f30;

@@ -6,8 +6,8 @@ import { useSiteContent } from '@/lib/useSiteContent'
 const fallbackLinks = ['/referral', '/bonuses']
 
 const styles = [
-  { gradient: "from-green-400 to-blue-500", btnGradient: "from-green-500 to-blue-600", Icon: Send },
-  { gradient: "from-purple-500 to-pink-500", btnGradient: "from-purple-500 to-pink-600", Icon: Gift },
+  { gradient: "from-green-400 to-blue-500", btnGradient: "from-green-700 to-blue-700", Icon: Send },
+  { gradient: "from-purple-500 to-pink-500", btnGradient: "from-purple-700 to-pink-700", Icon: Gift },
 ];
 
 export default function EventSection() {
@@ -23,7 +23,7 @@ export default function EventSection() {
               <p
                   className="text-gray-400 mb-10 sm:mb-16 max-w-2xl mx-auto"
                   data-aos="fade-down"
-                  data-aos-delay="100">
+                  data-aos-delay="25">
                   {c.intro}
               </p>
 
@@ -34,7 +34,7 @@ export default function EventSection() {
                       <div
                           key={index}
                           data-aos="fade-up"
-                          data-aos-delay={index * 150}>
+                          data-aos-delay={Math.min(index, 6) * 50}>
                           <div className="relative h-full bg-gray-800 p-6 sm:p-8 rounded-xl border border-gray-700 shadow-md transition-transform duration-300 hover:scale-[1.03]">
                               <div className="flex items-center gap-4 mb-4">
                                   <div
@@ -52,7 +52,7 @@ export default function EventSection() {
 
                               <a
                                   href={card.href || fallbackLinks[index] || '#home'}
-                                  className={`inline-block bg-gradient-to-r ${st.btnGradient} text-white px-6 py-3 rounded-full font-medium transition-all hover:opacity-80 shadow-lg`}>
+                                  className={`inline-block bg-gradient-to-r ${st.btnGradient} text-white px-6 py-3 rounded-full font-medium transition hover:opacity-80 shadow-lg`}>
                                   {card.button}
                               </a>
                           </div>

@@ -66,7 +66,7 @@ export default function BonusesSection({ bare = false }) {
                                     {card.badge}
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="font-bold text-white">{card.title}</h3>
+                                    {bare ? <h2 className="font-bold text-white">{card.title}</h2> : <h3 className="font-bold text-white">{card.title}</h3>}
                                     <p className="mt-1 text-sm text-gray-300">{card.description}</p>
                                 </div>
                             </div>

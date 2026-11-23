@@ -53,14 +53,12 @@ export default function GamesSection({ bare = false, all = false }) {
                     <>
                 <h2
                     data-aos="fade-down"
-                    data-aos-duration="1000"
                     className="text-white text-4xl sm:text-9xl md:text-4xl lg:text-6xl font-godofwar text-center mb-4">
                     {c.title}
                 </h2>
                 <p
                     data-aos="fade-down"
-                    data-aos-duration="1000"
-                    data-aos-delay="200"
+                    data-aos-delay="50"
                     className="text-gray-400 text-center mb-12 md:mb-16 max-w-2xl mx-auto text-sm sm:text-base">
                     {c.intro}
                 </p>
@@ -71,8 +69,7 @@ export default function GamesSection({ bare = false, all = false }) {
                         <div
                             key={game.id}
                             data-aos="fade-up"
-                            data-aos-duration="1000"
-                            data-aos-delay={100 * (index + 1)}
+                            data-aos-delay={Math.min(index, 6) * 40}
                             role="button"
                             tabIndex={0}
                             aria-label={`${c.play_label}: ${game.title}`}
@@ -108,7 +105,7 @@ export default function GamesSection({ bare = false, all = false }) {
 
                             <div className="flex flex-col items-stretch gap-1.5 bg-gray-900 px-2.5 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-5 sm:py-3">
                                 <div className="min-w-0">
-                                    <h3 className="truncate text-sm sm:text-lg leading-tight font-aldo">{game.title}</h3>
+                                    {bare ? <h2 className="truncate text-sm sm:text-lg leading-tight font-aldo">{game.title}</h2> : <h3 className="truncate text-sm sm:text-lg leading-tight font-aldo">{game.title}</h3>}
                                     {game.players && (
                                         <p className="hidden text-gray-400 text-sm sm:block">{game.players} Active Players</p>
                                     )}

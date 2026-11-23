@@ -176,7 +176,7 @@ export default function ReferralSection({ bare = false }) {
                                 </div>
                                 <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-night">
                                     <div
-                                        className="h-full rounded-full bg-gradient-to-r from-accent-dim via-accent to-accent2 transition-all"
+                                        className="h-full rounded-full bg-gradient-to-r from-accent-dim via-accent to-accent2 transition"
                                         style={{ width: `${next ? Math.min(100, (count / next.friends_required) * 100) : 100}%` }}
                                     />
                                 </div>

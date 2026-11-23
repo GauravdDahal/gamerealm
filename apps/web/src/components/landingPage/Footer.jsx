@@ -40,13 +40,19 @@ export default function Footer() {
                         <Link href="/" aria-label={`${brand.name} home`} className="mb-6 flex w-fit items-center gap-2">
                             {brand.logo ? (
                                 // eslint-disable-next-line @next/next/no-img-element
-                                <img src={brand.logo} alt={brand.name} className="w-8 h-8 object-contain" />
+                                <img src={brand.logo} alt="" className="w-11 h-11 object-contain" />
                             ) : (
                                 <Gamepad2 className="w-8 h-8 text-secondary animate-float" />
                             )}
-                            <span className="text-xl  font-bold bg-clip-text bg-gradient-to-r from-secondary via-secondary2 to-hot text-transparent">
-                                {brand.name}
-                            </span>
+                            {(() => {
+                                const [first, ...rest] = (brand.name || '').trim().split(/\s+/)
+                                return (
+                                    <span className="ts-wordmark text-[26px]" aria-label={brand.name}>
+                                        <span className="ts-word-1">{first}</span>
+                                        {rest.length > 0 && <span className="ts-word-2"> {rest.join(' ')}</span>}
+                                    </span>
+                                )
+                            })()}
                         </Link>
                         <p className="text-gray-400 mb-6">{c.description}</p>
                         <div className="flex gap-4">
@@ -101,7 +107,7 @@ export default function Footer() {
                         </div>
                     )}
                 </div>
-                <div className="border-t border-gray-800 mt-16 pt-8 text-center text-gray-600 dark:text-gray-400">
+                <div className="border-t border-gray-800 mt-16 pt-8 text-center text-gray-300">
                     <p>
                         &copy; {new Date().getFullYear()} {c.copyright_name}. All rights reserved.
                     </p>

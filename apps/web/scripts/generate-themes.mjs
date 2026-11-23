@@ -15,7 +15,7 @@ const hslToHex = (h, s, l) => {
 }
 const STOPS = { 50: 97, 100: 93, 200: 86, 300: 76, 400: 64, 500: 53, 600: 45, 700: 35, 800: 25, 900: 17, 950: 10 }
 // gray scales are much darker/less saturated at the ends so panels stay moody
-const GRAY_STOPS = { 50: 96, 100: 92, 200: 85, 300: 74, 400: 60, 500: 46, 600: 34, 700: 25, 800: 17, 900: 11, 950: 6 }
+const GRAY_STOPS = { 50: 96, 100: 92, 200: 85, 300: 74, 400: 64, 500: 46, 600: 34, 700: 25, 800: 17, 900: 11, 950: 6 }
 
 const block = (t) => {
   const out = []

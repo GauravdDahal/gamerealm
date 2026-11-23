@@ -47,7 +47,7 @@ export default function Navigation({ isScrolled }) {
 
     return (
         <nav
-            className={'fixed top-0 left-0 right-0 z-50 transition-all bg-gradient-to-r from-night via-surface to-night border-b border-line/70 backdrop-blur duration-300 w-full px-4 py-5'}>
+            className={'fixed top-0 left-0 right-0 z-50 transition bg-gradient-to-r from-night via-surface to-night border-b border-line/70 backdrop-blur duration-300 w-full px-4 py-5'}>
             <div className="max-w-8xl mx-auto px-4">
                 <div className="flex items-center justify-between w-full">
                     {/* Logo - Far Left */}
