@@ -119,7 +119,7 @@ html[data-theme="halloween"] {
   --c-line: 77 47 20;
   --c-ink: 255 243 230;
   --c-muted: 214 173 140;
-  --c-dim: 160 122 88;
+  --c-dim: 176 138 104;
   --c-accent: 255 122 0;
   --c-accent2: 255 166 61;
   --c-accent-dim: 168 77 0;
@@ -447,10 +447,10 @@ html[data-theme="independence"] {
   --c-ink: 255 255 255;
   --c-muted: 188 199 238;
   --c-dim: 135 147 200;
-  --c-accent: 230 57 70;
-  --c-accent2: 255 107 120;
+  --c-accent: 255 77 90;
+  --c-accent2: 255 122 133;
   --c-accent-dim: 155 28 40;
-  --c-accent-ink: 255 255 255;
+  --c-accent-ink: 5 10 31;
   --c-danger: 249 115 22;
   --c-danger-soft: 254 215 170;
   --c-secondary: 37 99 235;

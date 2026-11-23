@@ -6,7 +6,7 @@ import { Gift, Sparkles, Volume2, VolumeX, X, Zap } from 'lucide-react'
 import { useAuth } from '@/hooks/auth'
 import { createClient } from '@/lib/supabase/client'
 import { useSiteContent } from '@/lib/useSiteContent'
-import { lose, setSoundOn, settle, soundOn, stopSpin, tick, unlock, whoosh, win } from '@/lib/wheelSound'
+import { lose, setSoundOn, settle, soundOn, stopSpin, tick as tickSound, unlock, whoosh, win } from '@/lib/wheelSound'
 
 // Shown until the real segments arrive (and if they can't be loaded).
 const FALLBACK = [
@@ -56,7 +56,7 @@ export default function SpinWheel() {
     const [spinning, setSpinning] = useState(false)
     const [result, setResult] = useState(null)
     const [error, setError] = useState('')
-    const [, tick] = useState(0)
+    const [, refresh] = useState(0)
     const rotationRef = useRef(0)
     const wheelRef = useRef(null)
     const frameRef = useRef(0)
@@ -73,7 +73,7 @@ export default function SpinWheel() {
         setSoundOn(next)
         if (next) {
             unlock()
-            tick(0.3)
+            tickSound(0.3)
         }
     }
 
@@ -97,7 +97,7 @@ export default function SpinWheel() {
                 lastSlice = sliceNow
                 if (now - lastTick > 30) {
                     const speed = Math.min(1, Math.abs(((angle - lastAngle + 540) % 360) - 180) / 30)
-                    tick(speed)
+                    tickSound(speed)
                     lastTick = now
                 }
             }
@@ -125,7 +125,7 @@ export default function SpinWheel() {
 
     // Keep the "next spin in" text fresh.
     useEffect(() => {
-        const t = setInterval(() => tick(n => n + 1), 30000)
+        const t = setInterval(() => refresh(n => n + 1), 30000)
         return () => clearInterval(t)
     }, [])
 

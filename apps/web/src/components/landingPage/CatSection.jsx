@@ -50,7 +50,7 @@ function App() {
   return (
     <section className="bg-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-4">
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-purple-800 to-indigo-800 rounded-2xl shadow-xl overflow-hidden">
           <div className="px-6 py-12 sm:px-12 sm:py-16">
             <div className="lg:flex lg:items-center lg:justify-between">
               <div className="lg:w-0 lg:flex-1">
@@ -68,7 +68,7 @@ function App() {
                 <div className="inline-flex w-full sm:w-auto justify-center">
                   <button
                     onClick={() => router.push('/users')}
-                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-purple-600 bg-white hover:bg-purple-50 hover:transform hover:scale-105 transition duration-200 shadow-lg">
+                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-purple-50 transition duration-200 shadow-lg">
                     <Gift className="w-5 h-5 mr-2" />
                     {cta.signin_label}
                   </button>

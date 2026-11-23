@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import dynamic from 'next/dynamic';
 
 import LazyLottie from '@/components/common/LazyLottie';
 import { useSiteContent } from '@/lib/useSiteContent'

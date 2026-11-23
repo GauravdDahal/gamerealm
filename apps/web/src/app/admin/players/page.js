@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
-import { Badge, Button, EmptyState, ErrorState, Field, Input, Modal, Panel, Skeleton, useToast } from '@/components/admin/ui'
+import { Button, EmptyState, ErrorState, Field, Input, Modal, Panel, Skeleton, useToast } from '@/components/admin/ui'
 import PlayerMoney from '@/components/admin/PlayerMoney'
 
 const PAGE = 25

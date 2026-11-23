@@ -13,5 +13,8 @@ export async function GET(request) {
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) return NextResponse.redirect(new URL(safeNext, url.origin))
     }
+    if (safeNext.startsWith('/password-reset')) {
+        return NextResponse.redirect(new URL('/forgot-password?expired=1', url.origin))
+    }
     return NextResponse.redirect(new URL('/users?oauth=failed', url.origin))
 }

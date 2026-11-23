@@ -48,7 +48,7 @@ export default function Footer() {
                             {(() => {
                                 const [first, ...rest] = (brand.name || '').trim().split(/\s+/)
                                 return (
-                                    <span className="ts-wordmark text-[26px]" aria-label={brand.name}>
+                                    <span className="ts-wordmark whitespace-nowrap text-[clamp(20px,3vw,26px)]" aria-label={brand.name}>
                                         <span className="ts-word-1">{first}</span>
                                         {rest.length > 0 && <span className="ts-word-2"> {rest.join(' ')}</span>}
                                     </span>
@@ -76,14 +76,14 @@ export default function Footer() {
 
                     {c.columns.map((column, index) => (
                         <div key={index}>
-                            <h4 className="text-lg font-bold mb-6 text-white">{column.title}</h4>
-                            <ul className="space-y-4">
+                            <h2 className="text-lg font-bold mb-4 text-white">{column.title}</h2>
+                            <ul className="space-y-1">
                                 {column.links.map((link, i) => (
                                     <li key={i}>
                                         {link.url ? (
                                             <Link
                                                 href={safeUrl(link.url)}
-                                                className="text-gray-400 hover:text-accent transition-colors">
+                                                className="inline-flex min-h-[40px] items-center text-gray-400 hover:text-accent transition-colors">
                                                 {link.label}
                                             </Link>
                                         ) : (
@@ -97,8 +97,8 @@ export default function Footer() {
 
                     {c.contact.length > 0 && (
                         <div>
-                            <h4 className="text-lg font-bold mb-6 text-white">{c.contact_title}</h4>
-                            <ul className="space-y-4">
+                            <h2 className="text-lg font-bold mb-4 text-white">{c.contact_title}</h2>
+                            <ul className="space-y-1">
                                 {c.contact.map((line, i) => (
                                     <li key={i}>
                                         <ContactLine text={line.text} className="text-gray-400" />

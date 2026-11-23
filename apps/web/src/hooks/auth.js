@@ -75,6 +75,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         return () => subscription.unsubscribe()
     }, [loadUser, supabase])
 
+    // eslint-disable-next-line no-unused-vars
     const register = async ({ setErrors, password_confirmation, ...props }) => {
         setErrors([])
 
@@ -114,7 +115,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setStatus(null)
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${window.location.origin}/password-reset`,
+            redirectTo: `${window.location.origin}/auth/callback?next=/password-reset`,
         })
 
         if (error) {

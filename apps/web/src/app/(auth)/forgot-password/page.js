@@ -3,14 +3,14 @@
 import Link from 'next/link'
 
 import { useAuth } from '@/hooks/auth'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Field from '@/components/auth/Field'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
 
 const Page = () => {
     const { forgotPassword } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/',
     })
 
     const [email, setEmail] = useState('')
@@ -22,6 +22,12 @@ const Page = () => {
 
         forgotPassword({ email, setErrors, setStatus })
     }
+
+    useEffect(() => {
+        if (new URLSearchParams(window.location.search).get('expired')) {
+            setStatus('That reset link has expired or was already used. Enter your email to get a new one.')
+        }
+    }, [])
 
     return (
         <div className="auth-content">

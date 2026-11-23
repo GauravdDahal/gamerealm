@@ -53,8 +53,8 @@ const ProviderCard = ({ supabase, title, saved, onSaved }) => {
                     <div className="relative">
                         <Input type={show ? 'text' : 'password'} value={f.secret} onChange={e => setF({ ...f, secret: e.target.value })} autoComplete="new-password"
                             placeholder={saved?.has_secret ? '•••••••• (saved)' : ''} />
-                        <button type="button" onClick={() => setShow(s => !s)} aria-label={show ? 'Hide' : 'Show'}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-[#7E938B] hover:text-[#EFE9DA]">{show ? <EyeOff size={15} /> : <Eye size={15} />}</button>
+                        <button type="button" onClick={() => setShow(s => !s)} aria-label={show ? 'Hide secret' : 'Show secret'}
+                            className="absolute right-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center text-[#7E938B] hover:text-[#EFE9DA]">{show ? <EyeOff size={15} /> : <Eye size={15} />}</button>
                     </div>
                 </Field>
                 <Button variant="primary" onClick={save} disabled={busy}>{busy ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Save</Button>

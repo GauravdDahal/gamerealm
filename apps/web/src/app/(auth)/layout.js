@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowLeft, Club, Diamond, Heart, Spade } from 'lucide-react'
 
 export const metadata = {
-    title: { absolute: 'Join Thunder Sweeps' },
+    title: { absolute: 'Join Thunder Sweeps', template: '%s | Thunder Sweeps' },
     description: 'Sign in or create your Thunder Sweeps account.',
 }
 

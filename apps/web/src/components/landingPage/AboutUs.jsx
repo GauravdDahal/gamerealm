@@ -1,9 +1,6 @@
 'use client'
-import { useEffect } from 'react'
 import LazyLottie from '@/components/common/LazyLottie'
-import AOS from 'aos'
 import 'aos/dist/aos.css'
-import dynamic from 'next/dynamic'
 import { useSiteContent } from '@/lib/useSiteContent'
 export default function AboutUs() {
     const c = useSiteContent('about')

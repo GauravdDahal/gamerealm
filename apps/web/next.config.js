@@ -27,6 +27,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Old addresses from the original starter kit.
+  async redirects() {
+    return [
+      { source: '/dashboard', destination: '/', permanent: true },
+      { source: '/verify-email', destination: '/users', permanent: true },
+      { source: '/password-reset/:token', destination: '/forgot-password', permanent: false },
+    ];
+  },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

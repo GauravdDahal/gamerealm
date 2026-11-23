@@ -399,7 +399,6 @@ function ChatPopup() {
 
     const brand = 'linear-gradient(110deg, rgb(var(--c-accent-dim)), rgb(var(--c-accent2)) 48%, rgb(var(--c-accent-dim)))'
     const display = { fontFamily: "'PlayFairlDisplay', Georgia, serif" }
-    const brandFont = { fontFamily: "'Aldo', sans-serif" }
     const formatTime = iso =>
         new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
     // "Today 9:41 PM", "Yesterday 9:41 PM", "Nov 12, 9:41 PM"

@@ -11,7 +11,6 @@ import {
     KeyRound,
     ScrollText,
     Images,
-    UserCheck,
     MessageCircle,
     Zap,
     Gamepad2,

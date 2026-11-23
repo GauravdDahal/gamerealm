@@ -43,7 +43,7 @@ export const siteDefaults = {
     },
     games: {
         title: 'Featured Games',
-        intro: 'Dive into our selection of popular competitive games and start your journey to the top.',
+        intro: 'Tap any game to request it. Our team sets up your account and loads your points in chat.',
         play_label: 'Play Game',
         more_label: 'See More',
         less_label: 'Show Less',
@@ -57,9 +57,9 @@ export const siteDefaults = {
         ],
     },
     about: {
-        title: 'About US',
+        title: 'About Us',
         body: 'Thunder Sweeps puts your favourite sweepstakes games and a real support team in one place. Tell us in live chat which game you want, and we set up your account and load your points. Spin the lucky wheel once a day for freeplay, claim deposit bonuses, and earn extra every time a friend joins with your link.',
-        button: 'Learn More',
+        button: 'Contact support',
     },
     cta: {
         signin_label: 'Sign in to Play',

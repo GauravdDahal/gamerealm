@@ -1,5 +1,5 @@
 export const metadata = {
-    title: 'Join',
+    title: 'Sign in',
     description: 'Sign in or create your Thunder Sweeps account.',
 }
 

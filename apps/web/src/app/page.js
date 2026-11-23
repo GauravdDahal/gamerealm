@@ -41,6 +41,7 @@ function Home() {
     return (
         <div className="min-h-screen max-w-screen overflow-hidden bg-gray-900 text-white font-sans">
             <Navigation isScrolled={isScrolled} />
+            <main id="main">
             <Suspense fallback={<LoadingSpinner />}>
                 <SectionDecor name="hero"><SpinWheel /></SectionDecor>
                 <EventsSection />
@@ -57,6 +58,7 @@ function Home() {
             <SectionDecor name="faq"><FAQSection /></SectionDecor>
             <Testimonial />
             <PaymentSection />
+            </main>
             <SectionDecor name="footer"><Footer /></SectionDecor>
             <ChatPopup />
         </div>

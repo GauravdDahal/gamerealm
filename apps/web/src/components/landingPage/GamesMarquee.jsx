@@ -42,8 +42,10 @@ export default function GamesMarquee() {
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={game.logo || game.image}
-                                alt={game.title}
+                                alt=""
                                 loading="lazy"
+                                width={144}
+                                height={96}
                                 className="h-full w-full object-cover transition duration-300 group-hover:scale-110"
                             />
                             {game.hot && (

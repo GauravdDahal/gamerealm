@@ -6,7 +6,6 @@ import {
     Menu,
     X,
     LogOut,
-    CreditCard,
     ShieldCheck,
     Download,
     Share,
@@ -14,7 +13,6 @@ import {
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
-import Image from 'next/image'
 import UserAvatar from '@/components/common/UserAvatar'
 import { useSiteContent } from '@/lib/useSiteContent'
 import { useInstallApp } from '@/lib/installApp'

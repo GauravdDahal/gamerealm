@@ -24,7 +24,7 @@ export const THEMES = [
     blurb: 'Pumpkin orange on near-black, with witchy purple and slime green.',
     tokens: {
       night: '#0d0905', surface: '#1a110a', surface2: '#2a1a0d', line: '#4d2f14',
-      ink: '#fff3e6', muted: '#d6ad8c', dim: '#a07a58',
+      ink: '#fff3e6', muted: '#d6ad8c', dim: '#b08a68',
       accent: '#ff7a00', accent2: '#ffa63d', 'accent-dim': '#a84d00', 'accent-ink': '#1a0900',
       danger: '#e0342c', 'danger-soft': '#ffb4a8',
       secondary: '#7b2cbf', secondary2: '#a855f7', hot: '#84cc16',
@@ -119,7 +119,7 @@ export const THEMES = [
     tokens: {
       night: '#050a1f', surface: '#0c1738', surface2: '#142459', line: '#2b3d82',
       ink: '#ffffff', muted: '#bcc7ee', dim: '#8793c8',
-      accent: '#e63946', accent2: '#ff6b78', 'accent-dim': '#9b1c28', 'accent-ink': '#ffffff',
+      accent: '#ff4d5a', accent2: '#ff7a85', 'accent-dim': '#9b1c28', 'accent-ink': '#050a1f',
       danger: '#f97316', 'danger-soft': '#fed7aa',
       secondary: '#2563eb', secondary2: '#60a5fa', hot: '#e2e8f0',
     },

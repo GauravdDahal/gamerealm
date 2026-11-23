@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
 // Pages without the site's top bar: the hanging strip has nothing to hang from there.
-const AUTH_ROUTES = ['/users', '/register', '/login', '/forgot-password', '/password-reset', '/verify-email', '/complete-profile', '/account-pending']
+const AUTH_ROUTES = ['/users', '/register', '/login', '/forgot-password', '/password-reset', '/complete-profile', '/account-pending']
 import { useThemeSetting } from '@/lib/useSiteContent'
 import { THEMES } from '@/lib/themes.mjs'
 import Art from '@/components/decorArt'

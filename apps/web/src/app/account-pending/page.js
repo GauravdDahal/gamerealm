@@ -8,19 +8,19 @@ import { createClient } from '@/lib/supabase/client'
 const views = {
     pending: {
         icon: Clock,
-        tone: 'text-amber-500',
+        tone: 'text-amber-400',
         title: 'Your account is being reviewed',
         body: "Someone on our team is checking your details. You'll be able to sign in and play as soon as it's approved. This usually takes a day or so.",
     },
     rejected: {
         icon: XCircle,
-        tone: 'text-red-500',
+        tone: 'text-red-400',
         title: 'Your application was declined',
         body: 'We were not able to approve this account.',
     },
     suspended: {
         icon: Ban,
-        tone: 'text-red-500',
+        tone: 'text-red-400',
         title: 'Your account is suspended',
         body: 'Access has been paused. Contact support if you think this is a mistake.',
     },
@@ -70,47 +70,57 @@ const AccountPending = () => {
         window.location.href = '/users'
     }
 
+    const shell = children => (
+        <main className="auth">
+            <header className="auth-bar">
+                <a href="/" className="auth-brand" aria-label="Thunder Sweeps home">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/assets/images/brand/thunder-sweeps-mark.svg" alt="" width="44" height="44" />
+                    <span className="ts-wordmark" aria-hidden="true">
+                        <span className="ts-word-1">THUNDER</span>
+                        <span className="ts-word-2"> SWEEPS</span>
+                    </span>
+                </a>
+            </header>
+            <div className="auth-grid" style={{ gridTemplateColumns: 'minmax(0, 1fr)' }}>
+                <div className="auth-card">
+                    <div className="auth-card-edge" aria-hidden="true" />
+                    <div className="auth-card-body">{children}</div>
+                </div>
+            </div>
+        </main>
+    )
+
     if (state.loading) {
-        return (
-            <main className="flex min-h-screen items-center justify-center bg-gray-50">
-                <p className="text-sm text-gray-500">Loading…</p>
-            </main>
-        )
+        return shell(<p className="auth-hint">Loading…</p>)
     }
 
     const view = views[state.user?.status] ?? views.pending
     const Icon = view.icon
 
-    return (
-        <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-            <div className="w-full max-w-md rounded-lg bg-white p-8 text-center shadow-sm">
-                <Icon className={`mx-auto h-10 w-10 ${view.tone}`} strokeWidth={1.5} />
-
-                <h1 className="mt-4 text-xl font-semibold text-gray-900">
-                    {view.title}
-                </h1>
-                <p className="mt-2 text-sm leading-relaxed text-gray-600">{view.body}</p>
-
-                {state.user?.status_reason && (
-                    <div className="mt-4 rounded border border-gray-200 bg-gray-50 px-3 py-2 text-left">
-                        <p className="text-xs text-gray-500">Reason given</p>
-                        <p className="mt-0.5 text-sm text-gray-800">
-                            {state.user.status_reason}
-                        </p>
-                    </div>
-                )}
-
-                <p className="mt-6 text-xs text-gray-500">
-                    Signed in as {state.user?.email}
-                </p>
-
-                <button
-                    onClick={signOut}
-                    className="mt-3 w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                    Sign out
-                </button>
+    return shell(
+        <div className="auth-content">
+            <div className="auth-heading">
+                <Icon className={`mb-4 h-10 w-10 ${view.tone}`} strokeWidth={1.75} aria-hidden="true" />
+                <h1>{view.title}</h1>
+                <p>{view.body}</p>
             </div>
-        </main>
+
+            {state.user?.status_reason && (
+                <div className="mb-5 rounded-xl border border-line bg-night px-4 py-3">
+                    <p className="text-sm font-bold text-muted">Reason given</p>
+                    <p className="mt-1 text-base text-ink">{state.user.status_reason}</p>
+                </div>
+            )}
+
+            <p className="auth-hint">Signed in as {state.user?.email}</p>
+            <button type="button" onClick={signOut} className="auth-submit mt-4">
+                Sign out
+            </button>
+            <p className="auth-switch">
+                Need help? <a href="/support">Contact support</a>
+            </p>
+        </div>,
     )
 }
 

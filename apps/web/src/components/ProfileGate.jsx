@@ -33,7 +33,7 @@ export default function ProfileGate() {
             router.replace('/account-pending')
             return
         }
-        if (!user.date_of_birth && pathname !== '/complete-profile' && !pathname.startsWith('/auth')) {
+        if (!user.date_of_birth && pathname !== '/complete-profile' && !pathname.startsWith('/auth') && !pathname.startsWith('/password-reset')) {
             router.replace('/complete-profile')
         }
     }, [user, loading, pathname, router])

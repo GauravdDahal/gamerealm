@@ -14,7 +14,7 @@ export default function PaymentSection() {
                 {c.methods.map((method, i) => (
                     <div key={i} className="transition-transform hover:scale-105">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={method.image} alt={method.name} className="h-12 sm:h-16 rounded-md" />
+                        <img src={method.image} alt={method.name} width={96} height={64} loading="lazy" className="h-12 w-auto sm:h-16 rounded-md" />
                     </div>
                 ))}
             </div>

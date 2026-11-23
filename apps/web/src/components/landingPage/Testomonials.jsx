@@ -5,7 +5,6 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { useRef, useState, useEffect } from 'react'
-import AOS from 'aos'
 import { useSiteContent } from '@/lib/useSiteContent'
 import 'aos/dist/aos.css'
 

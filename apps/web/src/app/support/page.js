@@ -134,7 +134,7 @@ export default function SupportPage() {
                         <h2 className="font-godofwar text-2xl text-ink sm:text-3xl">Quick answers</h2>
                         <div className="relative mt-5">
                             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-dim" />
-                            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search questions…"
+                            <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search questions…" aria-label="Search help questions"
                                 className="w-full rounded-xl border border-line bg-night py-3 pl-10 pr-4 text-sm text-ink placeholder:text-dim focus:border-accent focus:outline-none" />
                         </div>
                         <div className="mt-4 space-y-3">

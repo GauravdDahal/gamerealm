@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -15,7 +15,7 @@ export default function GamesSection({ bare = false, all = false }) {
     const { user, loading: authLoading } = useAuth()
     const games = useGames()
     const c = useSiteContent('games')
-    const [showAll, setShowAll] = useState(false)
+    const showAll = false
     const [screenWidth, setScreenWidth] = useState(
         typeof window !== 'undefined' ? window.innerWidth : 0,
     );
@@ -38,13 +38,11 @@ export default function GamesSection({ bare = false, all = false }) {
         } else if (screenWidth >= 768) {
             return showAll ? games : games.slice(0, 8)
         } else {
-            return showAll ? games : games.slice(0, 3)
+            return showAll ? games : games.slice(0, 4)
         }
     }
 
     const displayedGames = getDisplayedGames()
-    const shouldShowButton =
-        !all && screenWidth < 1536 && games.length > (screenWidth >= 768 ? 8 : 3)
 
     return (
         <section id="games" className={`bg-gray-900 ${bare ? 'py-10 md:py-14' : 'py-16 md:py-24 lg:py-32'}`}>
@@ -81,12 +79,13 @@ export default function GamesSection({ bare = false, all = false }) {
                                 }
                             }}
                             className="group relative w-full max-w-[340px] cursor-pointer overflow-hidden rounded-lg gradient-border">
-                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-game-primary/20 via-game-secondary/20 to-game-accent/20 opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-game-primary/20 via-game-secondary/20 to-game-accent/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
                             <div className="w-full aspect-[4/5] relative">
                                 <Image
                                     src={game.image}
-                                    alt={game.title}
+                                    alt=""
                                     fill={true}
+                                    sizes="(min-width: 1280px) 340px, (min-width: 1024px) 33vw, 50vw"
                                     style={{ objectFit: 'cover' }}
                                     className="group-hover:scale-105 transition duration-500"
                                 />
@@ -94,9 +93,9 @@ export default function GamesSection({ bare = false, all = false }) {
                                     <div className="absolute top-2 right-1 z-30">
                                         <Image
                                             src="/assets/images/gameSectionImg/hotIcon.webp"
-                                            alt="Hot Icon"
-                                            width={164}
-                                            height={164}
+                                            alt="Hot"
+                                            width={64}
+                                            height={64}
                                             className="w-26 h-26 object-contain"
                                         />
                                     </div>
@@ -118,26 +117,13 @@ export default function GamesSection({ bare = false, all = false }) {
                     ))}
                 </div>
 
-                {!bare && (
-                    <div className="mt-6 text-center">
-                        <Link href="/games" className="text-sm font-semibold text-accent hover:text-accent2">
-                            View all games →
+                {!bare && games.length > displayedGames.length && (
+                    <div className="mt-8 flex justify-center">
+                        <Link
+                            href="/games"
+                            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-accent/60 px-5 text-sm font-bold text-accent transition-colors hover:bg-accent hover:text-accent-ink sm:text-base">
+                            See all {games.length} games <ChevronRight size={18} aria-hidden="true" />
                         </Link>
-                    </div>
-                )}
-
-                {shouldShowButton && (
-                    <div className="mt-8 text-center flex justify-center">
-                        <button
-                            onClick={() => setShowAll(!showAll)}
-                            className="text-white gradient-border bg-gray-900 px-4 sm:px-6 py-2 text-sm sm:text-base font-medium flex items-center gap-2">
-                            {showAll ? c.less_label : c.more_label}
-                            {showAll ? (
-                                <ChevronUp size={18} />
-                            ) : (
-                                <ChevronDown size={18} />
-                            )}
-                        </button>
                     </div>
                 )}
             </div>

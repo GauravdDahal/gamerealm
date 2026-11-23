@@ -5,6 +5,7 @@
 
 
 @font-face {
+  font-display: swap;
   font-family: 'FontMarquee';
   src: url('../../public/assets/fonts/CoffeetinInitials-YXJ2.ttf')
   format('truetype');
@@ -13,6 +14,7 @@
 }
 
 @font-face {
+  font-display: swap;
   font-family: 'GodOfWar';
   src: url('../../public/assets/fonts/GODOFWAR.TTF')
   format('truetype');
@@ -20,6 +22,7 @@
   font-style: normal;
 }
 @font-face {
+  font-display: swap;
   font-family: 'PlayFairlDisplay';
   src: url('../../public/assets/fonts/PlayfairDisplay-Regular.ttf')
   format('truetype');
@@ -28,6 +31,7 @@
 }
 
 @font-face {
+  font-display: swap;
   font-family: 'Glance';
   src: url('../../public/assets/fonts/GLANCE.ttf')
   format('truetype');
@@ -35,6 +39,7 @@
   font-style: normal;
 }
 @font-face {
+  font-display: swap;
   font-family: 'Aldo';
   src: url('../../public/assets/fonts/Aldo.ttf')
   format('truetype');
@@ -43,6 +48,7 @@
 }
 
 @font-face {
+  font-display: swap;
   font-family: 'Nowharehouse';
   src: url('../../public/assets/fonts/Nowharehouse.ttf')
   format('truetype');
