@@ -2,6 +2,7 @@
 import React from "react";
 import { Gift, Send } from "lucide-react";
 import { useSiteContent } from '@/lib/useSiteContent'
+import { safeUrl } from '@/lib/safeUrl'
 
 const fallbackLinks = ['/referral', '/bonuses']
 
@@ -51,7 +52,7 @@ export default function EventSection() {
                               </p>
 
                               <a
-                                  href={card.href || fallbackLinks[index] || '#home'}
+                                  href={safeUrl(card.href || fallbackLinks[index], '#home')}
                                   className={`inline-block bg-gradient-to-r ${st.btnGradient} text-white px-6 py-3 rounded-full font-medium transition hover:opacity-80 shadow-lg`}>
                                   {card.button}
                               </a>

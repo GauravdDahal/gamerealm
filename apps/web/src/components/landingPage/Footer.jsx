@@ -10,6 +10,7 @@ import {
 import Link from 'next/link'
 import { useSiteContent } from '@/lib/useSiteContent'
 import ContactLine from '@/components/common/ContactLine'
+import { safeUrl } from '@/lib/safeUrl'
 
 const socialIcons = {
     twitch: Twitch,
@@ -61,7 +62,7 @@ export default function Footer() {
                                 return (
                                     <a
                                         key={index}
-                                        href={s.url}
+                                        href={safeUrl(s.url)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={socialNames[s.platform]}
@@ -81,7 +82,7 @@ export default function Footer() {
                                     <li key={i}>
                                         {link.url ? (
                                             <Link
-                                                href={link.url}
+                                                href={safeUrl(link.url)}
                                                 className="text-gray-400 hover:text-accent transition-colors">
                                                 {link.label}
                                             </Link>

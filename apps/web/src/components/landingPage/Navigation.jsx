@@ -18,6 +18,7 @@ import Image from 'next/image'
 import UserAvatar from '@/components/common/UserAvatar'
 import { useSiteContent } from '@/lib/useSiteContent'
 import { useInstallApp } from '@/lib/installApp'
+import { safeUrl } from '@/lib/safeUrl'
 
 export default function Navigation({ isScrolled }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -74,7 +75,7 @@ export default function Navigation({ isScrolled }) {
                         {brand.nav.map((link, i) => (
                             <Link
                                 key={i}
-                                href={link.href}
+                                href={safeUrl(link.href, '/')}
                                 className={`text-[20px] font-aldo transition-transform hover:scale-125 duration-200 hover:text-accent ${active(link.href) ? 'text-accent' : 'text-ink'}`}>
                                 {link.label}
                             </Link>
@@ -208,7 +209,7 @@ export default function Navigation({ isScrolled }) {
                             {brand.nav.map((link, i) => (
                                 <Link
                                     key={i}
-                                    href={link.href}
+                                    href={safeUrl(link.href, '/')}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className={`hover:text-accent font-aldo ${active(link.href) ? 'text-accent' : 'text-ink'}`}>
                                     {link.label}

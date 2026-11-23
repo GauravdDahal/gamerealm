@@ -9,7 +9,22 @@ import { createAdminClient } from '@/lib/supabase/admin'
  * session first — the service role key itself bypasses every rule, so this
  * route is the thing standing in for RLS here.
  */
+/**
+ * Only accept JSON from this site's own pages. Browsers cannot send a
+ * cross-site application/json request without a CORS preflight, and the
+ * Origin check rejects anything posted from another site (CSRF).
+ */
+const badRequestSource = request => {
+    if (!(request.headers.get('content-type') || '').includes('application/json')) return 'Expected JSON.'
+    const origin = request.headers.get('origin')
+    if (origin && origin !== new URL(request.url).origin) return 'Cross-site request blocked.'
+    return null
+}
+
 export async function POST(request) {
+    const blocked = badRequestSource(request)
+    if (blocked) return NextResponse.json({ error: blocked }, { status: 403 })
+
     const { name, email, role_name } = await request.json()
 
     if (!name?.trim() || !email?.trim() || !role_name?.trim()) {
@@ -21,16 +36,20 @@ export async function POST(request) {
 
     // 1. Who is calling, and are they allowed to create admin users?
     const supabase = await createClient()
+    // getUser() verifies the token with Supabase; getSession() only reads the cookie.
     const {
-        data: { session },
-    } = await supabase.auth.getSession()
+        data: { user },
+    } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
         return NextResponse.json({ error: 'Not signed in.' }, { status: 401 })
     }
 
-    const { data: access } = await supabase.rpc('my_access')
-    if (!access?.is_staff) {
+    const [{ data: canCreate }, { data: canAssign }] = await Promise.all([
+        supabase.rpc('has_permission', { p: 'admin_user-create' }),
+        supabase.rpc('has_permission', { p: 'role-assign' }),
+    ])
+    if (!canCreate || !canAssign) {
         return NextResponse.json(
             { error: 'You do not have permission to do that.' },
             { status: 403 },
@@ -78,10 +97,10 @@ export async function POST(request) {
     })
 
     if (roleError) {
-        // Account exists but role assignment failed — surface it rather than
-        // leaving a silently roleless admin account.
+        // Never leave a half-made staff account behind.
+        await admin.auth.admin.deleteUser(created.user.id).catch(() => {})
         return NextResponse.json(
-            { error: `Account created, but the role could not be assigned: ${roleError.message}` },
+            { error: `The role could not be assigned, so the account was not created: ${roleError.message}` },
             { status: 422 },
         )
     }
@@ -101,6 +120,9 @@ export async function POST(request) {
  * everywhere or purge it from auth.
  */
 export async function DELETE(request) {
+    const blocked = badRequestSource(request)
+    if (blocked) return NextResponse.json({ error: blocked }, { status: 403 })
+
     const { id } = await request.json()
     if (!id) {
         return NextResponse.json({ error: 'Missing user id.' }, { status: 422 })
@@ -108,9 +130,9 @@ export async function DELETE(request) {
 
     const supabase = await createClient()
     const {
-        data: { session },
-    } = await supabase.auth.getSession()
-    if (!session) {
+        data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
         return NextResponse.json({ error: 'Not signed in.' }, { status: 401 })
     }
 

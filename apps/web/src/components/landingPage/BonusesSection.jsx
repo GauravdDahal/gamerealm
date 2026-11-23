@@ -4,6 +4,7 @@ import { ArrowRight, Gift } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 import { useSiteContent } from '@/lib/useSiteContent'
+import { safeUrl } from '@/lib/safeUrl'
 
 /**
  * Bonus cards. Everything written here is edited in Admin → Site content.
@@ -46,7 +47,7 @@ export default function BonusesSection({ bare = false }) {
                     </div>
                     {c.link_url && (
                         <a
-                            href={c.link_url}
+                            href={safeUrl(c.link_url)}
                             className="inline-flex items-center gap-1 text-sm font-semibold text-orange-400 hover:text-orange-300">
                             {c.link_label} <ArrowRight className="h-4 w-4" />
                         </a>
