@@ -8,7 +8,7 @@ export const DEFAULT_THEME = 'casino'
 // tint = [hue, saturation%] used to build the gray/secondary/accent/hot scales
 export const THEMES = [
   {
-    id: 'casino', label: 'Casino Night', emoji: '🎰',
+    id: 'casino', label: 'Casino Night',
     blurb: 'The everyday look: deep violet with warm orange.',
     tokens: {
       night: '#100627', surface: '#1b0f3d', surface2: '#2a1650', line: '#43307a',
@@ -20,7 +20,7 @@ export const THEMES = [
     scales: { gray: [265, 22], purple: [262, 80], pink: [330, 85], orange: [30, 100] },
   },
   {
-    id: 'halloween', label: 'Halloween', emoji: '🎃',
+    id: 'halloween', label: 'Halloween',
     blurb: 'Pumpkin orange on near-black, with witchy purple and slime green.',
     tokens: {
       night: '#0d0905', surface: '#1a110a', surface2: '#2a1a0d', line: '#4d2f14',
@@ -44,7 +44,7 @@ export const THEMES = [
     },
   },
   {
-    id: 'christmas', label: 'Christmas', emoji: '🎄',
+    id: 'christmas', label: 'Christmas',
     blurb: 'Pine green, candy red and festive gold.',
     tokens: {
       night: '#0c3321', surface: '#4a1020', surface2: '#1b6b41', line: '#35a96b',
@@ -70,7 +70,7 @@ export const THEMES = [
         ],
         about: [
           { kind: 'swag', img: '/assets/decor/christmas/garland-tile.webp', top: '0', height: 86 },
-          { img: '/assets/decor/christmas/snowman.webp', right: '3%', bottom: '-24px', size: 100, anim: 'bob', dur: 7 },
+          { img: '/assets/decor/christmas/snowman.webp', right: '3%', bottom: '-76px', size: 80, anim: 'bob', dur: 7 },
         ],
         bonuses: [
           { img: '/assets/decor/christmas/sack.webp', left: '2%', bottom: '-34px', size: 130 },
@@ -93,7 +93,7 @@ export const THEMES = [
     },
   },
   {
-    id: 'newyear', label: 'New Year', emoji: '🎆',
+    id: 'newyear', label: 'New Year',
     blurb: 'Midnight blue with champagne gold and silver sparkle.',
     tokens: {
       night: '#080a18', surface: '#11142b', surface2: '#1b2040', line: '#33396a',
@@ -114,7 +114,7 @@ export const THEMES = [
     },
   },
   {
-    id: 'independence', label: 'Independence Day', emoji: '🎇',
+    id: 'independence', label: 'Independence Day',
     blurb: 'Navy blue, firework red and white.',
     tokens: {
       night: '#050a1f', surface: '#0c1738', surface2: '#142459', line: '#2b3d82',
@@ -135,7 +135,7 @@ export const THEMES = [
     },
   },
   {
-    id: 'thanksgiving', label: 'Thanksgiving', emoji: '🦃',
+    id: 'thanksgiving', label: 'Thanksgiving',
     blurb: 'Harvest brown, pumpkin, burgundy and mustard.',
     tokens: {
       night: '#120a05', surface: '#201208', surface2: '#31200f', line: '#5b3b1d',

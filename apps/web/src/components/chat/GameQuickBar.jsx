@@ -28,12 +28,12 @@ export default function GameQuickBar({ games, onPick, openKey }) {
 
     if (phase === 'tray') {
         return (
-            <div className="mb-2 overflow-hidden rounded-2xl border border-accent/30 bg-surface/80">
+            <div className="mb-2 overflow-hidden rounded-xl border border-line bg-surface">
                 <div className="flex items-center justify-between px-3 py-2">
-                    <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent">
-                        <Gamepad2 className="h-4 w-4" /> Pick a game
+                    <p className="flex items-center gap-2 text-sm font-bold text-ink">
+                        <Gamepad2 className="h-4 w-4 text-accent" /> Pick a game
                     </p>
-                    <button onClick={() => setPhase('button')} aria-label="Close game list" className="rounded-full p-1 text-muted hover:text-ink">
+                    <button onClick={() => setPhase('button')} aria-label="Close game list" className="rounded-lg p-2 text-muted hover:bg-surface2 hover:text-ink">
                         <X className="h-4 w-4" />
                     </button>
                 </div>
@@ -46,10 +46,10 @@ export default function GameQuickBar({ games, onPick, openKey }) {
                                     setPhase('button')
                                 }}
                                 className="group w-full text-left">
-                                <span className="relative block aspect-[4/5] overflow-hidden rounded-lg border border-line/60 transition group-hover:border-accent">
-                                    <Image src={g.image} alt="" fill sizes="110px" className="object-cover transition group-hover:scale-105" />
+                                <span className="relative block aspect-[4/5] overflow-hidden rounded-lg border border-line transition-colors group-hover:border-accent">
+                                    <Image src={g.image} alt="" fill sizes="110px" className="object-cover" />
                                 </span>
-                                <span className="mt-1 block truncate text-[11px] text-ink">{g.title}</span>
+                                <span className="mt-1 block truncate text-xs text-ink">{g.title}</span>
                             </button>
                         </li>
                     ))}
@@ -62,15 +62,15 @@ export default function GameQuickBar({ games, onPick, openKey }) {
         return (
             <button
                 onClick={() => setPhase('tray')}
-                className="mb-2 flex w-full animate-fade-scale-up items-center gap-3 rounded-2xl border border-accent/40 bg-accent/10 px-3 py-2.5 text-left transition hover:bg-accent/15">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-ink">
-                    <Gamepad2 className="h-5 w-5" />
+                className="mb-2 flex w-full animate-fade-scale-up items-center gap-3 rounded-xl border border-line bg-surface px-3 py-2 text-left transition-colors hover:border-accent/60">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-ink">
+                    <Gamepad2 className="h-[18px] w-[18px]" />
                 </span>
                 <span className="min-w-0 flex-1">
                     <span className="block text-sm font-bold text-ink">Want to play?</span>
                     <span className="block text-xs text-muted">Pick a game and we’ll get you started.</span>
                 </span>
-                <ChevronRight className="h-5 w-5 shrink-0 text-accent" />
+                <ChevronRight className="h-[18px] w-[18px] shrink-0 text-muted" />
             </button>
         )
     }
@@ -81,8 +81,8 @@ export default function GameQuickBar({ games, onPick, openKey }) {
                 onClick={() => setPhase('tray')}
                 aria-label="Choose a game to play"
                 title="Choose a game"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-accent/50 bg-accent/10 text-accent transition hover:scale-105 hover:bg-accent/20">
-                <Gamepad2 className="h-5 w-5" />
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-surface text-accent transition-colors hover:border-accent/60">
+                <Gamepad2 className="h-[18px] w-[18px]" />
             </button>
         </div>
     )

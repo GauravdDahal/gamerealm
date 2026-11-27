@@ -16,8 +16,8 @@ export default function ReferralPage() {
             <Steps
                 title="How it works"
                 items={[
-                    { title: 'Share your link', text: 'Approved players get a personal link and code to send to friends.' },
-                    { title: 'Friends join', text: 'A friend counts once our team approves their new account.' },
+                    { title: 'Share your link', text: 'Every player gets a personal link and code to send to friends.' },
+                    { title: 'Friends join', text: 'A friend counts once their new account is active.' },
                     { title: 'Level up', text: 'Every level you reach unlocks a one-time reward, credited by our team.' },
                 ]}
             />

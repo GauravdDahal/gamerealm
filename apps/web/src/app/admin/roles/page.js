@@ -172,7 +172,7 @@ const Roles = () => {
                     </p>
                 </div>
                 <Button variant="primary" onClick={openCreate}>
-                    <Plus size={15} />
+                    <Plus size={16} />
                     New role
                 </Button>
             </div>
@@ -207,20 +207,20 @@ const Roles = () => {
                                     <button
                                         onClick={() => openEdit(role)}
                                         aria-label={`Edit ${role.name}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
-                                        <Pencil size={15} />
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                        <Pencil size={16} />
                                     </button>
                                     <button
                                         onClick={() => setConfirming(role)}
                                         aria-label={`Delete ${role.name}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
-                                        <Trash2 size={15} />
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                        <Trash2 size={16} />
                                     </button>
                                 </span>
                             }>
                             <div className="px-4 py-4">
                                 {role.permissions?.length ? (
-                                    <div className="flex flex-wrap gap-1.5">
+                                    <div className="flex flex-wrap gap-2">
                                         {role.permissions.map(p => (
                                             <Badge key={p.id}>{prettyPermission(p.name)}</Badge>
                                         ))}
@@ -271,7 +271,7 @@ const Roles = () => {
                     )}
 
                     {formError && (
-                        <p className="rounded border border-[#C25B45]/40 bg-[#2A1512] px-3 py-2 text-xs text-[#EFE9DA]">
+                        <p className="rounded-lg border border-[#C25B45]/40 bg-[#2A1512] px-3 py-2 text-xs text-[#EFE9DA]">
                             {formError}
                         </p>
                     )}
@@ -282,7 +282,7 @@ const Roles = () => {
                             return (
                                 <div
                                     key={resource}
-                                    className="rounded border border-[#1E322C] p-3">
+                                    className="rounded-lg border border-[#1E322C] p-3">
                                     <div className="mb-2 flex items-center justify-between">
                                         <span className="text-sm text-[#EFE9DA]">
                                             {prettyResource(resource)}
@@ -303,7 +303,7 @@ const Roles = () => {
                                                     type="checkbox"
                                                     checked={checked.includes(p.name)}
                                                     onChange={() => toggle(p.name)}
-                                                    className="h-3.5 w-3.5 accent-[#D4AF57]"
+                                                    className="h-4 w-4 accent-[#D4AF57]"
                                                 />
                                                 {p.action}
                                             </label>

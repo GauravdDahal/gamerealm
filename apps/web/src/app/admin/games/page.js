@@ -39,7 +39,7 @@ const ImagePicker = ({ label, hint, current, file, onFile, optional, onClear }) 
     return (
         <Field label={label} hint={hint}>
             <div className="flex items-center gap-3">
-                <div className="flex h-20 w-28 shrink-0 items-center justify-center overflow-hidden rounded border border-[#1E322C] bg-[#0C1714]">
+                <div className="flex h-20 w-28 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#1E322C] bg-[#0C1714]">
                     {shown ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src={shown} alt="" className="h-full w-full object-cover" />
@@ -53,7 +53,7 @@ const ImagePicker = ({ label, hint, current, file, onFile, optional, onClear }) 
                         type="file"
                         accept="image/*"
                         onChange={e => onFile(e.target.files?.[0] ?? null)}
-                        className="block w-full text-sm text-[#7E938B] file:mr-3 file:rounded file:border-0 file:bg-[#1E322C] file:px-3 file:py-1.5 file:text-[#EFE9DA]"
+                        className="block w-full text-sm text-[#7E938B] file:mr-3 file:rounded-lg file:border-0 file:bg-[#1E322C] file:px-3 file:py-2 file:text-[#EFE9DA]"
                     />
                     {optional && (current || file) && (
                         <button
@@ -202,7 +202,7 @@ const Games = () => {
                 title={`${games.length} game${games.length === 1 ? '' : 's'}`}
                 action={
                     <Button variant="primary" onClick={() => openForm(null)}>
-                        <Plus size={14} className="mr-1 inline" />
+                        <Plus size={16} className="mr-1 inline" />
                         New game
                     </Button>
                 }>
@@ -220,7 +220,7 @@ const Games = () => {
                         {games.map((g, i) => (
                             <li key={g.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={g.logo_url || g.image_url} alt="" className="h-14 w-20 shrink-0 rounded object-cover" />
+                                <img src={g.logo_url || g.image_url} alt="" className="h-14 w-20 shrink-0 rounded-lg object-cover" />
                                 <div className="min-w-0 flex-1 basis-40">
                                     <p className="truncate text-sm text-[#EFE9DA]">{g.title}</p>
                                     <p className="text-xs text-[#7E938B]">{g.players ? `${g.players} players` : 'No player count'}</p>
@@ -234,40 +234,40 @@ const Games = () => {
                                         onClick={() => patch(g, { is_hot: !g.is_hot })}
                                         aria-label={g.is_hot ? `Remove hot flag from ${g.title}` : `Mark ${g.title} as hot`}
                                         title={g.is_hot ? 'Hot (click to remove)' : 'Mark as hot'}
-                                        className={`rounded p-1.5 hover:bg-[#1E322C] ${g.is_hot ? 'text-[#D4AF57]' : 'text-[#7E938B] hover:text-[#EFE9DA]'}`}>
+                                        className={`rounded-lg p-2 hover:bg-[#1E322C] ${g.is_hot ? 'text-[#D4AF57]' : 'text-[#7E938B] hover:text-[#EFE9DA]'}`}>
                                         <Flame size={16} />
                                     </button>
                                     <button
                                         onClick={() => patch(g, { is_active: !g.is_active })}
                                         aria-label={g.is_active ? `Hide ${g.title}` : `Show ${g.title}`}
                                         title={g.is_active ? 'Visible (click to hide)' : 'Hidden (click to show)'}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         {g.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
                                     </button>
                                     <button
                                         onClick={() => move(i, -1)}
                                         disabled={i === 0}
                                         aria-label="Move up"
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
                                         <ArrowUp size={16} />
                                     </button>
                                     <button
                                         onClick={() => move(i, 1)}
                                         disabled={i === games.length - 1}
                                         aria-label="Move down"
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
                                         <ArrowDown size={16} />
                                     </button>
                                     <button
                                         onClick={() => openForm(g)}
                                         aria-label={`Edit ${g.title}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         <Pencil size={16} />
                                     </button>
                                     <button
                                         onClick={() => setConfirming(g)}
                                         aria-label={`Delete ${g.title}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
                                         <Trash2 size={16} />
                                     </button>
                                 </div>

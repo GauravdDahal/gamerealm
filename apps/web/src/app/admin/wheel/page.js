@@ -148,7 +148,7 @@ const Wheel = () => {
             <WheelSettings supabase={supabase} slices={activeCount} />
 
             {(activeCount < 2 && !loading && !error) && (
-                <p className="rounded border border-[#C25B45]/40 bg-[#C25B45]/10 px-4 py-3 text-sm text-[#e8a090]">
+                <p className="rounded-xl border border-[#C25B45]/40 bg-[#C25B45]/10 px-4 py-3 text-sm text-[#e8a090]">
                     The homepage needs at least 2 active prizes with a chance above 0 to show the wheel properly.
                 </p>
             )}
@@ -158,7 +158,7 @@ const Wheel = () => {
                 title={`Prizes (${prizes.length})`}
                 action={
                     <Button variant="primary" onClick={() => setForm(blank)}>
-                        <Plus size={14} className="mr-1 inline" />
+                        <Plus size={16} className="mr-1 inline" />
                         New prize
                     </Button>
                 }>
@@ -184,19 +184,19 @@ const Wheel = () => {
                                     <button
                                         onClick={() => patch(p, { is_active: !p.is_active })}
                                         aria-label={p.is_active ? `Hide ${p.label}` : `Show ${p.label}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         {p.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
                                     </button>
-                                    <button onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up" className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
+                                    <button onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up" className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
                                         <ArrowUp size={16} />
                                     </button>
-                                    <button onClick={() => move(i, 1)} disabled={i === prizes.length - 1} aria-label="Move down" className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
+                                    <button onClick={() => move(i, 1)} disabled={i === prizes.length - 1} aria-label="Move down" className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
                                         <ArrowDown size={16} />
                                     </button>
-                                    <button onClick={() => setForm(p)} aria-label={`Edit ${p.label}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                    <button onClick={() => setForm(p)} aria-label={`Edit ${p.label}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         <Pencil size={16} />
                                     </button>
-                                    <button onClick={() => setConfirming(p)} aria-label={`Delete ${p.label}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                    <button onClick={() => setConfirming(p)} aria-label={`Delete ${p.label}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
                                         <Trash2 size={16} />
                                     </button>
                                 </div>
@@ -211,8 +211,8 @@ const Wheel = () => {
                 title={onlyPending ? `Wins to credit (${pendingCount})` : `Spin results (${spins.length})`}
                 action={
                     <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
-                    <input value={spinSearch} onChange={e => setSpinSearch(e.target.value)} placeholder="Search by name, email, prize…"
-                        className="w-full rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1.5 text-xs sm:w-52 text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
+                    <input value={spinSearch} onChange={e => setSpinSearch(e.target.value)} placeholder="Search" aria-label="Search by name, email or prize"
+                        className="w-full rounded-lg border border-[#1E322C] bg-[#0C1714] px-2 py-2 text-xs sm:w-52 text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
                     <label className="flex items-center gap-2 text-xs text-[#7E938B]">
                         <input type="checkbox" checked={onlyPending} onChange={e => setOnlyPending(e.target.checked)} className="accent-[#D4AF57]" />
                         Only prizes still to credit
@@ -236,13 +236,13 @@ const Wheel = () => {
                                 {s.status === 'credited' ? (
                                     <>
                                         <Badge tone="brass">Credited</Badge>
-                                        <button onClick={() => credit(s, false)} aria-label="Undo credited" title="Mark as not credited" className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
-                                            <RotateCcw size={15} />
+                                        <button onClick={() => credit(s, false)} aria-label="Undo credited" title="Mark as not credited" className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                            <RotateCcw size={16} />
                                         </button>
                                     </>
                                 ) : (
                                     <Button onClick={() => credit(s, true)}>
-                                        <Check size={14} className="mr-1 inline" />
+                                        <Check size={16} className="mr-1 inline" />
                                         Mark credited
                                     </Button>
                                 )}
@@ -262,7 +262,7 @@ const Wheel = () => {
                             <div className="grid grid-cols-2 gap-3">
                                 <Field label="Kind">
                                     <select value={form.kind ?? ''} onChange={e => setForm(f => ({ ...f, kind: e.target.value }))}
-                                        className="w-full rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA]">
+                                        className="w-full rounded-lg border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA]">
                                         <option value="">—</option>
                                         <option value="freeplay">Freeplay ($)</option>
                                         <option value="bonus">Bonus (%)</option>
@@ -279,7 +279,7 @@ const Wheel = () => {
                             <Input type="number" min="0" value={form.weight} onChange={e => setForm(f => ({ ...f, weight: e.target.value }))} />
                         </Field>
                         <div>
-                            <span className="mb-1.5 block text-sm text-[#EFE9DA]">Colour</span>
+                            <span className="mb-2 block text-sm text-[#EFE9DA]">Colour</span>
                             <div className="flex flex-wrap items-center gap-2">
                                 {PALETTE.map(c => (
                                     <button
@@ -291,7 +291,7 @@ const Wheel = () => {
                                         className={`h-8 w-8 rounded-full border-2 ${form.color === c ? 'border-white' : 'border-transparent'}`}
                                     />
                                 ))}
-                                <input type="color" value={form.color} onChange={e => setForm(f => ({ ...f, color: e.target.value }))} className="h-8 w-10 cursor-pointer rounded border border-[#1E322C] bg-transparent" aria-label="Custom colour" />
+                                <input type="color" value={form.color} onChange={e => setForm(f => ({ ...f, color: e.target.value }))} className="h-8 w-10 cursor-pointer rounded-lg border border-[#1E322C] bg-transparent" aria-label="Custom colour" />
                             </div>
                         </div>
                         <label className="flex items-center gap-2 text-sm text-[#EFE9DA]">

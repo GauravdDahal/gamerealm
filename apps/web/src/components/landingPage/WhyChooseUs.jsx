@@ -1,87 +1,36 @@
 "use client";
-import { useState, useEffect } from "react";
-
-import LazyLottie from '@/components/common/LazyLottie';
+import { Gamepad2, Gift, MessageCircle, Users } from 'lucide-react';
 import { useSiteContent } from '@/lib/useSiteContent'
 
-const animations = ['/Lottie/secure.json', '/Lottie/premium.json', '/Lottie/winner.json', '/Lottie/reward.json'];
+// One line icon per feature, in the same order as the default features.
+const icons = [MessageCircle, Gamepad2, Gift, Users];
 
 export default function WhyChooseUs() {
   const c = useSiteContent('why');
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-
-  }, []);
 
   return (
-      <section className="bg-surface h-auto text-white p-1 sm:p-4 md:p-3  lg:p-30 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10 pointer-events-none">
-              <div className="absolute top-1/4 left-1/4 text-6xl sm:text-5xl">
-                  ♠
+      <section className="section relative overflow-hidden bg-surface">
+          <div className="wrap grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+              <div data-aos="fade">
+                  <h2 className="section-title">{c.title}</h2>
+                  <p className="section-intro">{c.intro}</p>
+                  <p className="mt-4 max-w-xl text-muted">{c.body}</p>
               </div>
-              <div className="absolute top-1/2 right-1/4 text-6xl sm:text-5xl">
-                  ♥
-              </div>
-              <div className="absolute bottom-1/4 left-1/3 text-6xl sm:text-5xl">
-                  ♦
-              </div>
-              <div className="absolute top-1/3 right-1/3 text-6xl sm:text-5xl">
-                  ♣
-              </div>
-          </div>
 
-          <div className="container mx-auto px-4">
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
-                  <div className="w-full space-y-6">
-                      <h2
-                          data-aos="fade-down"
-                          className="text-5xl sm:text-4xl font-glance leading-tight sm:pt-3">
-                          {c.title}
-                      </h2>
-                      <p
-                          data-aos="fade-down"
-                          data-aos-delay="25"
-                          className="text-lg text-gray-300 max-w-xl">
-                          {c.intro}
-                      </p>
-                      <p
-                          data-aos="fade-down"
-                          data-aos-delay="50"
-                          className="text-gray-400">
-                          {c.body}
-                      </p>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-10">
-                      {isClient &&
-                          c.features.map(
-                              (
-                                  { title, description },
-                                  index,
-                              ) => {
-                                  return (
-                                      <div
-                                          key={index}
-                                          className="space-y-4 last:mb-8"
-                                          data-aos="fade-left"
-                                          data-aos-delay={Math.min(index, 6) * 50}>
-                                          <div className="w-20 h-20 flex  items-center justify-center">
-                                              <LazyLottie src={animations[index % animations.length]} className="w-20 h-20" />
-                                          </div>
-                                          <h3 className="text-xl font-glance">
-                                              {title}
-                                          </h3>
-                                          <p className="text-gray-400">
-                                              {description}
-                                          </p>
-                                      </div>
-                                  )
-                              },
-                          )}
-                  </div>
-              </div>
+              <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
+                  {c.features.map(({ title, description }, index) => {
+                      const Icon = icons[index % icons.length];
+                      return (
+                          <li key={index} data-aos="fade" className="border-t border-line pt-6">
+                              <h3 className="flex items-center gap-2 text-lg font-bold text-ink">
+                                  <Icon className="h-[18px] w-[18px] text-accent" aria-hidden="true" />
+                                  {title}
+                              </h3>
+                              <p className="mt-2 text-muted">{description}</p>
+                          </li>
+                      )
+                  })}
+              </ul>
           </div>
       </section>
   )

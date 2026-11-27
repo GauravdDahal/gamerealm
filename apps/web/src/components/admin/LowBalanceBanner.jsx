@@ -36,8 +36,8 @@ export default function LowBalanceBanner() {
             <span className="min-w-0 flex-1">
                 <b>Low game balance (under {fmt(low.limit)}):</b> {low.list.map(g => `${g.game_title} ${fmt(g.store_balance)}`).join(', ')}
             </span>
-            <Link href="/admin/providers" className="shrink-0 rounded border border-red-400/50 px-3 py-1.5 text-xs font-bold uppercase hover:bg-red-500/20">View</Link>
-            <button onClick={() => setHidden(true)} aria-label="Dismiss" className="shrink-0 rounded p-2 hover:bg-red-500/20"><X size={14} /></button>
+            <Link href="/admin/providers" className="shrink-0 rounded-lg border border-red-400/50 px-3 py-2 text-xs font-bold hover:bg-red-500/20">View</Link>
+            <button onClick={() => setHidden(true)} aria-label="Dismiss" className="shrink-0 rounded-lg p-2 hover:bg-red-500/20"><X size={16} /></button>
         </div>
     )
 }

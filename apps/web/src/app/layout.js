@@ -10,6 +10,7 @@ import ProfileGate from '@/components/ProfileGate'
 const nunitoFont = Nunito({
     subsets: ['latin'],
     display: 'swap',
+    variable: '--font-ui',
 })
 
 const SITE = 'Thunder Sweeps'
@@ -44,7 +45,7 @@ const themeBoot = `try{var t=localStorage.getItem('site-theme');var ok=${JSON.st
 
 const RootLayout = ({ children }) => {
     return (
-        <html lang="en" className={nunitoFont.className} data-theme={DEFAULT_THEME} suppressHydrationWarning>
+        <html lang="en" className={`${nunitoFont.variable} ${nunitoFont.className}`} data-theme={DEFAULT_THEME} suppressHydrationWarning>
             <head>
                 <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
             </head>

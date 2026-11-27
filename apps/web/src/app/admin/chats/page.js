@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, Search, UserPlus, CheckCheck, Check, MessagesSquare, Pin, PinOff } from 'lucide-react'
+import { Send, Paperclip, Mic, Trash2, Loader2, Zap, X, Settings2, Search, UserPlus, CheckCheck, Check, MessagesSquare, Pin, PinOff, ChevronLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { errorMessage } from '@/lib/adminApi'
 import {
@@ -333,9 +333,9 @@ const Inbox = () => {
     const pinLabel = m => m.message?.trim() || (m.title ? m.title : 'Attachment')
 
     const stamp = m => (
-        <p className={`mt-1 flex items-center gap-1 px-1 text-[11px] text-[#7E938B] ${m.sender_id === staffId ? 'justify-end' : ''}`}>
+        <p className={`mt-1 flex items-center gap-1 px-1 text-xs text-[#7E938B] ${m.sender_id === staffId ? 'justify-end' : ''}`}>
             {formatStamp(m.created_at)}
-            {m.sender_id === staffId && (m.is_read ? <CheckCheck size={14} className="text-[#D4AF57]" /> : <Check size={14} />)}
+            {m.sender_id === staffId && (m.is_read ? <CheckCheck size={16} className="text-[#D4AF57]" /> : <Check size={16} />)}
         </p>
     )
 
@@ -357,8 +357,8 @@ const Inbox = () => {
                             <h1 className="min-w-0 flex-1 truncate text-2xl text-[#D4AF57]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                                 Messages
                             </h1>
-                            <span className={`flex items-center gap-1.5 text-xs ${live ? 'text-emerald-400' : live === false ? 'text-[#C25B45]' : 'text-[#7E938B]'}`}>
-                                <span className={`h-2 w-2 rounded-full ${live ? 'bg-emerald-400 shadow-[0_0_6px_#34d399]' : live === false ? 'bg-[#C25B45]' : 'bg-[#7E938B]'}`} />
+                            <span className={`flex items-center gap-2 text-xs ${live ? 'text-emerald-400' : live === false ? 'text-[#C25B45]' : 'text-[#7E938B]'}`}>
+                                <span className={`h-2 w-2 rounded-full ${live ? 'bg-emerald-400' : live === false ? 'bg-[#C25B45]' : 'bg-[#7E938B]'}`} />
                                 {live ? 'Live' : live === false ? 'Offline' : '…'}
                             </span>
                             <ChatTools
@@ -373,9 +373,9 @@ const Inbox = () => {
                         </header>
                         <div className="px-4 pb-3">
                             <div className="relative">
-                                <Search size={16} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7E938B]" />
-                                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search users…"
-                                    className="w-full rounded-xl border border-[#1E322C] bg-[#0C1714] py-2.5 pl-10 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
+                                <Search size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#7E938B]" />
+                                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search" aria-label="Search users"
+                                    className="w-full rounded-xl border border-[#1E322C] bg-[#0C1714] py-3 pl-10 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
                             </div>
                         </div>
                         <ul className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t border-[#1E322C]">
@@ -391,7 +391,7 @@ const Inbox = () => {
                                     <li key={c.id} className="border-b border-[#1E322C]/70">
                                         <button
                                             onClick={() => openChat(c)}
-                                            className={`flex w-full items-start gap-3 border-l-2 px-4 py-3.5 text-left transition-colors ${
+                                            className={`flex w-full items-start gap-3 border-l-2 px-4 py-4 text-left transition-colors ${
                                                 active ? 'border-[#D4AF57] bg-[#D4AF57]/10' : 'border-transparent hover:bg-[#0C1714]/60'
                                             }`}>
                                             <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-base font-semibold ${
@@ -402,19 +402,19 @@ const Inbox = () => {
                                             <span className="min-w-0 flex-1">
                                                 <span className="flex items-baseline justify-between gap-2">
                                                     <span className="truncate font-semibold text-[#EFE9DA]">{c.client_name}</span>
-                                                    <span className="shrink-0 text-[11px] text-[#7E938B]">{timeAgo(c.last_message_at)}</span>
+                                                    <span className="shrink-0 text-xs text-[#7E938B]">{timeAgo(c.last_message_at)}</span>
                                                 </span>
                                                 {c.referrer_name && (
-                                                    <span className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-[#D4AF57]">
-                                                        <UserPlus size={11} /> Ref: {c.referrer_name}
+                                                    <span className="mt-1 flex items-center gap-1 text-xs font-medium text-[#D4AF57]">
+                                                        <UserPlus size={16} /> Ref: {c.referrer_name}
                                                     </span>
                                                 )}
-                                                <span className="mt-0.5 flex items-center gap-2">
+                                                <span className="mt-1 flex items-center gap-2">
                                                     <span className={`min-w-0 flex-1 truncate text-sm ${c.unread_count > 0 ? 'text-[#EFE9DA]' : 'text-[#7E938B]'}`}>
                                                         {c.last_message ?? c.client_email}
                                                     </span>
                                                     {c.unread_count > 0 && (
-                                                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D4AF57] px-1.5 text-[11px] font-bold text-[#0C1714]">
+                                                        <span className="flex h-5 min-w-5 items-center justify-center rounded-md bg-[#D4AF57] px-2 text-xs font-bold text-[#0C1714]">
                                                             {c.unread_count > 99 ? '99+' : c.unread_count}
                                                         </span>
                                                     )}
@@ -437,18 +437,18 @@ const Inbox = () => {
                         {activeChat ? (
                             <>
                                 <div className="flex items-center border-b border-[#1E322C] lg:hidden">
-                                    <button onClick={() => setActiveId(null)} className="px-4 py-2 text-sm text-[#D4AF57]">← All messages</button>
+                                    <button onClick={() => setActiveId(null)} className="flex items-center gap-2 px-4 py-2 text-sm text-[#D4AF57]"><ChevronLeft size={16} aria-hidden="true" /> All messages</button>
                                 </div>
                                 <PlayerMoney key={activeChat.client_id} supabase={supabase} chat={activeChat} variant="header" onQr={() => setQrOpen(true)} />
                                 {pinned.length > 0 && (
                                     <div className="border-b border-[#1E322C] bg-[#132320] px-4 py-2">
                                         <div className="flex w-full items-center gap-2 text-sm text-[#EFE9DA]">
                                             <button onClick={() => jumpTo(pinned[0].id)} className="flex min-w-0 flex-1 items-center gap-2 py-1 text-left">
-                                                <Pin size={14} className="shrink-0 text-[#D4AF57]" />
+                                                <Pin size={16} className="shrink-0 text-[#D4AF57]" />
                                                 <span className="min-w-0 flex-1 truncate">{pinLabel(pinned[0])}</span>
                                             </button>
                                             {pinned.length > 1 && (
-                                                <button onClick={() => setPinOpen(v => !v)} className="shrink-0 rounded px-2 py-1 text-xs text-[#D4AF57] hover:bg-[#0C1714]">
+                                                <button onClick={() => setPinOpen(v => !v)} className="shrink-0 rounded-lg px-2 py-1 text-xs text-[#D4AF57] hover:bg-[#0C1714]">
                                                     {pinned.length} pinned {pinOpen ? '▴' : '▾'}
                                                 </button>
                                             )}
@@ -457,7 +457,7 @@ const Inbox = () => {
                                             <ul className="mt-2 space-y-1">
                                                 {pinned.map(m => (
                                                     <li key={m.id}>
-                                                        <button onClick={() => jumpTo(m.id)} className="w-full truncate rounded bg-[#0C1714] px-2 py-1 text-left text-xs text-[#EFE9DA]">
+                                                        <button onClick={() => jumpTo(m.id)} className="w-full truncate rounded-lg bg-[#0C1714] px-2 py-1 text-left text-xs text-[#EFE9DA]">
                                                             {pinLabel(m)}
                                                         </button>
                                                     </li>
@@ -479,16 +479,16 @@ const Inbox = () => {
                                                 ) : hl ? (
                                                     <div
                                                         style={{ background: hl.tint, borderColor: hl.bar, boxShadow: `0 0 18px ${hl.tint}` }}
-                                                        className="max-w-[78%] space-y-1.5 rounded-2xl border px-4 py-3 text-[15px] font-semibold text-[#EFE9DA]">
-                                                        <p style={{ color: hl.bar }} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wide">
-                                                            <HlIcon size={14} />
+                                                        className="max-w-[78%] space-y-2 rounded-2xl border px-4 py-3 text-base font-semibold text-[#EFE9DA]">
+                                                        <p style={{ color: hl.bar }} className="flex items-center gap-2 text-xs font-bold">
+                                                            <HlIcon size={16} />
                                                             {m.title || hl.label}
                                                         </p>
                                                         {hasText && <p className="whitespace-pre-wrap break-words">{m.message}</p>}
                                                     </div>
                                                 ) : (
                                                     <div
-                                                        className={`max-w-[78%] space-y-2 rounded-2xl px-4 py-2.5 text-[15px] ${
+                                                        className={`max-w-[78%] space-y-2 rounded-2xl px-4 py-3 text-base ${
                                                             mine ? 'rounded-br-md bg-[#D4AF57] text-[#0C1714]' : 'rounded-bl-md bg-[#1E322C] text-[#EFE9DA]'
                                                         }`}>
                                                         {hasText && <p className="whitespace-pre-wrap break-words">{m.message}</p>}
@@ -501,10 +501,10 @@ const Inbox = () => {
                                                         onClick={() => togglePin(m)}
                                                         aria-label={m.pinned_at ? 'Unpin message' : 'Pin message'}
                                                         title={m.pinned_at ? 'Unpin' : 'Pin'}
-                                                        className={`mt-1 flex h-7 w-7 items-center justify-center rounded-full ${
+                                                        className={`mt-1 flex h-7 w-7 items-center justify-center rounded-lg ${
                                                             m.pinned_at ? 'text-[#D4AF57]' : 'text-[#7E938B] hover:text-[#D4AF57]'
                                                         }`}>
-                                                        {m.pinned_at ? <PinOff size={14} /> : <Pin size={14} />}
+                                                        {m.pinned_at ? <PinOff size={16} /> : <Pin size={16} />}
                                                     </button>
                                                 </div>
                                             </div>
@@ -514,11 +514,11 @@ const Inbox = () => {
                                 </div>
                                 <div className="relative border-t border-[#1E322C] px-4 py-3 sm:px-5">
                                     {quickOpen && (
-                                        <div className="absolute bottom-full left-3 right-3 z-10 mb-2 max-h-72 overflow-y-auto rounded border border-[#1E322C] bg-[#132320] shadow-xl">
+                                        <div className="absolute bottom-full left-3 right-3 z-10 mb-2 max-h-72 overflow-y-auto rounded-lg border border-[#1E322C] bg-[#132320] shadow-xl">
                                             <div className="flex items-center justify-between border-b border-[#1E322C] px-3 py-2">
                                                 <span className="text-xs text-[#7E938B]">Click a reply to send it</span>
                                                 <Link href="/admin/quick-replies" className="flex items-center gap-1 text-xs text-[#D4AF57] hover:underline">
-                                                    <Settings2 size={12} /> Manage
+                                                    <Settings2 size={16} /> Manage
                                                 </Link>
                                             </div>
                                             {quick.length === 0 ? (
@@ -535,10 +535,10 @@ const Inbox = () => {
                                                             onClick={() => sendQuick(q)}
                                                             disabled={sending}
                                                             className="block w-full border-b border-[#1E322C]/60 px-3 py-2 text-left hover:bg-[#0C1714] disabled:opacity-50">
-                                                            <span style={{ color: hl.bar }} className="flex items-center gap-1.5 text-xs font-semibold">
-                                                                <hl.icon size={13} /> {q.title}
+                                                            <span style={{ color: hl.bar }} className="flex items-center gap-2 text-xs font-semibold">
+                                                                <hl.icon size={16} /> {q.title}
                                                             </span>
-                                                            <span className="mt-0.5 line-clamp-2 block text-xs text-[#7E938B]">{q.body}</span>
+                                                            <span className="mt-1 line-clamp-2 block text-xs text-[#7E938B]">{q.body}</span>
                                                         </button>
                                                     )
                                                 })
@@ -547,23 +547,23 @@ const Inbox = () => {
                                     )}
 
                                     {notice && (
-                                        <p className="mb-2 rounded bg-[#C25B45]/15 px-3 py-2 text-xs text-[#e8a090]" role="alert">{notice}</p>
+                                        <p className="mb-2 rounded-lg bg-[#C25B45]/15 px-3 py-2 text-xs text-[#e8a090]" role="alert">{notice}</p>
                                     )}
 
                                     {files.length > 0 && (
                                         <div className="mb-2 flex gap-2 overflow-x-auto pb-1">
                                             {files.map((f, i) => (
-                                                <div key={`${f.name}-${i}`} className="relative flex shrink-0 items-center gap-2 rounded border border-[#1E322C] bg-[#0C1714] py-1.5 pl-2 pr-7">
+                                                <div key={`${f.name}-${i}`} className="relative flex shrink-0 items-center gap-2 rounded-lg border border-[#1E322C] bg-[#0C1714] py-2 pl-2 pr-7">
                                                     <FileThumb file={f} className="h-8 w-8" />
                                                     <span className="max-w-[120px]">
                                                         <span className="block truncate text-xs text-[#EFE9DA]">{f.name}</span>
-                                                        <span className="block text-[10px] text-[#7E938B]">{formatSize(f.size)}</span>
+                                                        <span className="block text-xs text-[#7E938B]">{formatSize(f.size)}</span>
                                                     </span>
                                                     <button
                                                         onClick={() => setFiles(list => list.filter((_, n) => n !== i))}
                                                         aria-label={`Remove ${f.name}`}
-                                                        className="absolute right-1 top-1 rounded p-0.5 text-[#7E938B] hover:text-[#EFE9DA]">
-                                                        <X size={13} />
+                                                        className="absolute right-1 top-1 rounded-lg p-1 text-[#7E938B] hover:text-[#EFE9DA]">
+                                                        <X size={16} />
                                                     </button>
                                                 </div>
                                             ))}
@@ -572,33 +572,33 @@ const Inbox = () => {
 
                                     {voice.recording ? (
                                         <div className="flex items-center gap-2">
-                                            <button onClick={voice.cancel} aria-label="Discard recording" className="rounded p-2 text-[#7E938B] hover:text-[#C25B45]">
+                                            <button onClick={voice.cancel} aria-label="Discard recording" className="rounded-lg p-2 text-[#7E938B] hover:text-[#C25B45]">
                                                 <Trash2 size={16} />
                                             </button>
-                                            <div className="flex flex-1 items-center gap-3 rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA]">
-                                                <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#C25B45]" />
+                                            <div className="flex flex-1 items-center gap-3 rounded-lg border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA]">
+                                                <span className="h-3 w-3 animate-pulse rounded-full bg-[#C25B45]" />
                                                 Recording… {formatClock(voice.seconds)}
                                             </div>
-                                            <button onClick={sendVoice} aria-label="Send voice message" className="rounded bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110">
+                                            <button onClick={sendVoice} aria-label="Send voice message" className="rounded-lg bg-[#D4AF57] p-2 text-[#0C1714] hover:brightness-110">
                                                 <Send size={16} />
                                             </button>
                                         </div>
                                     ) : (
                                         <>
-                                            <div className="flex items-center gap-1.5">
+                                            <div className="flex items-center gap-2">
                                                 <input ref={fileInputRef} type="file" multiple accept={ATTACH_ACCEPT} onChange={pickFiles} className="hidden" />
                                                 <button
                                                     onClick={() => setQuickOpen(v => !v)}
                                                     aria-label="Saved replies"
                                                     title="Saved replies"
-                                                    className={`rounded p-2 hover:text-[#D4AF57] ${quickOpen ? 'text-[#D4AF57]' : 'text-[#7E938B]'}`}>
+                                                    className={`rounded-lg p-2 hover:text-[#D4AF57] ${quickOpen ? 'text-[#D4AF57]' : 'text-[#7E938B]'}`}>
                                                     <Zap size={18} />
                                                 </button>
                                                 <button
                                                     onClick={() => fileInputRef.current?.click()}
                                                     aria-label="Attach photos, GIFs or documents"
                                                     disabled={sending}
-                                                    className="rounded p-2 text-[#7E938B] hover:text-[#EFE9DA] disabled:opacity-40">
+                                                    className="rounded-lg p-2 text-[#7E938B] hover:text-[#EFE9DA] disabled:opacity-40">
                                                     <Paperclip size={18} />
                                                 </button>
                                                 <textarea
@@ -611,11 +611,11 @@ const Inbox = () => {
                                                         }
                                                     }}
                                                     rows={1}
-                                                    placeholder="Reply to user…"
-                                                    className="max-h-32 min-w-0 flex-1 resize-none rounded-2xl border border-[#1E322C] bg-[#132320] px-4 py-2.5 text-sm text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none"
+                                                    placeholder="Reply"
+                                                    className="max-h-32 min-w-0 flex-1 resize-none rounded-[10px] border border-[#1E322C] bg-[#132320] px-4 py-3 text-sm text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none"
                                                 />
                                                 {!draft.trim() && !files.length && voice.supported ? (
-                                                    <button onClick={startVoice} aria-label="Record a voice message" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#D4AF57] text-[#0C1714] hover:brightness-110">
+                                                    <button onClick={startVoice} aria-label="Record a voice message" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF57] text-[#0C1714] hover:brightness-110">
                                                         <Mic size={16} />
                                                     </button>
                                                 ) : (
@@ -623,18 +623,18 @@ const Inbox = () => {
                                                         onClick={send}
                                                         disabled={sending}
                                                         aria-label="Send"
-                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#D4AF57] text-[#0C1714] hover:brightness-110 disabled:opacity-50">
+                                                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#D4AF57] text-[#0C1714] hover:brightness-110 disabled:opacity-50">
                                                         {sending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
                                                     </button>
                                                 )}
                                             </div>
-                                            <div className="mt-2 flex items-center gap-2 pl-1 text-[11px] text-[#7E938B]">
+                                            <div className="mt-2 flex items-center gap-2 pl-1 text-xs text-[#7E938B]">
                                                 <label htmlFor="hl-style">Highlight this message:</label>
                                                 <select
                                                     id="hl-style"
                                                     value={style}
                                                     onChange={e => setStyle(e.target.value)}
-                                                    className="rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1 text-xs text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none">
+                                                    className="rounded-lg border border-[#1E322C] bg-[#0C1714] px-2 py-1 text-xs text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none">
                                                     <option value="">No highlight</option>
                                                     {Object.entries(HIGHLIGHT_STYLES).map(([k, v]) => (
                                                         <option key={k} value={k}>{v.label}</option>
@@ -647,7 +647,7 @@ const Inbox = () => {
                             </>
                         ) : (
                             <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
-                                <span className="flex h-16 w-16 items-center justify-center rounded-full border border-[#D4AF57]/30 bg-[#D4AF57]/10 text-[#D4AF57]">
+                                <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#D4AF57]/30 bg-[#D4AF57]/10 text-[#D4AF57]">
                                     <MessagesSquare size={28} />
                                 </span>
                                 <p className="text-lg text-[#EFE9DA]">Select a conversation</p>

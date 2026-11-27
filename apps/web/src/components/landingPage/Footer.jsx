@@ -34,16 +34,16 @@ export default function Footer() {
     const social = c.social.filter(s => s.url && socialIcons[s.platform])
 
     return (
-        <footer className="bg-gray-900 border-t border-gray-800 py-20">
-            <div className="container mx-auto px-4">
-                <div className="grid md:grid-cols-4 gap-12">
+        <footer className="border-t border-line bg-gray-900 py-16">
+            <div className="wrap">
+                <div className="grid gap-12 md:grid-cols-4">
                     <div>
-                        <Link href="/" aria-label={`${brand.name} home`} className="mb-6 flex w-fit items-center gap-2">
+                        <Link href="/" aria-label={`${brand.name} home`} className="mb-4 flex w-fit items-center gap-2">
                             {brand.logo ? (
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={brand.logo} alt="" className="w-11 h-11 object-contain" />
                             ) : (
-                                <Gamepad2 className="w-8 h-8 text-secondary animate-float" />
+                                <Gamepad2 className="h-8 w-8 text-accent" />
                             )}
                             {(() => {
                                 const [first, ...rest] = (brand.name || '').trim().split(/\s+/)
@@ -55,8 +55,8 @@ export default function Footer() {
                                 )
                             })()}
                         </Link>
-                        <p className="text-gray-400 mb-6">{c.description}</p>
-                        <div className="flex gap-4">
+                        <p className="mb-6 max-w-xs text-muted">{c.description}</p>
+                        <div className="flex gap-2">
                             {social.map((s, index) => {
                                 const Icon = socialIcons[s.platform]
                                 return (
@@ -66,8 +66,8 @@ export default function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={socialNames[s.platform]}
-                                        className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-secondary delay-200 ease-in-out duration-150 transition-colors">
-                                        <Icon className="w-5 h-5" />
+                                        className="icon-btn border border-line">
+                                        <Icon />
                                     </a>
                                 )
                             })}
@@ -76,18 +76,18 @@ export default function Footer() {
 
                     {c.columns.map((column, index) => (
                         <div key={index}>
-                            <h2 className="text-lg font-bold mb-4 text-white">{column.title}</h2>
+                            <h2 className="mb-2 text-sm font-bold text-ink">{column.title}</h2>
                             <ul className="space-y-1">
                                 {column.links.map((link, i) => (
                                     <li key={i}>
                                         {link.url ? (
                                             <Link
                                                 href={safeUrl(link.url)}
-                                                className="inline-flex min-h-[40px] items-center text-gray-400 hover:text-accent transition-colors">
+                                                className="inline-flex min-h-[40px] items-center text-muted transition-colors hover:text-accent">
                                                 {link.label}
                                             </Link>
                                         ) : (
-                                            <span className="text-gray-400">{link.label}</span>
+                                            <span className="text-muted">{link.label}</span>
                                         )}
                                     </li>
                                 ))}
@@ -97,18 +97,18 @@ export default function Footer() {
 
                     {c.contact.length > 0 && (
                         <div>
-                            <h2 className="text-lg font-bold mb-4 text-white">{c.contact_title}</h2>
+                            <h2 className="mb-2 text-sm font-bold text-ink">{c.contact_title}</h2>
                             <ul className="space-y-1">
                                 {c.contact.map((line, i) => (
                                     <li key={i}>
-                                        <ContactLine text={line.text} className="text-gray-400" />
+                                        <ContactLine text={line.text} className="text-muted" />
                                     </li>
                                 ))}
                             </ul>
                         </div>
                     )}
                 </div>
-                <div className="border-t border-gray-800 mt-16 pt-8 text-center text-gray-300">
+                <div className="mt-12 border-t border-line pt-8 text-center text-sm text-muted">
                     <p>
                         &copy; {new Date().getFullYear()} {c.copyright_name}. All rights reserved.
                     </p>

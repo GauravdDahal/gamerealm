@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, Gift } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 import { useSiteContent } from '@/lib/useSiteContent'
@@ -33,50 +33,47 @@ export default function BonusesSection({ bare = false }) {
     const odd = c.cards.length % 2 === 1
 
     return (
-        <section id="bonuses" className={`bg-gray-900 ${bare ? 'pt-10 pb-4' : 'py-12 sm:py-16'}`}>
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="bonuses" className={`bg-gray-900 ${bare ? 'pb-8 pt-8' : 'section'}`}>
+            <div className="wrap">
                 {!bare && (
-                <div className="flex flex-wrap items-end justify-between gap-3">
-                    <div>
-                        <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-orange-400">
-                            <Gift className="h-3.5 w-3.5" /> {c.eyebrow}
-                        </p>
-                        <h2 className="mt-2 font-godofwar text-3xl leading-tight text-white sm:text-4xl">
-                            {c.title} <span className="text-orange-500">{c.highlight}</span>
-                        </h2>
+                    <div className="flex flex-wrap items-end justify-between gap-4" data-aos="fade">
+                        <div>
+                            {c.eyebrow && <p className="eyebrow">{c.eyebrow}</p>}
+                            <h2 className="section-title">
+                                {c.title} <span className="text-accent">{c.highlight}</span>
+                            </h2>
+                        </div>
+                        {c.link_url && (
+                            <a href={safeUrl(c.link_url)} className="btn btn-ghost">
+                                {c.link_label} <ArrowRight aria-hidden="true" />
+                            </a>
+                        )}
                     </div>
-                    {c.link_url && (
-                        <a
-                            href={safeUrl(c.link_url)}
-                            className="inline-flex items-center gap-1 text-sm font-semibold text-orange-400 hover:text-orange-300">
-                            {c.link_label} <ArrowRight className="h-4 w-4" />
-                        </a>
-                    )}
-                </div>
                 )}
 
-                <div className={`${bare ? '' : 'mt-6 '}grid gap-4 md:grid-cols-2`}>
+                <div className={`${bare ? '' : 'mt-12 '}grid gap-4 md:grid-cols-2 md:gap-6`}>
                     {c.cards.map((card, i) => (
                         <div
                             key={i}
-                            className={`rounded-2xl border border-white/10 bg-gradient-to-br from-surface2 to-night p-5 shadow-lg shadow-black/30 ${
-                                odd && i === c.cards.length - 1 ? 'md:col-span-2' : ''
-                            }`}>
-                            <div className="flex items-start gap-4">
-                                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-orange-400/25 bg-white/5 text-lg font-bold text-orange-400">
-                                    {card.badge}
-                                </div>
+                            data-aos="fade"
+                            className={`card flex flex-col ${odd && i === c.cards.length - 1 ? 'md:col-span-2' : ''}`}>
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6">
+                                <p className="w-20 shrink-0 font-display text-4xl leading-none text-accent">{card.badge}</p>
                                 <div className="min-w-0">
-                                    {bare ? <h2 className="font-bold text-white">{card.title}</h2> : <h3 className="font-bold text-white">{card.title}</h3>}
-                                    <p className="mt-1 text-sm text-gray-300">{card.description}</p>
+                                    {bare ? (
+                                        <h2 className="text-lg font-bold text-ink">{card.title}</h2>
+                                    ) : (
+                                        <h3 className="text-lg font-bold text-ink">{card.title}</h3>
+                                    )}
+                                    <p className="mt-2 text-muted">{card.description}</p>
+                                    {card.note && <p className="mt-2 text-sm text-dim">{card.note}</p>}
                                 </div>
                             </div>
-                            {card.note && <p className="mt-4 text-xs text-purple-300">{card.note}</p>}
-                            <button
-                                onClick={() => claim(card)}
-                                className="mt-3 w-full rounded-lg bg-gradient-to-r from-orange-400 to-orange-600 px-4 py-3 text-sm font-semibold text-gray-900 shadow-md transition hover:brightness-110">
-                                {user ? c.claim_label : c.signin_label}
-                            </button>
+                            <div className="mt-auto pt-6">
+                                <button onClick={() => claim(card)} className="btn btn-primary w-full sm:w-auto">
+                                    {user ? c.claim_label : c.signin_label}
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>

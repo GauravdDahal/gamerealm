@@ -1,44 +1,23 @@
 'use client'
-import LazyLottie from '@/components/common/LazyLottie'
-import 'aos/dist/aos.css'
+import ChatPreview from '@/components/common/ChatPreview'
 import { useSiteContent } from '@/lib/useSiteContent'
+
 export default function AboutUs() {
     const c = useSiteContent('about')
 
     return (
-        <section id='about' className="lg:min-h-[600px] bg-surface relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
-                    <div
-                        className="space-y-6 order-1 sm:order-1 lg:order-1"
-                        data-aos="fade-right"
-                        data-aos-offset="200">
-                        <h2
-                            className="text-4xl sm:text-5xl font-godofwar text-white tracking-tight"
-                            data-aos="fade-up"
-                            data-aos-delay="50">
-                            {c.title}
-                        </h2>
-                        <p
-                            className="text-lg text-gray-300 leading-relaxed max-w-xl"
-                            data-aos="fade-up"
-                            data-aos-delay="75">
-                            {c.body}
-                        </p>
-                        <a
-                            href="/support"
-                            className="inline-block border border-game-primary hover:bg-blue-950 ease-out duration-200 px-8 py-3 rounded-full font-medium transition backdrop-blur-sm"
-                            data-aos="fade-up"
-                            data-aos-delay="100">
-                            {c.button}
-                        </a>
-                    </div>
-                    <div
-                        className="relative h-[280px] sm:h-[420px] lg:h-[600px] flex justify-center items-center order-2 sm:order-2 lg:order-2"
-                        data-aos="fade-left"
-                        data-aos-delay="50">
-                        <LazyLottie src="/Lottie/spin.json" className="w-full h-full" />
-                    </div>
+        <section id="about" className="section relative overflow-hidden bg-surface">
+            <div className="wrap grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+                <div data-aos="fade">
+                    <h2 className="section-title">{c.title}</h2>
+                    <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">{c.body}</p>
+                    <a href="/support" className="btn btn-secondary btn-lg mt-8">
+                        {c.button}
+                    </a>
+                </div>
+                {/* The real product, not a stock animation. */}
+                <div className="flex justify-center lg:justify-end" data-aos="fade">
+                    <ChatPreview />
                 </div>
             </div>
         </section>

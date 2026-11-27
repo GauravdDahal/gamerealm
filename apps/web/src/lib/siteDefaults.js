@@ -7,7 +7,7 @@ export const siteDefaults = {
     brand: {
         name: 'THUNDER SWEEPS',
         logo: '/assets/images/brand/thunder-sweeps-mark.svg',
-        join_label: 'JOIN NOW',
+        join_label: 'Join now',
         nav: [
             { label: 'Home', href: '/' },
             { label: 'Games', href: '/games' },
@@ -17,52 +17,51 @@ export const siteDefaults = {
         ],
     },
     wheel: {
-        eyebrow: 'Online gaming · Lucky wheel',
+        eyebrow: '',
         title: 'Spin free.',
         highlight: 'Win freeplay.',
         subtitle:
-            'Every approved player gets one free spin a day. Land on a prize and our team will credit it to your account.',
+            'Every player gets one free spin a day. Land on a prize and our team credits it to your account.',
     },
     events: {
-        title: 'Earn Rewards And Bonuses',
-        intro: 'Participate in our referral program and upcoming bonuses to maximize your rewards.',
+        title: 'Rewards and bonuses',
+        intro: 'Two more ways to get extra play: invite friends, or claim a bonus on your next deposit.',
         cards: [
             {
-                title: 'Refer And Earn',
+                title: 'Refer and earn',
                 description:
-                    'Invite your friends and earn exclusive rewards for each successful referral!',
-                button: 'Refer Now',
+                    'Share your personal link. Each level you reach as friends join unlocks a reward, from $5 up to $50.',
+                button: 'Get your link',
             },
             {
-                title: 'Upcoming Bonuses',
-                description:
-                    'Stay tuned for exciting rewards and exclusive bonus opportunities!',
-                button: 'View Bonuses',
+                title: 'Deposit bonuses',
+                description: 'See the offers you can claim on your next deposit.',
+                button: 'View bonuses',
             },
         ],
     },
     games: {
-        title: 'Featured Games',
+        title: 'Featured games',
         intro: 'Tap any game to request it. Our team sets up your account and loads your points in chat.',
-        play_label: 'Play Game',
-        more_label: 'See More',
-        less_label: 'Show Less',
+        play_label: 'Play game',
+        more_label: 'See more',
+        less_label: 'Show less',
     },
     marquee: {
         items: [
-            { text: 'Jackpot ♠' },
-            { text: 'casino ♠' },
-            { text: 'Spinning wheel ♠' },
-            { text: 'casino games ♠' },
+            { text: 'Jackpot' },
+            { text: 'Casino' },
+            { text: 'Spinning wheel' },
+            { text: 'Casino games' },
         ],
     },
     about: {
-        title: 'About Us',
+        title: 'About us',
         body: 'Thunder Sweeps puts your favourite sweepstakes games and a real support team in one place. Tell us in live chat which game you want, and we set up your account and load your points. Spin the lucky wheel once a day for freeplay, claim deposit bonuses, and earn extra every time a friend joins with your link.',
         button: 'Contact support',
     },
     cta: {
-        signin_label: 'Sign in to Play',
+        signin_label: 'Sign in to play',
     },
     // Example offers: replace them with your real bonuses in Admin → Site content.
     bonuses: {
@@ -95,98 +94,95 @@ export const siteDefaults = {
         ],
     },
     why: {
-        title: 'Why Play With Thunder Sweeps',
+        title: 'Why play with Thunder Sweeps',
         intro: 'Real people on live chat, fast game loads and something to win every day.',
         body: 'Every message reaches a real member of our team, not a bot. Pick a game and we handle the account, the deposit and the cashout for you, with every step right there in your chat. A free spin each day, regular deposit bonuses and referral levels mean there is always something extra to play for.',
         features: [
             {
-                title: 'Live Chat Support',
+                title: 'Live chat support',
                 description:
                     'Ask anything in chat and a real team member answers. Deposits, cashouts and game problems are all sorted right there.',
             },
             {
-                title: 'Popular Sweepstakes Games',
+                title: 'Popular sweepstakes games',
                 description:
                     'Your favourite sweepstakes games in one place. Pick one and we set up your game account for you.',
             },
             {
-                title: 'Daily Rewards',
+                title: 'Daily rewards',
                 description:
                     'One free spin on the lucky wheel every day, plus deposit bonuses you can claim from the Bonuses page.',
             },
             {
-                title: 'Refer and Level Up',
+                title: 'Refer and level up',
                 description:
                     'Invite friends with your link and unlock a bigger reward at every referral level, up to $50 and a 20% deposit bonus.',
             },
         ],
     },
     rules: {
-        title: 'Community Rules',
-        intro: 'To maintain a fair and enjoyable gaming environment, all members must follow these essential rules.',
+        title: 'Community rules',
+        intro: 'A few rules that keep the games fair for everyone.',
         items: [
             {
-                title: 'Fair Play Policy',
-                description:
-                    'All players must adhere to our strict fair play policy. Any form of cheating or exploitation will result in immediate account suspension.',
+                title: 'Fair play',
+                description: 'Cheating or exploiting a game gets your account suspended.',
                 type: 'critical',
             },
             {
-                title: 'Account Sharing',
-                description:
-                    'Account sharing is strictly prohibited. Each account should be used by a single player only.',
+                title: 'One player per account',
+                description: 'Accounts are for one person. Please don’t share yours.',
                 type: 'warning',
             },
             {
-                title: 'Tournament Participation',
+                title: 'Prizes and rewards',
                 description:
-                    'Players must be at least level 10 and have completed account verification to participate in tournaments.',
+                    'Wheel prizes, bonuses and referral rewards are added to your account by our team after a quick check.',
                 type: 'success',
             },
             {
-                title: 'Toxic Behavior',
-                description:
-                    'Zero tolerance for toxic behavior, harassment, or discrimination. Violations will lead to permanent bans.',
+                title: 'Be respectful',
+                description: 'No harassment or abuse in chat. Repeated abuse leads to a permanent ban.',
                 type: 'danger',
             },
         ],
     },
     faq: {
-        title: 'Frequently Asked Questions',
+        title: 'Frequently asked questions',
         intro: 'Quick answers about accounts, deposits, cashouts and bonuses. Can’t find yours? Ask us in live chat.',
         background: '',
         items: [
             {
                 question: 'How do I create an account?',
-                answer: 'Creating a casino account is simple and secure. Visit our registration page, fill in your personal details, verify your email address, and complete the identity verification process.',
+                answer: 'Tap Join now, then sign up with Google or your email. You need to be 18 or over. Your account is ready to use straight away.',
             },
             {
                 question: 'What payment methods are accepted?',
-                answer: 'We accept credit/debit cards, e-wallets, bank transfers, and cryptocurrency. All transactions are processed securely.',
+                answer: 'Deposits go through the payment QR codes in live chat. Open the chat, tap the QR button and pick a method.',
             },
             {
                 question: 'How can I ensure responsible gaming?',
-                answer: 'We promote responsible gaming through deposit limits, self-exclusion options, and reality checks.',
+                answer: 'Set yourself a budget and take breaks. If you want us to pause or close your account, message our team in live chat.',
             },
             {
                 question: 'What games are available?',
-                answer: 'Our platform offers slots, table games, live dealer games, and specialty games from top providers.',
+                answer: 'Every game on the Games page. Tap one and our team sets up your account in live chat.',
             },
             {
                 question: 'How do I withdraw my winnings?',
-                answer: 'Navigate to the cashier section, select your withdrawal method, and follow verification steps.',
+                answer: 'Ask in live chat. Our team checks your game balance and sends your cashout.',
             },
             {
                 question: 'Is my personal information secure?',
-                answer: 'Yes, we use state-of-the-art encryption and security measures to protect your personal information.',
+                answer: 'Yes. Your details are stored securely and only our support team can see them.',
             },
             {
-                question: 'What are the VIP benefits?',
-                answer: 'Our VIP program offers exclusive bonuses, personal account managers, higher betting limits, and special event invitations based on your loyalty level.',
+                question: 'How do referral rewards work?',
+                answer: 'Share your link from the Referral page. Each level you reach unlocks a reward, which our team adds to your account.',
             },
             {
                 question: 'How can I contact customer support?',
-                answer: 'Our 24/7 customer support team is available via live chat, email, and phone. We aim to respond to all inquiries within minutes.',
+                answer: 'Open the live chat with the button at the bottom right. Our team usually replies within a few minutes.',
             },
         ],
     },
@@ -198,7 +194,7 @@ export const siteDefaults = {
         items: [],
     },
     payments: {
-        title: 'Payment Methods',
+        title: 'Payment methods',
         methods: [
             { name: 'Mastercard', image: '/assets/images/paymentSectionImg/mastercard.jpg' },
             { name: 'Visa', image: '/assets/images/paymentSectionImg/visa.jpg' },
@@ -209,15 +205,15 @@ export const siteDefaults = {
         title: 'Invite friends,',
         highlight: 'level up your rewards.',
         subtitle:
-            'Share your personal link. Every friend our team approves counts toward your level, and each new level unlocks a bigger reward.',
+            'Share your personal link. Every friend who joins counts toward your level, and each new level unlocks a bigger reward.',
         signin_label: 'Sign up to get your link',
-        pending_note: 'Your referral link appears here as soon as your account is approved.',
+        pending_note: 'Your referral link appears here as soon as your account is active.',
     },
     theme: { active: 'casino', decor: true },
     footer: {
         description:
             'Sweepstakes games, a free daily spin and a team on live chat whenever you play. 18+ only. Please play responsibly.',
-        copyright_name: 'THUNDER SWEEPS',
+        copyright_name: 'Thunder Sweeps',
         social: [
             { platform: 'twitch', url: '' },
             { platform: 'youtube', url: '' },
@@ -226,7 +222,7 @@ export const siteDefaults = {
         ],
         columns: [
             {
-                title: 'Quick Links',
+                title: 'Quick links',
                 links: [
                     { label: 'Home', url: '/' },
                     { label: 'Games', url: '/games' },

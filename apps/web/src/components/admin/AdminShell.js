@@ -138,7 +138,7 @@ const Shell = ({ children }) => {
                 </p>
                 <Link
                     href="/users"
-                    className="rounded border border-[#D4AF57] bg-[#D4AF57] px-3 py-1.5 text-sm text-[#0C1714]">
+                    className="rounded-lg border border-[#D4AF57] bg-[#D4AF57] px-3 py-2 text-sm text-[#0C1714]">
                     Go to sign in
                 </Link>
             </div>
@@ -156,12 +156,12 @@ const Shell = ({ children }) => {
                 <div className="flex gap-2">
                     <Link
                         href="/"
-                        className="rounded border border-[#1E322C] px-3 py-1.5 text-sm text-[#EFE9DA] hover:bg-[#1E322C]">
+                        className="rounded-lg border border-[#1E322C] px-3 py-2 text-sm text-[#EFE9DA] hover:bg-[#1E322C]">
                         Back to the site
                     </Link>
                     <button
                         onClick={signOut}
-                        className="rounded border border-[#1E322C] px-3 py-1.5 text-sm text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                        className="rounded-lg border border-[#1E322C] px-3 py-2 text-sm text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                         Sign out
                     </button>
                 </div>
@@ -176,18 +176,18 @@ const Shell = ({ children }) => {
                 className={`fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-[#1E322C]
                     bg-[#0C1714] transition-transform duration-200 lg:translate-x-0
                     ${navOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <div className="flex shrink-0 items-center gap-2.5 border-b border-[#1E322C] px-5 py-4">
+                <div className="flex shrink-0 items-center gap-3 border-b border-[#1E322C] px-5 py-4">
                     <span className="text-lg leading-none text-[#D4AF57]" aria-hidden="true">
                         &spades;
                     </span>
                     <span
-                        className="text-[17px] tracking-tight text-[#EFE9DA]"
+                        className="text-lg tracking-tight text-[#EFE9DA]"
                         style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                         Back office
                     </span>
                 </div>
 
-                <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
+                <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
                     {nav
                         .filter(i => !i.perm || user?.is_superadmin || !user?.permissions || user.permissions.includes(i.perm))
                         .map(({ href, label, icon: Icon }) => {
@@ -200,7 +200,7 @@ const Shell = ({ children }) => {
                                 key={href}
                                 href={href}
                                 aria-current={active ? 'page' : undefined}
-                                className={`flex items-center gap-3 rounded px-3 py-2 text-sm transition-colors
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors
                                     ${
                                         active
                                             ? 'bg-[#132320] text-[#D4AF57]'
@@ -209,7 +209,7 @@ const Shell = ({ children }) => {
                                 <Icon size={16} strokeWidth={1.75} />
                                 <span className="flex-1">{label}</span>
                                 {href === '/admin/chats' && alerts.unread > 0 && (
-                                    <span className="rounded-full bg-[#D4AF57] px-1.5 text-[11px] font-semibold leading-5 text-[#0C1714]">
+                                    <span className="rounded-md bg-[#D4AF57] px-2 text-xs font-semibold leading-5 text-[#0C1714]">
                                         {alerts.unread > 99 ? '99+' : alerts.unread}
                                     </span>
                                 )}
@@ -229,14 +229,14 @@ const Shell = ({ children }) => {
                                 const problem = await alerts.toggleAlerts()
                                 if (problem) toast(problem, 'error')
                             }}
-                            className="flex w-full items-center gap-3 rounded px-3 py-2 text-sm text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]">
+                            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]">
                             {alerts.alertsOn ? <Bell size={16} strokeWidth={1.75} className="text-[#D4AF57]" /> : <BellOff size={16} strokeWidth={1.75} />}
                             {alerts.alertsOn ? 'Alerts on' : 'Turn on alerts'}
                         </button>
                     )}
                     <button
                         onClick={signOut}
-                        className="flex w-full items-center gap-3 rounded px-3 py-2 text-sm text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]">
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-[#7E938B] hover:bg-[#132320] hover:text-[#EFE9DA]">
                         <LogOut size={16} strokeWidth={1.75} />
                         Sign out
                     </button>
@@ -258,11 +258,11 @@ const Shell = ({ children }) => {
                         onClick={() => setNavOpen(v => !v)}
                         aria-label="Toggle navigation"
                         aria-expanded={navOpen}
-                        className="rounded border border-[#1E322C] p-1.5 text-[#EFE9DA]">
+                        className="rounded-lg border border-[#1E322C] p-2 text-[#EFE9DA]">
                         <Menu size={16} />
                     </button>
                     <span
-                        className="text-[15px]"
+                        className="text-base"
                         style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
                         Back office
                     </span>

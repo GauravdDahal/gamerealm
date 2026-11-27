@@ -12,7 +12,7 @@ export default function PageShell({ children }) {
     return (
         <div className="min-h-screen max-w-screen overflow-hidden bg-gray-900 font-sans text-white">
             <Navigation />
-            <main className="pt-24">{children}</main>
+            <main className="pt-16 sm:pt-20">{children}</main>
             <SectionDecor name="footer">
                 <Footer />
             </SectionDecor>

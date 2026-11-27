@@ -185,7 +185,7 @@ const BannerGroups = () => {
                 title={`${groups.length} banner set${groups.length === 1 ? '' : 's'}`}
                 action={
                     <Button variant="primary" onClick={() => setCreatingSet(true)}>
-                        <Plus size={14} className="mr-1 inline" />
+                        <Plus size={16} className="mr-1 inline" />
                         New set
                     </Button>
                 }>
@@ -224,14 +224,14 @@ const BannerGroups = () => {
                                         <button
                                             onClick={() => openDetail(g)}
                                             aria-label={`View ${g.name}`}
-                                            className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
-                                            <Eye size={15} />
+                                            className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                            <Eye size={16} />
                                         </button>
                                         <button
                                             onClick={() => setConfirming(g)}
                                             aria-label={`Delete ${g.name}`}
-                                            className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
-                                            <Trash2 size={15} />
+                                            className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                            <Trash2 size={16} />
                                         </button>
                                     </span>
                                 </Cell>
@@ -254,13 +254,13 @@ const BannerGroups = () => {
                                 {detail.banners.map(b => (
                                     <li
                                         key={b.id}
-                                        className="flex gap-3 rounded border border-[#1E322C] p-3">
+                                        className="flex gap-3 rounded-lg border border-[#1E322C] p-3">
                                         {b.image_url && (
                                             // eslint-disable-next-line @next/next/no-img-element
                                             <img
                                                 src={b.image_url}
                                                 alt=""
-                                                className="h-16 w-24 flex-shrink-0 rounded object-cover"
+                                                className="h-16 w-24 flex-shrink-0 rounded-lg object-cover"
                                             />
                                         )}
                                         <div className="min-w-0 flex-1">
@@ -272,8 +272,8 @@ const BannerGroups = () => {
                                         <button
                                             onClick={() => setConfirmingSlide(b)}
                                             aria-label={`Remove ${b.title}`}
-                                            className="h-fit rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
-                                            <Trash2 size={15} />
+                                            className="h-fit rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                            <Trash2 size={16} />
                                         </button>
                                     </li>
                                 ))}
@@ -322,7 +322,7 @@ const BannerGroups = () => {
                                             file: e.target.files?.[0] ?? null,
                                         }))
                                     }
-                                    className="block w-full text-sm text-[#7E938B] file:mr-3 file:rounded file:border-0 file:bg-[#1E322C] file:px-3 file:py-1.5 file:text-[#EFE9DA]"
+                                    className="block w-full text-sm text-[#7E938B] file:mr-3 file:rounded-lg file:border-0 file:bg-[#1E322C] file:px-3 file:py-2 file:text-[#EFE9DA]"
                                 />
                             </Field>
                             <Button type="submit" variant="primary" disabled={savingSlide}>

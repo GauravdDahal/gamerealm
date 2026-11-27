@@ -147,7 +147,7 @@ const Registrations = () => {
                     <button
                         key={t.key}
                         onClick={() => setTab(t.key)}
-                        className={`rounded border px-3 py-1.5 text-sm transition-colors
+                        className={`rounded-lg border px-3 py-2 text-sm transition-colors
                             ${
                                 tab === t.key
                                     ? 'border-[#D4AF57] text-[#D4AF57]'
@@ -168,12 +168,12 @@ const Registrations = () => {
                 action={
                     <div className="relative">
                         <Search
-                            size={14}
-                            className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-[#7E938B]"
+                            size={16}
+                            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#7E938B]"
                         />
                         <input
                             className={`${inputClass} w-56 pl-8`}
-                            placeholder="Name, email or phone"
+                            placeholder="Search"
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             aria-label="Search registrations"
@@ -222,8 +222,8 @@ const Registrations = () => {
                                                 disabled={busy}
                                                 title="Approve"
                                                 aria-label={`Approve ${u.name}`}
-                                                className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#D4AF57] disabled:opacity-30">
-                                                <Check size={15} />
+                                                className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#D4AF57] disabled:opacity-30">
+                                                <Check size={16} />
                                             </button>
                                         )}
                                         {u.status === 'pending' && (
@@ -234,8 +234,8 @@ const Registrations = () => {
                                                 }}
                                                 title="Reject"
                                                 aria-label={`Reject ${u.name}`}
-                                                className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
-                                                <X size={15} />
+                                                className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                                <X size={16} />
                                             </button>
                                         )}
                                         {u.status === 'approved' && (
@@ -246,8 +246,8 @@ const Registrations = () => {
                                                 }}
                                                 title="Suspend"
                                                 aria-label={`Suspend ${u.name}`}
-                                                className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
-                                                <Ban size={15} />
+                                                className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                                <Ban size={16} />
                                             </button>
                                         )}
                                         {(u.status === 'rejected' ||
@@ -257,8 +257,8 @@ const Registrations = () => {
                                                 disabled={busy}
                                                 title="Move back to pending"
                                                 aria-label={`Reinstate ${u.name}`}
-                                                className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
-                                                <RotateCcw size={15} />
+                                                className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30">
+                                                <RotateCcw size={16} />
                                             </button>
                                         )}
                                     </span>

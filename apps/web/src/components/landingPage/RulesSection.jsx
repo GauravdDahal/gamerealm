@@ -4,59 +4,32 @@ import { Shield, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
 import { useSiteContent } from '@/lib/useSiteContent'
 
 const icons = { critical: Shield, warning: AlertTriangle, success: CheckCircle2, danger: XCircle };
+// Status colour only on the icon; the card itself stays neutral.
+const tones = { critical: 'text-red-400', warning: 'text-amber-400', success: 'text-emerald-400', danger: 'text-red-400' };
 
 export default function RulesSection() {
   const c = useSiteContent('rules');
   return (
-      <section id="rules" className="py-32 bg-gray-900">
-          <div className="container mx-auto px-4">
-              <h2
-                  data-aos="fade-down"
-                  className="text-4xl sm:text-9xl md:text-4xl lg:text-6xl font-godofwar text-center mb-4 text-white">
-                  {c.title}
-              </h2>
-              <p
-                  data-aos="fade-down"
-                  data-aos-delay="25"
-                  className="text-gray-400 text-center mb-16 max-w-2xl mx-auto">
-                  {c.intro}
-              </p>
-              <div className="grid md:grid-cols-2 gap-8">
+      <section id="rules" className="section bg-gray-900">
+          <div className="wrap">
+              <div data-aos="fade">
+                  <h2 className="section-title">{c.title}</h2>
+                  <p className="section-intro">{c.intro}</p>
+              </div>
+              <ol className="mt-12 grid gap-4 md:grid-cols-2 md:gap-6">
                   {c.items.map((rule, index) => {
                       const Icon = icons[rule.type] ?? XCircle
                       return (
-                      <div
-                          key={index}
-                          className="gradient-border p-1"
-                          data-aos={index % 2 ? "fade-left" : "fade-right"}
-                          data-aos-delay={Math.min(index, 6) * 50}>
-                          <div className="bg-gray-900 p-8 rounded-lg h-full">
-                              <div className="flex items-start gap-4">
-                                  <div
-                                      className={`w-12 h-12 shrink-0 rounded-lg flex items-center justify-center ${
-                                          rule.type === 'critical'
-                                              ? 'bg-red-500/10 text-red-500'
-                                              : rule.type === 'warning'
-                                                ? 'bg-yellow-500/10 text-yellow-500'
-                                                : rule.type === 'success'
-                                                  ? 'bg-green-500/10 text-green-500'
-                                                  : 'bg-gray-500/10 text-gray-500'
-                                      }`}>
-                                      <Icon className="w-6 h-6" />
-                                  </div>
-                                  <div>
-                                      <h3 className="text-xl font-glance mb-2 text-white">
-                                          {rule.title}
-                                      </h3>
-                                      <p className="text-gray-400">
-                                          {rule.description}
-                                      </p>
-                                  </div>
+                          <li key={index} data-aos="fade" className="card flex gap-4">
+                              <Icon className={`mt-1 h-[18px] w-[18px] shrink-0 ${tones[rule.type] ?? 'text-muted'}`} aria-hidden="true" />
+                              <div>
+                                  <h3 className="text-lg font-bold text-ink">{rule.title}</h3>
+                                  <p className="mt-2 text-muted">{rule.description}</p>
                               </div>
-                          </div>
-                      </div>
-                  )})}
-              </div>
+                          </li>
+                      )
+                  })}
+              </ol>
           </div>
       </section>
   )

@@ -33,7 +33,7 @@ export const Button = ({
 }) => (
     <button
         disabled={disabled}
-        className={`inline-flex items-center justify-center gap-2 rounded border px-3 py-1.5 text-sm
+        className={`inline-flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm
             transition-colors duration-150 focus:outline-none focus-visible:ring-2
             focus-visible:ring-[#D4AF57] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C1714]
             disabled:cursor-not-allowed disabled:opacity-40
@@ -47,7 +47,7 @@ export const Button = ({
 
 export const Field = ({ label, hint, error, children }) => (
     <label className="block">
-        <span className="mb-1.5 block text-sm text-[#EFE9DA]">{label}</span>
+        <span className="mb-2 block text-sm text-[#EFE9DA]">{label}</span>
         {children}
         {hint && !error && (
             <span className="mt-1 block text-xs text-[#7E938B]">{hint}</span>
@@ -56,7 +56,7 @@ export const Field = ({ label, hint, error, children }) => (
     </label>
 )
 
-export const inputClass = `w-full rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm
+export const inputClass = `w-full rounded-lg border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm
     text-[#EFE9DA] placeholder-[#7E938B] focus:border-[#D4AF57] focus:outline-none`
 
 export const Input = props => <input className={inputClass} {...props} />
@@ -77,7 +77,7 @@ export const Badge = ({ children, tone = 'neutral' }) => {
     }
     return (
         <span
-            className={`inline-block rounded-full border px-2 py-0.5 text-xs whitespace-nowrap ${tones[tone]}`}>
+            className={`inline-block rounded-md border px-2 py-1 text-xs whitespace-nowrap ${tones[tone]}`}>
             {children}
         </span>
     )
@@ -87,7 +87,7 @@ export const Badge = ({ children, tone = 'neutral' }) => {
 
 export const Panel = ({ title, action, children, className = '' }) => (
     <section
-        className={`rounded border border-[#1E322C] bg-[#132320] ${className}`}>
+        className={`rounded-xl border border-[#1E322C] bg-[#132320] ${className}`}>
         {(title || action) && (
             <header className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#1E322C] px-4 py-3">
                 <h2 className="text-sm text-[#EFE9DA]">{title}</h2>
@@ -119,7 +119,7 @@ export const ErrorState = ({ message, onRetry }) => (
 export const Skeleton = ({ rows = 5 }) => (
     <div className="space-y-2 p-4" aria-hidden="true">
         {Array.from({ length: rows }).map((_, i) => (
-            <div key={i} className="h-9 animate-pulse rounded bg-[#1E322C]/50" />
+            <div key={i} className="h-9 rounded-lg bg-[#1E322C]/50" />
         ))}
     </div>
 )
@@ -134,7 +134,7 @@ export const Table = ({ head, children }) => (
                     {head.map(h => (
                         <th
                             key={h}
-                            className="px-4 py-2.5 font-normal text-[#7E938B] whitespace-nowrap">
+                            className="px-4 py-3 font-normal text-[#7E938B] whitespace-nowrap">
                             {h}
                         </th>
                     ))}
@@ -180,13 +180,13 @@ export const Modal = ({ open, title, onClose, children, footer }) => {
                 role="dialog"
                 aria-modal="true"
                 aria-label={title}
-                className="relative z-10 flex max-h-[calc(100dvh-1.5rem)] w-full max-w-lg flex-col rounded border border-[#1E322C] bg-[#132320] shadow-2xl sm:max-h-[calc(100dvh-2rem)]">
+                className="relative z-10 flex max-h-[calc(100dvh-1.5rem)] w-full max-w-lg flex-col rounded-2xl border border-[#1E322C] bg-[#132320] shadow-2xl sm:max-h-[calc(100dvh-2rem)]">
                 <header className="flex shrink-0 items-center justify-between border-b border-[#1E322C] px-4 py-3">
                     <h2 className="text-sm text-[#EFE9DA]">{title}</h2>
                     <button
                         onClick={onClose}
                         aria-label="Close"
-                        className="rounded p-1 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                         <X size={16} />
                     </button>
                 </header>
@@ -225,16 +225,16 @@ export const ToastProvider = ({ children }) => {
                 {items.map(t => (
                     <div
                         key={t.id}
-                        className={`pointer-events-auto flex items-center gap-2 rounded border px-3 py-2 text-sm shadow-lg
+                        className={`pointer-events-auto flex items-center gap-2 rounded-lg border px-3 py-2 text-sm shadow-lg
                             ${
                                 t.tone === 'error'
                                     ? 'border-[#C25B45]/50 bg-[#2A1512] text-[#EFE9DA]'
                                     : 'border-[#D4AF57]/40 bg-[#132320] text-[#EFE9DA]'
                             }`}>
                         {t.tone === 'error' ? (
-                            <AlertTriangle size={14} className="text-[#C25B45]" />
+                            <AlertTriangle size={16} className="text-[#C25B45]" />
                         ) : (
-                            <Check size={14} className="text-[#D4AF57]" />
+                            <Check size={16} className="text-[#D4AF57]" />
                         )}
                         {t.message}
                     </div>

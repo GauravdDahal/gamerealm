@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Gift, Sparkles, Volume2, VolumeX, X, Zap } from 'lucide-react'
+import { Gift, Volume2, VolumeX, X } from 'lucide-react'
 import { useAuth } from '@/hooks/auth'
 import { createClient } from '@/lib/supabase/client'
 import { useSiteContent } from '@/lib/useSiteContent'
@@ -139,7 +139,7 @@ export default function SpinWheel() {
         if (!user) return router.push('/users')
         if (status?.state === 'not_approved') return router.push('/account-pending')
         if (status?.state === 'staff') return setError('Admin accounts can’t spin. Sign in as a player to try it.')
-        if (status?.state === 'closed') return setError('The wheel is closed right now. Check back soon!')
+        if (status?.state === 'closed') return setError('The wheel is closed right now. Check back soon.')
         if (status?.state === 'needs_deposit') return setError('Make a deposit to unlock your free spin. Our team can help in chat.')
         if (status?.state === 'wait') return setError(`Your next free spin is in ${untilText(status.next_spin_at)}.`)
 
@@ -183,7 +183,7 @@ export default function SpinWheel() {
 
     const hint = (() => {
         if (error) return { text: error, tone: 'warn' }
-        if (state === 'closed') return { text: 'The wheel is closed right now. Check back soon!', tone: 'info' }
+        if (state === 'closed') return { text: 'The wheel is closed right now. Check back soon.', tone: 'info' }
         if (state === 'needs_deposit') return { text: `Make a deposit to unlock your spin (within ${status.hours} hours).`, tone: 'info' }
         if (state === 'wait') return { text: `Next free spin in ${untilText(status.next_spin_at)}`, tone: 'info' }
         if (state === 'not_approved') return { text: 'Your account is waiting for approval. You can spin once it is approved.', tone: 'info' }
@@ -197,51 +197,31 @@ export default function SpinWheel() {
 
     return (
         <section id="home" className="relative overflow-hidden bg-gray-900 pb-12 pt-24 sm:pb-20 sm:pt-32">
-            <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0"
-                style={{
-                    background:
-                        'radial-gradient(60% 50% at 80% 40%, rgb(var(--c-secondary2) / .28), transparent 70%), radial-gradient(45% 40% at 10% 10%, rgb(var(--c-secondary) / .25), transparent 70%), radial-gradient(40% 35% at 50% 100%, rgb(var(--c-hot) / .18), transparent 70%)',
-                }}
-            />
-            <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
+            <div className="wrap relative grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
                 {/* ------------------------------------------------ words */}
                 <div className="text-center lg:text-left">
-                    <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-indigo-300 sm:text-xs">
-                        <Zap className="h-3.5 w-3.5" /> {copy.eyebrow}
-                    </p>
-                    <h1 className="mt-4 font-godofwar text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-                        {copy.title}{' '}
-                        <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
-                            {copy.highlight}
-                        </span>
+                    {copy.eyebrow && <p className="eyebrow">{copy.eyebrow}</p>}
+                    <h1 className="font-display text-5xl leading-none text-ink sm:text-6xl lg:text-7xl">
+                        {copy.title} <span className="text-accent">{copy.highlight}</span>
                     </h1>
-                    <p className="mx-auto mt-3 max-w-xl text-sm text-gray-400 sm:mt-4 sm:text-lg lg:mx-0">
+                    <p className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-lg lg:mx-0">
                         {copy.subtitle}
                     </p>
 
-                    <div className="mt-6 hidden flex-wrap justify-center gap-2 sm:flex lg:justify-start">
+                    <ul className="mt-8 hidden flex-wrap justify-center gap-2 sm:flex lg:justify-start" aria-label="Prizes on the wheel">
                         {segments.map(s => (
-                            <span
-                                key={s.id}
-                                className="inline-flex items-center gap-1.5 rounded-md border border-gray-700 bg-gray-800/80 px-2.5 py-1 text-xs text-gray-200">
-                                <span className="h-2 w-2 rounded-full" style={{ background: s.color }} />
+                            <li key={s.id} className="chip">
+                                <span className="h-2 w-2 rounded-full" style={{ background: s.color }} aria-hidden="true" />
                                 {s.label}
-                            </span>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
 
                     <div className="mt-8 hidden flex-col items-center gap-3 lg:flex lg:items-start">
-                        <button
-                            onClick={spin}
-                            disabled={!canTap}
-                            className="inline-flex min-h-[48px] items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-violet-600 to-pink-600 px-8 text-sm font-bold uppercase tracking-wider text-white shadow-lg shadow-indigo-900/40 transition hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60">
-                            <Sparkles className="h-4 w-4" /> {cta}
+                        <button onClick={spin} disabled={!canTap} className="btn btn-primary btn-lg">
+                            <Gift /> {cta}
                         </button>
-                        <p
-                            role="status"
-                            className={`text-sm ${hint.tone === 'warn' ? 'text-pink-300' : 'text-gray-400'}`}>
+                        <p role="status" className={`text-sm ${hint.tone === 'warn' ? 'text-danger' : 'text-muted'}`}>
                             {hint.text}
                         </p>
                     </div>
@@ -320,8 +300,8 @@ export default function SpinWheel() {
                         onClick={toggleSound}
                         aria-label={sound ? 'Mute wheel sounds' : 'Turn wheel sounds on'}
                         title={sound ? 'Sound on' : 'Sound off'}
-                        className="absolute -top-2 right-0 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-gray-700 bg-gray-900/80 text-gray-300 backdrop-blur transition hover:text-white sm:-right-2">
-                        {sound ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+                        className="icon-btn absolute -top-2 left-0 z-30 border border-line bg-night/90 sm:-left-2">
+                        {sound ? <Volume2 /> : <VolumeX />}
                     </button>
 
                     {/* hub */}
@@ -329,15 +309,15 @@ export default function SpinWheel() {
                         onClick={spin}
                         disabled={!canTap}
                         aria-label="Spin the wheel"
-                        className="absolute left-1/2 top-1/2 z-10 flex h-[26%] w-[26%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-[5px] border-accent2 bg-gradient-to-br from-gray-800 to-gray-950 text-white shadow-[0_0_30px_rgba(0,0,0,.6)] transition hover:brightness-125 active:scale-95 disabled:cursor-not-allowed">
-                        <Gift className="mb-0.5 h-[22%] w-[22%] text-accent2" />
-                        <span className="font-godofwar text-[clamp(.8rem,3.2vw,1.35rem)] leading-none">SPIN</span>
+                        className="absolute left-1/2 top-1/2 z-10 flex h-[26%] w-[26%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-1 rounded-full border-4 border-accent2 bg-night text-ink shadow-[0_8px_24px_rgba(0,0,0,.5)] transition-colors hover:bg-surface disabled:cursor-not-allowed">
+                        <Gift className="h-[22%] w-[22%] text-accent2" />
+                        <span className="font-display text-[clamp(.8rem,3.2vw,1.35rem)] leading-none tracking-wide">SPIN</span>
                     </button>
 
                     {/* On phones the wheel itself is the button, so the status goes underneath it. */}
                     <p
                         role="status"
-                        className={`mt-5 text-center text-sm lg:hidden ${hint.tone === 'warn' ? 'text-pink-300' : 'text-gray-400'}`}>
+                        className={`mt-4 text-center text-sm lg:hidden ${hint.tone === 'warn' ? 'text-danger' : 'text-muted'}`}>
                         {hint.text}
                     </p>
                 </div>
@@ -352,28 +332,21 @@ export default function SpinWheel() {
                     onClick={() => setResult(null)}>
                     <div
                         onClick={e => e.stopPropagation()}
-                        className="gradient-border relative w-full max-w-sm animate-fade-scale-up rounded-2xl bg-gray-900 p-8 text-center">
-                        <button
-                            onClick={() => setResult(null)}
-                            aria-label="Close"
-                            className="absolute right-3 top-3 rounded-full p-2 text-gray-400 hover:bg-gray-800 hover:text-white">
-                            <X className="h-5 w-5" />
+                        className="relative w-full max-w-sm animate-fade-scale-up rounded-2xl border border-line bg-surface p-8 text-center shadow-2xl">
+                        <button onClick={() => setResult(null)} aria-label="Close" className="icon-btn absolute right-4 top-4">
+                            <X />
                         </button>
-                        <p className="text-xs font-bold uppercase tracking-[0.25em] text-indigo-300">
-                            {unlucky ? 'So close' : 'Congratulations'}
-                        </p>
-                        <h2 className="mt-3 font-godofwar text-3xl text-white">
+                        <p className="eyebrow">{unlucky ? 'So close' : 'You won'}</p>
+                        <h2 className="font-display text-4xl leading-tight text-ink">
                             {unlucky ? 'Try again tomorrow' : result.label}
                         </h2>
-                        <p className="mt-3 text-gray-400">
+                        <p className="mt-4 text-muted">
                             {unlucky
                                 ? 'No prize this time. Your next free spin is in 24 hours.'
                                 : 'Our team will credit your prize shortly. Your next free spin is in 24 hours.'}
                         </p>
-                        <button
-                            onClick={() => setResult(null)}
-                            className="mt-6 min-h-[44px] rounded-full bg-gradient-to-r from-indigo-600 via-violet-600 to-pink-600 px-8 text-sm font-bold uppercase tracking-wider text-white">
-                            Great
+                        <button onClick={() => setResult(null)} className="btn btn-primary btn-lg mt-8 w-full">
+                            Done
                         </button>
                     </div>
                 </div>

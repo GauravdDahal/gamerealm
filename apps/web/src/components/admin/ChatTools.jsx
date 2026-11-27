@@ -15,10 +15,10 @@ const initials = n => (n || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0]).
 const PlayerRow = ({ p, checked, onClick, badge }) => (
     <li>
         <button type="button" onClick={onClick}
-            className={`flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-[#0C1714] ${checked ? 'bg-[#0C1714]' : ''}`}>
+            className={`flex w-full items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-[#0C1714] ${checked ? 'bg-[#0C1714]' : ''}`}>
             {checked !== undefined && (
-                <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? 'border-[#D4AF57] bg-[#D4AF57] text-[#0C1714]' : 'border-[#7E938B]'}`}>
-                    {checked && <Check size={12} strokeWidth={3} />}
+                <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-lg border ${checked ? 'border-[#D4AF57] bg-[#D4AF57] text-[#0C1714]' : 'border-[#7E938B]'}`}>
+                    {checked && <Check size={16} strokeWidth={3} />}
                 </span>
             )}
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1E322C] bg-[#0C1714] text-xs text-[#7E938B]">
@@ -104,11 +104,11 @@ export default function ChatTools({ supabase, onOpened }) {
     const list = (
         <>
             <div className="relative">
-                <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#7E938B]" />
-                <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search players by name or email…" autoFocus
-                    className="w-full rounded border border-[#1E322C] bg-[#0C1714] py-2 pl-9 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
+                <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#7E938B]" />
+                <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search" aria-label="Search players by name or email" autoFocus
+                    className="w-full rounded-lg border border-[#1E322C] bg-[#0C1714] py-2 pl-9 pr-3 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
             </div>
-            <div className="mt-2 max-h-[40dvh] overflow-y-auto rounded border border-[#1E322C]">
+            <div className="mt-2 max-h-[40dvh] overflow-y-auto rounded-lg border border-[#1E322C]">
                 {loadError ? (
                     <p className="p-4 text-sm text-[#C25B45]">{loadError}</p>
                 ) : players === null ? (
@@ -120,7 +120,7 @@ export default function ChatTools({ supabase, onOpened }) {
                         {filtered.map(p =>
                             mode === 'new' ? (
                                 <PlayerRow key={p.id} p={p} onClick={() => startChat(p)}
-                                    badge={p.chat_id ? <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-300">Chatting</span> : null} />
+                                    badge={p.chat_id ? <span className="rounded-md bg-emerald-500/15 px-2 py-1 text-xs font-bold text-emerald-300">Chatting</span> : null} />
                             ) : (
                                 <PlayerRow key={p.id} p={p} checked={picked.has(p.id)} onClick={() => toggle(p.id)} />
                             ),
@@ -135,11 +135,11 @@ export default function ChatTools({ supabase, onOpened }) {
         <>
             <div className="flex items-center gap-2">
                 <button onClick={() => open('broadcast')} title="Broadcast message" aria-label="Broadcast message"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D4AF57]/50 bg-[#D4AF57]/10 text-[#D4AF57] transition hover:bg-[#D4AF57]/20">
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#D4AF57]/50 bg-[#D4AF57]/10 text-[#D4AF57] transition-colors hover:bg-[#D4AF57]/20">
                     <Megaphone size={16} />
                 </button>
                 <button onClick={() => open('new')} title="Start a new conversation" aria-label="Start a new conversation"
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D4AF57]/50 bg-[#D4AF57]/10 text-[#D4AF57] transition hover:bg-[#D4AF57]/20">
+                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#D4AF57]/50 bg-[#D4AF57]/10 text-[#D4AF57] transition-colors hover:bg-[#D4AF57]/20">
                     <MessageSquarePlus size={16} />
                 </button>
             </div>
@@ -157,8 +157,8 @@ export default function ChatTools({ supabase, onOpened }) {
                     <>
                         <Button onClick={close} disabled={busy}>Cancel</Button>
                         <button onClick={send} disabled={!canSend}
-                            className="inline-flex items-center gap-1.5 rounded bg-gradient-to-r from-red-600 via-orange-500 to-amber-400 px-4 py-2 text-sm font-bold text-white disabled:opacity-40">
-                            {busy ? <Loader2 size={14} className="animate-spin" /> : <Megaphone size={14} />}
+                            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-red-600 via-orange-500 to-amber-400 px-4 py-2 text-sm font-bold text-white disabled:opacity-40">
+                            {busy ? <Loader2 size={16} className="animate-spin" /> : <Megaphone size={16} />}
                             Send to {count}
                         </button>
                     </>
@@ -168,7 +168,7 @@ export default function ChatTools({ supabase, onOpened }) {
                     <div className="grid grid-cols-2 gap-2">
                         {[['all', 'All players'], ['select', 'Select players']].map(([k, l]) => (
                             <button key={k} type="button" onClick={() => setAudience(k)}
-                                className={`rounded border px-3 py-2 text-sm ${audience === k ? 'border-[#D4AF57] bg-[#D4AF57]/15 text-[#EFE9DA]' : 'border-[#1E322C] text-[#7E938B] hover:text-[#EFE9DA]'}`}>
+                                className={`rounded-lg border px-3 py-2 text-sm ${audience === k ? 'border-[#D4AF57] bg-[#D4AF57]/15 text-[#EFE9DA]' : 'border-[#1E322C] text-[#7E938B] hover:text-[#EFE9DA]'}`}>
                                 {l}
                             </button>
                         ))}
@@ -185,11 +185,11 @@ export default function ChatTools({ supabase, onOpened }) {
                             </div>
                         </div>
                     )}
-                    <textarea value={text} onChange={e => setText(e.target.value)} rows={4} maxLength={1000} placeholder="Write an announcement…"
-                        className="w-full rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
+                    <textarea value={text} onChange={e => setText(e.target.value)} rows={4} maxLength={1000} placeholder="Announcement"
+                        className="w-full rounded-lg border border-[#1E322C] bg-[#0C1714] px-3 py-2 text-sm text-[#EFE9DA] placeholder:text-[#7E938B] focus:border-[#D4AF57] focus:outline-none" />
                     {text.trim() && (
                         <div>
-                            <p className="mb-2 text-[11px] uppercase tracking-wide text-[#7E938B]">Preview</p>
+                            <p className="mb-2 text-xs text-[#7E938B]">Preview</p>
                             <BroadcastBubble text={text.trim()} />
                         </div>
                     )}

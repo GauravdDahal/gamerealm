@@ -139,7 +139,7 @@ const Referrals = () => {
                             Only still to credit
                         </label>
                         <Button onClick={recheck} disabled={checking}>
-                            <RefreshCw size={14} className={`mr-1 inline ${checking ? 'animate-spin' : ''}`} />
+                            <RefreshCw size={16} className={`mr-1 inline ${checking ? 'animate-spin' : ''}`} />
                             Re-check
                         </Button>
                     </div>
@@ -167,13 +167,13 @@ const Referrals = () => {
                                 {r.status === 'credited' ? (
                                     <>
                                         <Badge tone="brass">Credited</Badge>
-                                        <button onClick={() => credit(r, false)} aria-label="Undo credited" title="Mark as not credited" className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
-                                            <RotateCcw size={15} />
+                                        <button onClick={() => credit(r, false)} aria-label="Undo credited" title="Mark as not credited" className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                            <RotateCcw size={16} />
                                         </button>
                                     </>
                                 ) : (
                                     <Button onClick={() => credit(r, true)}>
-                                        <Check size={14} className="mr-1 inline" />
+                                        <Check size={16} className="mr-1 inline" />
                                         Mark credited
                                     </Button>
                                 )}
@@ -187,7 +187,7 @@ const Referrals = () => {
                 title={`Levels (${levels.length})`}
                 action={
                     <Button variant="primary" onClick={() => setForm(blank)}>
-                        <Plus size={14} className="mr-1 inline" />
+                        <Plus size={16} className="mr-1 inline" />
                         New level
                     </Button>
                 }>
@@ -208,13 +208,13 @@ const Referrals = () => {
                                 </div>
                                 {!l.is_active && <Badge>Hidden</Badge>}
                                 <div className="flex items-center gap-1">
-                                    <button onClick={() => toggle(l)} aria-label={l.is_active ? `Hide ${l.name}` : `Show ${l.name}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                    <button onClick={() => toggle(l)} aria-label={l.is_active ? `Hide ${l.name}` : `Show ${l.name}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         {l.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
                                     </button>
-                                    <button onClick={() => setForm(l)} aria-label={`Edit ${l.name}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                    <button onClick={() => setForm(l)} aria-label={`Edit ${l.name}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         <Pencil size={16} />
                                     </button>
-                                    <button onClick={() => setConfirming(l)} aria-label={`Delete ${l.name}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                    <button onClick={() => setConfirming(l)} aria-label={`Delete ${l.name}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
                                         <Trash2 size={16} />
                                     </button>
                                 </div>

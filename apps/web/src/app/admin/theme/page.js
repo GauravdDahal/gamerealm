@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { mutate as globalMutate } from 'swr'
-import { Check } from 'lucide-react'
+import { Check, Flag, Ghost, Leaf, PartyPopper, Spade, TreePine } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { SITE_CONTENT_KEY, useSiteContent } from '@/lib/useSiteContent'
 import { THEMES } from '@/lib/themes.mjs'
@@ -10,23 +10,26 @@ import { Button, Panel, useToast } from '@/components/admin/ui'
 
 const SWATCHES = ['night', 'surface2', 'secondary', 'accent', 'accent2', 'ink']
 
+// One line icon per theme, from the same icon set as the rest of the admin.
+const THEME_ICONS = { casino: Spade, halloween: Ghost, christmas: TreePine, newyear: PartyPopper, independence: Flag, thanksgiving: Leaf }
+
 const Preview = ({ theme }) => {
     const t = theme.tokens
     return (
         <div className="overflow-hidden rounded-lg border border-[#1E322C]" style={{ background: t.night }}>
             <div className="flex items-center gap-2 px-3 py-2" style={{ background: t.surface }}>
                 <span className="h-2 w-2 rounded-full" style={{ background: t.accent }} />
-                <span className="h-1.5 w-10 rounded" style={{ background: t.muted, opacity: 0.6 }} />
-                <span className="ml-auto h-1.5 w-6 rounded" style={{ background: t.dim, opacity: 0.6 }} />
+                <span className="h-2 w-10 rounded" style={{ background: t.muted, opacity: 0.6 }} />
+                <span className="ml-auto h-2 w-6 rounded" style={{ background: t.dim, opacity: 0.6 }} />
             </div>
             <div className="space-y-2 p-3">
                 <div className="h-2 w-3/4 rounded" style={{ background: t.ink }} />
-                <div className="h-1.5 w-1/2 rounded" style={{ background: t.muted, opacity: 0.7 }} />
+                <div className="h-2 w-1/2 rounded" style={{ background: t.muted, opacity: 0.7 }} />
                 <div className="flex gap-2 pt-1">
-                    <span className="rounded px-3 py-1 text-[10px] font-bold" style={{ background: t.accent, color: t['accent-ink'] }}>
+                    <span className="rounded-lg px-3 py-1 text-xs font-bold" style={{ background: t.accent, color: t['accent-ink'] }}>
                         Play now
                     </span>
-                    <span className="rounded border px-3 py-1 text-[10px]" style={{ borderColor: t.line, color: t.ink }}>
+                    <span className="rounded-lg border px-3 py-1 text-xs" style={{ borderColor: t.line, color: t.ink }}>
                         Learn more
                     </span>
                 </div>
@@ -94,11 +97,14 @@ const ThemePage = () => {
                             }`}>
                             <Preview theme={theme} />
                             <div className="mt-3 flex items-center gap-2">
-                                <span className="text-lg">{theme.emoji}</span>
+                                {(() => {
+                                    const Icon = THEME_ICONS[theme.id] ?? Spade
+                                    return <Icon size={18} className="text-[#D4AF57]" aria-hidden="true" />
+                                })()}
                                 <span className="font-medium text-[#EFE9DA]">{theme.label}</span>
                                 {on && (
-                                    <span className="ml-auto inline-flex items-center gap-1 rounded bg-[#D4AF57] px-2 py-0.5 text-xs font-medium text-[#0C1714]">
-                                        <Check size={12} /> Selected
+                                    <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-[#D4AF57] px-2 py-1 text-xs font-medium text-[#0C1714]">
+                                        <Check size={16} /> Selected
                                     </span>
                                 )}
                                 {theme.id === live.active && !on && (

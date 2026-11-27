@@ -31,8 +31,8 @@ export default function BroadcastBubble({ title, text, time, compact = false }) 
                 <p className="bc-title">
                     <Megaphone className="h-4 w-4" /> {title || 'Announcement'}
                 </p>
-                <p className="relative whitespace-pre-wrap break-words text-[15px] font-semibold leading-relaxed text-white">{text}</p>
-                {time && <p className="relative mt-1 text-[10px] text-amber-100/70">{time}</p>}
+                <p className="relative whitespace-pre-wrap break-words text-base font-semibold leading-relaxed text-white">{text}</p>
+                {time && <p className="relative mt-1 text-xs text-amber-100/70">{time}</p>}
             </div>
             {burst && (
                 <div className="bc-confetti" aria-hidden>

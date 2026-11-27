@@ -5,39 +5,17 @@ import Link from 'next/link'
 import { adminApi, errorMessage } from '@/lib/adminApi'
 import { ErrorState, Panel, Skeleton } from '@/components/admin/ui'
 
-/** A casino chip: dashed outer edge, value in the middle. */
-const Chip = ({ value, label, href }) => {
-    const body = (
-        <div className="flex flex-col items-center gap-3">
-            <div className="relative flex h-32 w-32 items-center justify-center">
-                <span
-                    className="absolute inset-0 rounded-full border-2 border-dashed border-[#D4AF57]/45"
-                    aria-hidden="true"
-                />
-                <span
-                    className="absolute inset-[9px] rounded-full border border-[#1E322C] bg-[#132320]"
-                    aria-hidden="true"
-                />
-                <span
-                    className="relative text-3xl tabular-nums text-[#EFE9DA]"
-                    style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
-                    {value}
-                </span>
-            </div>
-            <span className="text-sm text-[#7E938B]">{label}</span>
-        </div>
-    )
-
-    return href ? (
-        <Link
-            href={href}
-            className="rounded transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF57]">
-            {body}
-        </Link>
-    ) : (
-        body
-    )
-}
+/** One figure in the stats strip: label above, number below. */
+const Stat = ({ value, label, href }) => (
+    <Link
+        href={href}
+        className="flex flex-col gap-1 bg-[#132320] px-6 py-5 transition-colors hover:bg-[#0C1714] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#D4AF57]">
+        <span className="text-sm text-[#7E938B]">{label}</span>
+        <span className="text-3xl tabular-nums text-[#EFE9DA]" style={{ fontFamily: 'var(--font-display), Georgia, serif' }}>
+            {value}
+        </span>
+    </Link>
+)
 
 const Overview = () => {
     const [stats, setStats] = useState(null)
@@ -96,19 +74,12 @@ const Overview = () => {
                 </Panel>
             ) : (
                 <>
-                    <div className="grid grid-cols-2 justify-items-center gap-x-6 gap-y-8 rounded border border-[#1E322C] bg-[#132320] px-4 py-8 sm:flex sm:flex-wrap sm:justify-start sm:gap-14 sm:px-10 sm:py-10">
-                        <Chip
-                            value={stats?.adminUsersCount ?? 0}
-                            label="Staff"
-                            href="/admin/users"
-                        />
-                        <Chip
-                            value={stats?.clientUsersCount ?? 0}
-                            label="Players"
-                            href="/admin/players"
-                        />
-                        <Chip value={extra.unread ?? 0} label="Unread messages" href="/admin/chats" />
-                        <Chip value={extra.toCredit ?? 0} label="Prizes to credit" href="/admin/wheel" />
+                    {/* One strip of figures with hairline dividers, not four identical cards. */}
+                    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[#1E322C] bg-[#1E322C] sm:grid-cols-4">
+                        <Stat value={extra.unread ?? 0} label="Unread messages" href="/admin/chats" />
+                        <Stat value={extra.toCredit ?? 0} label="Prizes to credit" href="/admin/wheel" />
+                        <Stat value={stats?.clientUsersCount ?? 0} label="Players" href="/admin/players" />
+                        <Stat value={stats?.adminUsersCount ?? 0} label="Staff" href="/admin/users" />
                     </div>
 
                     <Panel title="Needs attention">
@@ -124,9 +95,7 @@ const Overview = () => {
                                             href={n.href ?? '/admin'}
                                             className="flex items-center justify-between gap-4 px-4 py-3 hover:bg-[#0C1714]/50">
                                             <span className="text-sm text-[#EFE9DA]">{n.message}</span>
-                                            <span className="rounded-full border border-[#D4AF57]/40 px-2 py-0.5 text-xs tabular-nums text-[#D4AF57]">
-                                                {n.count}
-                                            </span>
+                                            <span className="text-sm font-semibold tabular-nums text-[#D4AF57]">{n.count}</span>
                                         </Link>
                                     </li>
                                 ))}

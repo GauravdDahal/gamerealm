@@ -43,14 +43,14 @@ export const tone = c => (/^#|^rgb/.test(c) ? c : `rgb(var(--c-${c}))`)
 const LIGHT_COLORS = ['#ff4d4d', '#ffd24d', '#4dd96a', '#4da6ff']
 
 const Strip = ({ type, still }) => {
-    const wrap = 'pointer-events-none fixed left-0 right-0 top-[75px] z-[49] flex justify-between overflow-hidden'
+    const wrap = 'pointer-events-none fixed left-0 right-0 top-16 sm:top-20 z-[49] flex justify-between overflow-hidden'
     const anim = (name, dur, i) => (still ? undefined : `${name} ${(dur * SPEED).toFixed(2)}s ease-in-out ${-i * 0.37}s infinite`)
     if (type === 'lights')
         return (
-            <div className={wrap} style={{ height: 26 }}>
+            <div className={wrap} style={{ height: 28 }}>
                 <div className="absolute left-0 right-0 top-0 h-[2px] bg-black/60" />
                 {Array.from({ length: 34 }, (_, i) => (
-                    <span key={i} className="relative top-[2px] block h-3 w-2 rounded-b-full"
+                    <span key={i} className="relative top-1 block h-3 w-2 rounded-b-full"
                         style={{ background: LIGHT_COLORS[i % 4], boxShadow: `0 0 7px 1px ${LIGHT_COLORS[i % 4]}`, willChange: 'opacity', animation: anim('d-twinkle', 1.8, i), marginTop: i % 2 ? 6 : 0 }} />
                 ))}
             </div>
@@ -58,7 +58,7 @@ const Strip = ({ type, still }) => {
     if (type === 'bunting') {
         const c = ['#e63946', '#ffffff', '#2563eb']
         return (
-            <div className={wrap} style={{ height: 34 }}>
+            <div className={wrap} style={{ height: 32 }}>
                 {Array.from({ length: 26 }, (_, i) => (
                     <span key={i} className="block"
                         style={{ width: 0, height: 0, borderLeft: '18px solid transparent', borderRight: '18px solid transparent', borderTop: `30px solid ${c[i % 3]}`, transformOrigin: 'top', animation: anim('d-sway', 3 + (i % 3), i) }} />
@@ -68,7 +68,7 @@ const Strip = ({ type, still }) => {
     }
     if (type === 'sparkle')
         return (
-            <div className={wrap} style={{ height: 22 }}>
+            <div className={wrap} style={{ height: 24 }}>
                 {Array.from({ length: 40 }, (_, i) => (
                     <span key={i} className="block rounded-full"
                         style={{ width: 4 + (i % 3) * 2, height: 4 + (i % 3) * 2, marginTop: (i * 7) % 14, background: i % 2 ? '#fde68a' : '#e5e7eb', boxShadow: '0 0 5px 1px rgb(253 230 138 / .8)', willChange: 'opacity', animation: anim('d-twinkle', 1.4 + (i % 4) * 0.4, i) }} />

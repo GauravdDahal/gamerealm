@@ -32,16 +32,16 @@ export default function WheelSettings({ supabase, slices }) {
         toast('Wheel settings saved. They apply to the next spin.')
     }
 
-    const num = 'w-24 rounded border border-[#1E322C] bg-[#0C1714] px-2 py-1.5 text-sm text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none'
+    const num = 'w-24 rounded border border-[#1E322C] bg-[#0C1714] px-2 py-2 text-sm text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none'
     return (
-        <section className="rounded border border-[#1E322C] bg-[#132320]">
+        <section className="rounded-lg border border-[#1E322C] bg-[#132320]">
             <button onClick={() => setOpen(o => !o)} className="flex w-full items-center gap-3 px-4 py-3 text-left">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF57]">Wheel settings</span>
+                <span className="text-xs font-bold text-[#D4AF57]">Wheel settings</span>
                 <span className="text-xs text-[#7E938B]">
                     · {slices} slices · {s ? (s.is_open ? 'live' : 'closed') : missing ? 'needs database update' : '…'}
                 </span>
                 <span className="ml-auto flex items-center gap-1 text-xs text-[#7E938B]">
-                    {open ? 'hide' : 'edit'} <ChevronDown size={14} className={open ? 'rotate-180' : ''} />
+                    {open ? 'hide' : 'edit'} <ChevronDown size={16} className={open ? 'rotate-180' : ''} />
                 </span>
             </button>
             {open && (
@@ -65,7 +65,7 @@ export default function WheelSettings({ supabase, slices }) {
                                 <input type="number" min="0" max="720" value={s.deposit_within_hours} onChange={e => setS({ ...s, deposit_within_hours: e.target.value })} className={num} />
                             </label>
                             <p className="text-xs text-[#7E938B]">A deposit counts when staff record it with the Deposit or Wallet button in the chat.</p>
-                            <Button variant="primary" onClick={save} disabled={busy}>{busy && <Loader2 size={14} className="animate-spin" />} Save settings</Button>
+                            <Button variant="primary" onClick={save} disabled={busy}>{busy && <Loader2 size={16} className="animate-spin" />} Save settings</Button>
                         </div>
                     )}
                 </div>

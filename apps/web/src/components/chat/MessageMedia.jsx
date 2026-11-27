@@ -70,7 +70,7 @@ export const ImageViewer = ({ src, name, onClose }) => {
                         await saveFile(src, name)
                         setSaving(false)
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20">
+                    className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm hover:bg-white/20">
                     {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download
                 </button>
                 <button onClick={onClose} aria-label="Close" className="rounded-lg bg-white/10 p-2 hover:bg-white/20">
@@ -111,7 +111,7 @@ export const MessageMedia = ({ message, urls, mine }) => {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={g.url} alt={g.name} className="h-32 w-full object-cover" />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent px-3 pb-2 pt-8">
-                            <span className="block text-[10px] font-bold uppercase tracking-[2px] text-accent2">
+                            <span className="block text-xs font-bold text-accent2">
                                 Game request
                             </span>
                             <span className="block text-base font-semibold text-white">{g.name}</span>
@@ -133,7 +133,7 @@ export const MessageMedia = ({ message, urls, mine }) => {
                 ))}
 
             {images.length > 0 && (
-                <div className={`grid gap-1.5 ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                <div className={`grid gap-2 ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
                     {images.map(f =>
                         urls[f.path] ? (
                             <button
@@ -151,7 +151,7 @@ export const MessageMedia = ({ message, urls, mine }) => {
                                 />
                             </button>
                         ) : (
-                            <div key={f.path} className="h-24 animate-pulse rounded-xl bg-white/10" />
+                            <div key={f.path} className="h-24 rounded-xl bg-white/10" />
                         ),
                     )}
                 </div>
@@ -167,10 +167,10 @@ export const MessageMedia = ({ message, urls, mine }) => {
                     className={`flex w-full items-center text-left gap-3 rounded-xl border ${border} bg-black/20 px-3 py-2 ${
                         urls[f.path] ? 'hover:bg-black/30' : 'pointer-events-none opacity-60'
                     }`}>
-                    <FileText className="h-6 w-6 shrink-0" />
+                    <FileText className="h-[18px] w-[18px] shrink-0" />
                     <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm">{f.name}</span>
-                        <span className="block text-[11px] opacity-70">{formatSize(f.size)}</span>
+                        <span className="block text-xs opacity-70">{formatSize(f.size)}</span>
                     </span>
                     <Download className="h-4 w-4 shrink-0 opacity-70" />
                 </button>
@@ -191,7 +191,7 @@ export const FileThumb = ({ file, className = '' }) => {
         setSrc(url)
         return () => URL.revokeObjectURL(url)
     }, [file])
-    if (!src) return <FileText className={`p-1.5 text-gray-400 ${className}`} />
+    if (!src) return <FileText className={`p-2 text-gray-400 ${className}`} />
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt="" className={`rounded-lg object-cover ${className}`} />
 }

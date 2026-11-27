@@ -5,8 +5,8 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { useRef, useState, useEffect } from 'react'
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import { useSiteContent } from '@/lib/useSiteContent'
-import 'aos/dist/aos.css'
 
 export default function Testimonial() {
     const [isMobile, setIsMobile] = useState(false)
@@ -25,17 +25,15 @@ export default function Testimonial() {
     if (testimonials.length === 0) return null
 
     return (
-        <section
-            className="py-10 sm:py-30 bg-gray-900 relative overflow-hidden"
-            data-aos="fade-up">
+        <section className="section relative overflow-hidden bg-gray-900" data-aos="fade">
             <style>
                 {`
                     .swiper-pagination-bullet {
                         background-color: rgb(var(--c-muted));
                         opacity: 1;
-                        width: 12px;
-                        height: 12px;
-                        margin: 0 8px !important;
+                        width: 8px;
+                        height: 8px;
+                        margin: 0 4px !important;
                     }
                     .swiper-pagination-bullet-active {
                         background-color: rgb(var(--c-accent));
@@ -43,107 +41,59 @@ export default function Testimonial() {
                 `}
             </style>
 
-            <div className="absolute top-0 left-0 w-1/3 h-full bg-secondary/20 blur-[150px]" />
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-secondary/20 blur-[150px]" />
-
-            <div className="container mx-auto px-4 relative">
-                <div className="text-center mb-12" data-aos="fade-up">
-                    <h3 className="text-white text-4xl sm:text-9xl md:text-4xl lg:text-6xl font-godofwar">
-                        {c.title}
-                    </h3>
-                    <h2 className="text-gray-200 text-lg font-medium mt-4">
-                        {c.subtitle}
-                    </h2>
+            <div className="wrap relative">
+                <div>
+                    <h2 className="section-title">{c.title}</h2>
+                    {c.subtitle && <p className="section-intro">{c.subtitle}</p>}
                 </div>
 
-                <div className="relative" data-aos="fade-up">
+                <div className="relative mt-12">
                     {!isMobile && (
-                        <>
-                            <button
-                                onClick={() => swiperRef.current?.slidePrev()}
-                                className="absolute left-1 sm:left-2 xl:left-[-40px] top-1/2 -translate-y-1/2 z-10 bg-gray-300 p-3 sm:p-4 rounded-full shadow-lg hover:bg-gray-400 transition duration-300"
-                                aria-label="Previous">
-                                <svg
-                                    className="w-5 h-5 sm:w-6 sm:h-6 text-black"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M15 19l-7-7 7-7"
-                                    />
-                                </svg>
+                        <div className="absolute -top-20 right-0 flex gap-2">
+                            <button onClick={() => swiperRef.current?.slidePrev()} className="icon-btn border border-line" aria-label="Previous">
+                                <ChevronLeft />
                             </button>
-
-                            <button
-                                onClick={() => swiperRef.current?.slideNext()}
-                                className="absolute right-1 sm:right-2 xl:right-[-56px] top-1/2 -translate-y-1/2 z-10 bg-gray-300 p-3 sm:p-4 rounded-full shadow-lg hover:bg-gray-400 transition duration-300"
-                                aria-label="Next">
-                                <svg
-                                    className="w-5 h-5 sm:w-6 sm:h-6 text-black"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M9 5l7 7-7 7"
-                                    />
-                                </svg>
+                            <button onClick={() => swiperRef.current?.slideNext()} className="icon-btn border border-line" aria-label="Next">
+                                <ChevronRight />
                             </button>
-                        </>
+                        </div>
                     )}
 
                     <Swiper
                         modules={[Navigation, Pagination, Autoplay]}
-                        spaceBetween={20}
+                        spaceBetween={16}
                         slidesPerView={1}
                         breakpoints={{
-                            768: { slidesPerView: 2 },
-                            1024: { slidesPerView: 3 },
+                            768: { slidesPerView: 2, spaceBetween: 24 },
+                            1024: { slidesPerView: 3, spaceBetween: 24 },
                         }}
-                        pagination={{
-                            clickable: true,
-                            el: '.swiper-pagination',
-                        }}
-                        autoplay={{ delay: 3000 }}
+                        pagination={{ clickable: true, el: '.swiper-pagination' }}
+                        autoplay={{ delay: 5000 }}
                         loop
-                        className="pb-16"
                         onSwiper={swiper => (swiperRef.current = swiper)}>
                         {testimonials.map(testimonial => (
-                            <SwiperSlide key={testimonial.id}>
-                                <div className="bg-surface rounded-2xl sm:w-full p-6 sm:p-10 m-4 h-full">
-                                    <div className="flex gap-1">
+                            <SwiperSlide key={testimonial.id} className="!h-auto">
+                                <figure className="card flex h-full flex-col">
+                                    <div className="flex gap-1" aria-label={`${testimonial.rating} out of 5`}>
                                         {[...Array(5)].map((_, i) => (
-                                            <svg
+                                            <Star
                                                 key={i}
-                                                className={`w-5 h-5 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-600'}`}
-                                                fill="currentColor"
-                                                viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927a1 1 0 011.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                            </svg>
+                                                aria-hidden="true"
+                                                className={`h-4 w-4 ${i < testimonial.rating ? 'fill-current text-accent' : 'text-line'}`}
+                                            />
                                         ))}
                                     </div>
-                                    <p className="text-gray-300 mt-6 mb-8 text-[17px] sm:text-xl leading-relaxed">
-                                        {testimonial.comment}
-                                    </p>
-                                    <div>
-                                        <h4 className="text-white text-[20px] sm:text-2xl font-semibold">
-                                            {testimonial.name}
-                                        </h4>
-                                        <p className="text-gray-400">
-                                            {testimonial.role}
-                                        </p>
-                                    </div>
-                                </div>
+                                    <blockquote className="mt-4 flex-1 text-lg leading-relaxed text-ink">{testimonial.comment}</blockquote>
+                                    <figcaption className="mt-6">
+                                        <p className="font-bold text-ink">{testimonial.name}</p>
+                                        {testimonial.role && <p className="text-sm text-muted">{testimonial.role}</p>}
+                                    </figcaption>
+                                </figure>
                             </SwiperSlide>
                         ))}
                     </Swiper>
 
-                    <div className="swiper-pagination !relative !mt-4" />
+                    <div className="swiper-pagination !relative !mt-6" />
                 </div>
             </div>
         </section>

@@ -96,7 +96,7 @@ const ActivityLog = () => {
                     </p>
                 </div>
                 <Button variant="danger" onClick={() => setConfirming(true)}>
-                    <Trash2 size={15} />
+                    <Trash2 size={16} />
                     Clear log
                 </Button>
             </div>
@@ -118,7 +118,7 @@ const ActivityLog = () => {
                                 setFrom(e.target.value)
                             }}
                             aria-label="From date"
-                            className={`${inputClass} !w-auto min-w-0 flex-1 py-1.5 sm:flex-none`}
+                            className={`${inputClass} !w-auto min-w-0 flex-1 py-2 sm:flex-none`}
                         />
                         <span className="text-xs text-[#7E938B]">to</span>
                         <input
@@ -130,7 +130,7 @@ const ActivityLog = () => {
                                 setTo(e.target.value)
                             }}
                             aria-label="To date"
-                            className={`${inputClass} !w-auto min-w-0 flex-1 py-1.5 sm:flex-none`}
+                            className={`${inputClass} !w-auto min-w-0 flex-1 py-2 sm:flex-none`}
                         />
                         {(from || to) && (
                             <button
@@ -185,7 +185,7 @@ const ActivityLog = () => {
                                     <Button
                                         onClick={() => setPage(p => Math.max(1, p - 1))}
                                         disabled={paginator.current_page <= 1}>
-                                        <ChevronLeft size={15} />
+                                        <ChevronLeft size={16} />
                                         Previous
                                     </Button>
                                     <Button
@@ -194,7 +194,7 @@ const ActivityLog = () => {
                                         }
                                         disabled={paginator.current_page >= lastPage}>
                                         Next
-                                        <ChevronRight size={15} />
+                                        <ChevronRight size={16} />
                                     </Button>
                                 </span>
                             </div>

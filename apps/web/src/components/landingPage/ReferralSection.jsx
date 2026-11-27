@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import useSWR from 'swr'
 import { useRouter } from 'next/navigation'
-import { Check, Copy, Lock, Share2, Users } from 'lucide-react'
+import { Check, Copy, Share2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/hooks/auth'
 import { useSiteContent } from '@/lib/useSiteContent'
@@ -31,41 +31,26 @@ const loadMine = async () => {
     return data
 }
 
-const LevelCard = ({ lv, state }) => {
-    const reached = state === 'reached'
-    return (
-        <div
-            className={`relative rounded-2xl border p-4 transition ${
-                reached ? 'border-accent/70 bg-accent/10 shadow-[0_0_24px_rgb(var(--c-accent)/0.15)]' : 'border-line/60 bg-surface/60'
+/** One row of the level ladder: a short ranked list instead of identical cards. */
+const LevelRow = ({ lv, isNext }) => (
+    <li className={`flex items-center gap-4 px-4 py-3 ${isNext ? 'bg-accent/10' : ''}`}>
+        <span
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-sm font-bold ${
+                lv.reached ? 'border-accent bg-accent text-accent-ink' : 'border-line text-muted'
             }`}>
-            <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-dim">Level {lv.level}</span>
-                {reached ? (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-accent-ink">
-                        <Check className="h-3 w-3" strokeWidth={3} />
-                    </span>
-                ) : (
-                    <Lock className="h-3.5 w-3.5 text-dim" />
-                )}
-            </div>
-            <p className="mt-2 font-godofwar text-xl leading-tight text-ink">{lv.name}</p>
-            <p className="mt-1 text-xs text-muted">
-                {lv.friends_required} approved {lv.friends_required === 1 ? 'friend' : 'friends'}
+            {lv.reached ? <Check className="h-4 w-4" aria-label="Reached" /> : lv.level}
+        </span>
+        <div className="min-w-0 flex-1">
+            <p className="truncate font-bold text-ink">{lv.name}</p>
+            <p className="text-sm text-muted">
+                {lv.friends_required} {lv.friends_required === 1 ? 'friend' : 'friends'}
+                {lv.deposit_bonus_pct > 0 && <> · +{lv.deposit_bonus_pct}% deposit bonus</>}
+                {lv.reward_status && <> · {lv.reward_status === 'credited' ? 'Credited' : 'On its way'}</>}
             </p>
-            <p className="mt-3 text-2xl font-extrabold text-accent">{money(lv.reward_amount)}</p>
-            {lv.deposit_bonus_pct > 0 && (
-                <span className="mt-1 inline-block rounded-full bg-accent px-2 py-0.5 text-[11px] font-bold text-accent-ink">
-                    +{lv.deposit_bonus_pct}% deposit bonus
-                </span>
-            )}
-            {lv.reward_status && (
-                <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-secondary2">
-                    {lv.reward_status === 'credited' ? 'Credited' : 'On its way'}
-                </p>
-            )}
         </div>
-    )
-}
+        <p className="shrink-0 font-display text-2xl text-accent">{money(lv.reward_amount)}</p>
+    </li>
+)
 
 export default function ReferralSection({ bare = false }) {
     const c = useSiteContent('referral')
@@ -104,95 +89,93 @@ export default function ReferralSection({ bare = false }) {
         } catch {}
     }
 
-    return (
-        <section id="referrals" className={`bg-gray-900 ${bare ? 'pt-10 pb-4' : 'py-12 sm:py-16'}`}>
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                {!bare && (
-                    <>
-                <p className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.25em] text-accent">
-                    <Users className="h-3.5 w-3.5" /> {c.eyebrow}
-                </p>
-                <h2 className="mt-2 font-godofwar text-3xl leading-tight text-ink sm:text-4xl">
-                    {c.title} <span className="text-accent">{c.highlight}</span>
-                </h2>
-                <p className="mt-3 max-w-2xl text-sm text-muted sm:text-base">{c.subtitle}</p>
+    const H = bare ? 'h2' : 'h3'
 
-                    </>
+    return (
+        <section id="referrals" className={`bg-gray-900 ${bare ? 'pb-8 pt-8' : 'section'}`}>
+            <div className="wrap">
+                {!bare && (
+                    <div data-aos="fade">
+                        {c.eyebrow && <p className="eyebrow">{c.eyebrow}</p>}
+                        <h2 className="section-title">
+                            {c.title} <span className="text-accent">{c.highlight}</span>
+                        </h2>
+                        <p className="section-intro">{c.subtitle}</p>
+                    </div>
                 )}
 
-                {/* ------------------------------------------- personal panel */}
-                <div className={`${bare ? '' : 'mt-8 '}rounded-2xl border border-line/60 bg-surface/70 p-5 sm:p-6`}>
-                    {loading ? null : !user ? (
-                        <div className="flex flex-wrap items-center justify-between gap-4">
-                            <p className="text-sm text-muted">Create an account to get your personal referral link.</p>
-                            <button
-                                onClick={() => router.push('/register')}
-                                className="rounded-xl bg-accent px-5 py-2.5 text-sm font-bold text-accent-ink transition hover:bg-accent2">
-                                {c.signin_label}
-                            </button>
-                        </div>
-                    ) : !approved ? (
-                        <p className="text-sm text-muted">{c.pending_note}</p>
-                    ) : !mine ? (
-                        <p className="text-sm text-muted">Loading your link…</p>
-                    ) : (
-                        <div className="space-y-5">
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-widest text-dim">Your referral link</p>
-                                <div className="mt-2 flex flex-wrap items-center gap-2">
-                                    <code className="min-w-0 flex-1 truncate rounded-lg border border-line/60 bg-night px-3 py-2.5 text-sm text-ink">
-                                        {link}
-                                    </code>
-                                    <button
-                                        onClick={copy}
-                                        className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-sm font-bold text-accent-ink hover:bg-accent2">
-                                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                                        {copied ? 'Copied' : 'Copy'}
-                                    </button>
-                                    <button
-                                        onClick={share}
-                                        className="inline-flex items-center gap-1.5 rounded-lg border border-line px-4 py-2.5 text-sm font-semibold text-ink hover:bg-surface2">
-                                        <Share2 className="h-4 w-4" /> Share
-                                    </button>
-                                </div>
-                                <p className="mt-2 text-xs text-dim">
-                                    Or give friends your code: <span className="font-bold tracking-widest text-ink">{mine.code}</span>
-                                </p>
+                {/* Wide personal panel next to a narrow level list. */}
+                <div className={`${bare ? '' : 'mt-12 '}grid gap-4 md:gap-6 lg:grid-cols-5`}>
+                    <div className="card lg:col-span-3">
+                        {loading ? null : !user ? (
+                            <div className="flex h-full flex-col items-start justify-center gap-4">
+                                <H className="text-lg font-bold text-ink">Get your personal link</H>
+                                <p className="text-muted">Create an account to get a link and code you can send to friends.</p>
+                                <button onClick={() => router.push('/register')} className="btn btn-primary">
+                                    {c.signin_label}
+                                </button>
                             </div>
+                        ) : !approved ? (
+                            <p className="text-muted">{c.pending_note}</p>
+                        ) : !mine ? (
+                            <p className="text-muted">Loading your link…</p>
+                        ) : (
+                            <div className="space-y-8">
+                                <div>
+                                    <H className="text-lg font-bold text-ink">Your referral link</H>
+                                    <div className="mt-4 flex flex-wrap items-center gap-2">
+                                        <code className="flex h-10 min-w-0 flex-1 items-center truncate rounded-lg border border-line bg-night px-4 text-sm text-ink">
+                                            {link}
+                                        </code>
+                                        <button onClick={copy} className="btn btn-primary">
+                                            {copied ? <Check /> : <Copy />}
+                                            {copied ? 'Copied' : 'Copy'}
+                                        </button>
+                                        <button onClick={share} className="btn btn-secondary">
+                                            <Share2 /> Share
+                                        </button>
+                                    </div>
+                                    <p className="mt-2 text-sm text-muted">
+                                        Or give friends your code: <span className="font-bold tracking-wider text-ink">{mine.code}</span>
+                                    </p>
+                                </div>
 
-                            <div>
-                                <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
-                                    <span className="text-ink">
-                                        <b className="text-accent">{count}</b> approved {count === 1 ? 'friend' : 'friends'}
-                                        {mine.waiting > 0 && <span className="text-dim"> · {mine.waiting} waiting for approval</span>}
-                                    </span>
-                                    {next ? (
-                                        <span className="text-muted">
-                                            {next.friends_required - count} more for <b className="text-ink">{next.name}</b> ({money(next.reward_amount)})
+                                <div>
+                                    <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                                        <span className="text-ink">
+                                            <b className="text-accent">{count}</b> {count === 1 ? 'friend' : 'friends'} counted
+                                            {mine.waiting > 0 && <span className="text-muted"> · {mine.waiting} waiting for approval</span>}
                                         </span>
-                                    ) : (
-                                        <span className="font-semibold text-accent">Top level reached 🎉</span>
-                                    )}
-                                </div>
-                                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-night">
-                                    <div
-                                        className="h-full rounded-full bg-gradient-to-r from-accent-dim via-accent to-accent2 transition"
-                                        style={{ width: `${next ? Math.min(100, (count / next.friends_required) * 100) : 100}%` }}
-                                    />
+                                        {next ? (
+                                            <span className="text-muted">
+                                                {next.friends_required - count} more for <b className="text-ink">{next.name}</b> ({money(next.reward_amount)})
+                                            </span>
+                                        ) : (
+                                            <span className="font-bold text-accent">Top level reached</span>
+                                        )}
+                                    </div>
+                                    <div className="mt-2 h-2 overflow-hidden rounded-full bg-night">
+                                        <div
+                                            className="h-full rounded-full bg-accent"
+                                            style={{ width: `${next ? Math.min(100, (count / next.friends_required) * 100) : 100}%` }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
 
-                {/* ---------------------------------------------------- levels */}
-                <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-                    {list.map(lv => (
-                        <LevelCard key={lv.level} lv={lv} state={lv.reached ? 'reached' : 'locked'} />
-                    ))}
+                    <div className="overflow-hidden rounded-2xl border border-line bg-surface lg:col-span-2">
+                        <H className="border-b border-line px-4 py-3 text-sm font-bold text-muted">Levels</H>
+                        <ol className="divide-y divide-line">
+                            {list.map(lv => (
+                                <LevelRow key={lv.level} lv={lv} isNext={next && lv.level === next.level} />
+                            ))}
+                        </ol>
+                    </div>
                 </div>
-                <p className="mt-4 text-xs text-dim">
-                    A friend counts once our team approves their account. Rewards are added to your account by our team.
+                <p className="mt-4 text-sm text-muted">
+                    A friend counts once their account is active. Our team adds your level rewards to your account.
                 </p>
             </div>
         </section>

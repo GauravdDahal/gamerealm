@@ -33,7 +33,7 @@ const ProviderCard = ({ supabase, title, saved, onSaved }) => {
     }
     const configured = saved && saved.base_url && saved.agent_id && saved.has_secret
     return (
-        <section className="rounded border border-[#1E322C] bg-[#132320] p-4">
+        <section className="rounded-xl border border-[#1E322C] bg-[#132320] p-4">
             <header className="flex items-center gap-2">
                 <Server size={16} className="text-[#D4AF57]" />
                 <h3 className="flex-1 text-sm font-semibold text-[#EFE9DA]">{title}</h3>
@@ -54,10 +54,10 @@ const ProviderCard = ({ supabase, title, saved, onSaved }) => {
                         <Input type={show ? 'text' : 'password'} value={f.secret} onChange={e => setF({ ...f, secret: e.target.value })} autoComplete="new-password"
                             placeholder={saved?.has_secret ? '•••••••• (saved)' : ''} />
                         <button type="button" onClick={() => setShow(s => !s)} aria-label={show ? 'Hide secret' : 'Show secret'}
-                            className="absolute right-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center text-[#7E938B] hover:text-[#EFE9DA]">{show ? <EyeOff size={15} /> : <Eye size={15} />}</button>
+                            className="absolute right-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center text-[#7E938B] hover:text-[#EFE9DA]">{show ? <EyeOff size={16} /> : <Eye size={16} />}</button>
                     </div>
                 </Field>
-                <Button variant="primary" onClick={save} disabled={busy}>{busy ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />} Save</Button>
+                <Button variant="primary" onClick={save} disabled={busy}>{busy ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Save</Button>
             </div>
         </section>
     )
@@ -110,7 +110,7 @@ export default function Providers() {
                     </p>
                 </div>
                 <Button onClick={() => toast('Store balance checks start once the provider APIs are connected.', 'error')}>
-                    <RefreshCw size={14} /> Check store balances
+                    <RefreshCw size={16} /> Check store balances
                 </Button>
             </div>
 
@@ -120,7 +120,7 @@ export default function Providers() {
                         <Input type="number" min="0" value={threshold} onChange={e => setThreshold(e.target.value)} />
                     </Field>
                     <Button variant="primary" onClick={saveThreshold} disabled={savingT || rows === null}>
-                        {savingT ? <Loader2 size={14} className="animate-spin" /> : <BellRing size={14} />} Save
+                        {savingT ? <Loader2 size={16} className="animate-spin" /> : <BellRing size={16} />} Save
                     </Button>
                     <p className="basis-full text-xs text-[#7E938B]">
                         When a game falls below this, a banner shows across the admin panel. Automatic checks every 15 minutes and push alerts start once the provider APIs are connected.

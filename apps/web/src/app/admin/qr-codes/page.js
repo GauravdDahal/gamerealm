@@ -30,12 +30,12 @@ const Thumb = ({ supabase, path, file }) => {
         }
     }, [supabase, path, file])
     return (
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded bg-white">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
             {url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={url} alt="" className="h-full w-full object-contain" />
             ) : (
-                <span className="text-[10px] text-gray-400">QR</span>
+                <span className="text-xs text-gray-400">QR</span>
             )}
         </div>
     )
@@ -144,7 +144,7 @@ const QrCodes = () => {
             </div>
 
             <Panel title={`QR codes (${codes.length})`}
-                action={<Button variant="primary" onClick={() => open(blank)}><Plus size={14} className="mr-1 inline" />New QR code</Button>}>
+                action={<Button variant="primary" onClick={() => open(blank)}><Plus size={16} className="mr-1 inline" />New QR code</Button>}>
                 {loading ? <Skeleton /> : error ? <ErrorState message={error} onRetry={load} /> : codes.length === 0 ? (
                     <EmptyState message="No QR codes yet." action={<Button variant="primary" onClick={() => open(blank)}>Add one</Button>} />
                 ) : (
@@ -158,13 +158,13 @@ const QrCodes = () => {
                                 </div>
                                 {!c.is_active && <Badge>Hidden</Badge>}
                                 <div className="flex items-center gap-1">
-                                    <button onClick={() => toggle(c)} aria-label={c.is_active ? `Hide ${c.label}` : `Show ${c.label}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                    <button onClick={() => toggle(c)} aria-label={c.is_active ? `Hide ${c.label}` : `Show ${c.label}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
                                         {c.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
                                     </button>
-                                    <button onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up" className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30"><ArrowUp size={16} /></button>
-                                    <button onClick={() => move(i, 1)} disabled={i === codes.length - 1} aria-label="Move down" className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30"><ArrowDown size={16} /></button>
-                                    <button onClick={() => open(c)} aria-label={`Edit ${c.label}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]"><Pencil size={16} /></button>
-                                    <button onClick={() => setConfirming(c)} aria-label={`Delete ${c.label}`} className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]"><Trash2 size={16} /></button>
+                                    <button onClick={() => move(i, -1)} disabled={i === 0} aria-label="Move up" className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30"><ArrowUp size={16} /></button>
+                                    <button onClick={() => move(i, 1)} disabled={i === codes.length - 1} aria-label="Move down" className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:opacity-30"><ArrowDown size={16} /></button>
+                                    <button onClick={() => open(c)} aria-label={`Edit ${c.label}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]"><Pencil size={16} /></button>
+                                    <button onClick={() => setConfirming(c)} aria-label={`Delete ${c.label}`} className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]"><Trash2 size={16} /></button>
                                 </div>
                             </li>
                         ))}
@@ -186,7 +186,7 @@ const QrCodes = () => {
                                 <Thumb supabase={supabase} path={form.image_path} file={file} />
                                 <input ref={input} type="file" accept="image/png,image/jpeg,image/webp,image/gif"
                                     onChange={e => setFile(e.target.files?.[0] ?? null)}
-                                    className="block w-full text-sm text-[#7E938B] file:mr-3 file:rounded file:border-0 file:bg-[#1E322C] file:px-3 file:py-1.5 file:text-[#EFE9DA]" />
+                                    className="block w-full text-sm text-[#7E938B] file:mr-3 file:rounded-lg file:border-0 file:bg-[#1E322C] file:px-3 file:py-2 file:text-[#EFE9DA]" />
                             </div>
                         </Field>
                         <label className="flex items-center gap-2 text-sm text-[#EFE9DA]">

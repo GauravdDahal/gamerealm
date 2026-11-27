@@ -100,15 +100,15 @@ export default function QrPanel({ onClose, tone = 'player', onSend }) {
         <div className={`flex min-h-0 flex-1 flex-col ${c.bg}`}>
             <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
                 {picked ? (
-                    <button onClick={() => setPicked(null)} aria-label="Back to the list" className={`rounded-full p-1.5 ${c.muted} hover:text-white`}>
-                        <ArrowLeft className="h-5 w-5" />
+                    <button onClick={() => setPicked(null)} aria-label="Back to the list" className={`rounded-lg p-2 ${c.muted} hover:text-white`}>
+                        <ArrowLeft className="h-[18px] w-[18px]" />
                     </button>
                 ) : (
-                    <QrCode className={`h-5 w-5 ${c.accent}`} />
+                    <QrCode className={`h-[18px] w-[18px] ${c.accent}`} />
                 )}
                 <p className={`flex-1 text-sm font-bold ${c.text}`}>{picked ? (admin ? picked.label : `Deposit · ${picked.label}`) : onSend ? 'Tap a QR code to send it to the player' : 'Pay with a QR code'}</p>
-                <button onClick={onClose} aria-label="Close QR codes" className={`rounded-full p-1.5 ${c.muted} hover:text-white`}>
-                    <X className="h-5 w-5" />
+                <button onClick={onClose} aria-label="Close QR codes" className={`rounded-lg p-2 ${c.muted} hover:text-white`}>
+                    <X className="h-[18px] w-[18px]" />
                 </button>
             </div>
 
@@ -119,7 +119,7 @@ export default function QrPanel({ onClose, tone = 'player', onSend }) {
                         <button onClick={load} className={`underline ${c.accent}`}>Try again</button>
                     </p>
                 ) : codes === null ? (
-                    <div className={`flex justify-center py-10 ${c.muted}`}><Loader2 className="h-5 w-5 animate-spin" /></div>
+                    <div className={`flex justify-center py-10 ${c.muted}`}><Loader2 className="h-[18px] w-[18px] animate-spin" /></div>
                 ) : picked ? (
                     <div className="flex flex-col items-center gap-4 text-center">
                         <div className="flex aspect-square w-full max-w-[260px] items-center justify-center rounded-2xl bg-white p-3">
@@ -127,12 +127,12 @@ export default function QrPanel({ onClose, tone = 'player', onSend }) {
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={url} alt={`${picked.label} QR code`} className="h-full w-full object-contain" />
                             ) : (
-                                <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+                                <Loader2 className="h-[18px] w-[18px] animate-spin text-gray-400" />
                             )}
                         </div>
                         {picked.note && <p className={`text-sm ${c.muted}`}>{picked.note}</p>}
                         <button onClick={download} disabled={!url || busy}
-                            className={`inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold disabled:opacity-50 ${c.btn}`}>
+                            className={`inline-flex h-10 items-center gap-2 rounded-lg px-4 text-sm font-bold disabled:opacity-50 ${c.btn}`}>
                             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} Download QR code
                         </button>
                     </div>
@@ -156,11 +156,11 @@ export default function QrPanel({ onClose, tone = 'player', onSend }) {
                                         <span className={`text-sm font-semibold ${c.text}`}>{q.label}</span>
                                     ) : (
                                         <>
-                                            <span className={`text-sm font-bold uppercase tracking-wider ${c.text}`}>Deposit</span>
-                                            <span className={`text-[11px] ${c.muted}`}>{q.label}</span>
+                                            <span className={`text-sm font-bold ${c.text}`}>Deposit</span>
+                                            <span className={`text-xs ${c.muted}`}>{q.label}</span>
                                         </>
                                     )}
-                                    {q.note && <span className={`line-clamp-2 text-[11px] ${c.muted}`}>{q.note}</span>}
+                                    {q.note && <span className={`line-clamp-2 text-xs ${c.muted}`}>{q.note}</span>}
                                 </button>
                             </li>
                         ))}

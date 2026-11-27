@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Flame } from 'lucide-react'
 import { useAuth } from '@/hooks/auth'
 import { useGames } from '@/lib/useGames'
 import { playGame } from '@/lib/playGame'
@@ -25,7 +24,7 @@ export default function GamesMarquee() {
     return (
         <section
             aria-label="Games"
-            className="games-marquee relative overflow-hidden border-y border-gray-800 bg-gray-900 py-6 sm:py-8">
+            className="games-marquee relative overflow-hidden border-y border-line bg-gray-900 py-6 sm:py-8">
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-gray-900 to-transparent sm:w-24" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-gray-900 to-transparent sm:w-24" />
             <div
@@ -38,7 +37,7 @@ export default function GamesMarquee() {
                         aria-hidden={i >= row.length ? true : undefined}
                         tabIndex={i >= row.length ? -1 : 0}
                         className="group flex w-28 shrink-0 flex-col items-center gap-2 sm:w-36">
-                        <span className="relative block h-20 w-28 overflow-hidden rounded-xl border border-gray-700 transition group-hover:border-indigo-400 sm:h-24 sm:w-36">
+                        <span className="relative block h-20 w-28 overflow-hidden rounded-xl border border-line transition-colors group-hover:border-accent/60 sm:h-24 sm:w-36">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={game.logo || game.image}
@@ -46,16 +45,12 @@ export default function GamesMarquee() {
                                 loading="lazy"
                                 width={144}
                                 height={96}
-                                className="h-full w-full object-cover transition duration-300 group-hover:scale-110"
+                                className="h-full w-full object-cover"
                             />
-                            {game.hot && (
-                                <span className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-white">
-                                    <Flame className="h-3 w-3" />
-                                </span>
-                            )}
                         </span>
-                        <span className="w-full truncate text-center text-xs text-gray-300 sm:text-sm">
+                        <span className="w-full truncate text-center text-xs text-muted sm:text-sm">
                             {game.title}
+                            {game.hot && <span className="font-bold text-accent"> · Hot</span>}
                         </span>
                     </button>
                 ))}

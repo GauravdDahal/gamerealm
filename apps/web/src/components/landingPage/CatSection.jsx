@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Gift, Gamepad2 } from 'lucide-react';
+import { Gift } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from "@/hooks/auth";
 import { createClient } from '@/lib/supabase/client';
 import { useSiteContent } from '@/lib/useSiteContent';
 
 const defaultBanner = {
-  heading: 'Play And Earn Rewards',
-  text: 'Join our gaming community and earn amazing rewards! Play our featured games, compete with others, and collect points for exclusive rewards.',
+  heading: 'Your first spin is free',
+  text: 'Create an account to spin the lucky wheel every day, claim deposit bonuses and chat with our team.',
   is_active: true
 };
 
@@ -48,34 +48,17 @@ function App() {
   if (user) return null;
 
   return (
-    <section className="bg-gray-900">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-4">
-        <div className="bg-gradient-to-r from-purple-800 to-indigo-800 rounded-2xl shadow-xl overflow-hidden">
-          <div className="px-6 py-12 sm:px-12 sm:py-16">
-            <div className="lg:flex lg:items-center lg:justify-between">
-              <div className="lg:w-0 lg:flex-1">
-                <div className="flex items-center gap-3 mb-4">
-                  <Gamepad2 className="w-8 h-8 text-purple-200" />
-                  <h2 className="text-3xl font-godofwar tracking-tight text-white sm:text-4xl md:text-5xl">
-                    {banner.heading}
-                  </h2>
-                </div>
-                <p className="mt-4 max-w-3xl text-lg text-purple-100">
-                  {banner.text}
-                </p>
-              </div>
-              <div className="mt-8 lg:mt-0 lg:flex-shrink-0 lg:ml-8">
-                <div className="inline-flex w-full sm:w-auto justify-center">
-                  <button
-                    onClick={() => router.push('/users')}
-                    className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-purple-50 transition duration-200 shadow-lg">
-                    <Gift className="w-5 h-5 mr-2" />
-                    {cta.signin_label}
-                  </button>
-                </div>
-              </div>
-            </div>
+    <section className="bg-gray-900 pt-16 md:pt-24">
+      <div className="wrap">
+        <div className="flex flex-col gap-8 rounded-2xl border border-line bg-surface2 p-8 md:p-12 lg:flex-row lg:items-center lg:justify-between">
+          <div className="max-w-2xl">
+            <h2 className="section-title">{banner.heading}</h2>
+            <p className="mt-4 text-lg text-muted">{banner.text}</p>
           </div>
+          <button onClick={() => router.push('/users')} className="btn btn-primary btn-lg w-full shrink-0 sm:w-auto">
+            <Gift aria-hidden="true" />
+            {cta.signin_label}
+          </button>
         </div>
       </div>
     </section>

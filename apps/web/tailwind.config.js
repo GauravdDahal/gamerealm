@@ -3,12 +3,10 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['system-ui', 'sans-serif'],
-                marquee: ['FontMarquee', 'sans-serif'],
-                godofwar: ['GodOfWar', 'sans-serif'],
-                playfairdisplay: ['PlayFairlDisplay', 'sans-serif'],
-                glance: ['Glance', 'sans-serif'],
-                aldo: ['Aldo', 'sans-serif'],
+                // Two families only: Nunito for text and UI, Anton for headings
+                // (the same face as the logo).
+                sans: ['var(--font-ui)', 'system-ui', 'sans-serif'],
+                display: ['Anton', 'Impact', 'Arial Narrow', 'sans-serif'],
                 nowarehouse: ['Nowharehouse', 'sans-serif'],
             },
             colors: {
@@ -35,9 +33,6 @@ module.exports = {
                 random: 'rgb(var(--c-muted) / <alpha-value>)',
                 navbarColor: 'rgb(var(--c-ink) / <alpha-value>)',
                 custom1: 'rgb(var(--c-dim) / <alpha-value>)',
-            },
-            animation: {
-                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },
         },
     },

@@ -49,23 +49,23 @@ const ImageField = ({ field, value, onChange, upload }) => {
 
     return (
         <div>
-            <span className="mb-1.5 block text-sm text-[#EFE9DA]">{field.label}</span>
+            <span className="mb-2 block text-sm text-[#EFE9DA]">{field.label}</span>
             <div className="flex items-center gap-3">
                 {value ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={value} alt="" className="h-16 w-24 rounded border border-[#1E322C] object-cover" />
+                    <img src={value} alt="" className="h-16 w-24 rounded-lg border border-[#1E322C] object-cover" />
                 ) : (
-                    <div className="flex h-16 w-24 items-center justify-center rounded border border-dashed border-[#1E322C] text-xs text-[#7E938B]">
+                    <div className="flex h-16 w-24 items-center justify-center rounded-lg border border-dashed border-[#1E322C] text-xs text-[#7E938B]">
                         No picture
                     </div>
                 )}
                 <input ref={input} type="file" accept="image/*" className="hidden" onChange={pick} />
                 <Button type="button" onClick={() => input.current?.click()} disabled={busy}>
-                    <ImagePlus size={14} /> {busy ? 'Uploading…' : value ? 'Change' : 'Choose picture'}
+                    <ImagePlus size={16} /> {busy ? 'Uploading…' : value ? 'Change' : 'Choose picture'}
                 </Button>
                 {value && (
                     <Button type="button" variant="danger" onClick={() => onChange('')}>
-                        <X size={14} /> Remove
+                        <X size={16} /> Remove
                     </Button>
                 )}
             </div>
@@ -129,33 +129,33 @@ const ListEditor = ({ field, value, onChange, upload }) => {
             <span className="mb-2 block text-sm text-[#EFE9DA]">{field.label}</span>
             <div className="space-y-3">
                 {value.length === 0 && (
-                    <p className="rounded border border-dashed border-[#1E322C] px-3 py-4 text-center text-xs text-[#7E938B]">
+                    <p className="rounded-lg border border-dashed border-[#1E322C] px-3 py-4 text-center text-xs text-[#7E938B]">
                         Nothing here yet.
                     </p>
                 )}
                 {value.map((item, i) => (
-                    <div key={i} className="rounded border border-[#1E322C] bg-[#0C1714] p-3">
+                    <div key={i} className="rounded-lg border border-[#1E322C] bg-[#0C1714] p-3">
                         <div className="mb-3 flex items-center justify-between gap-2">
-                            <span className="truncate text-xs uppercase tracking-wide text-[#D4AF57]">
+                            <span className="truncate text-xs text-[#D4AF57]">
                                 {i + 1}. {(item[field.itemLabel] || '').toString().slice(0, 40) || 'New'}
                             </span>
                             <div className="flex shrink-0 gap-1">
                                 <Button type="button" aria-label="Move up" onClick={() => move(i, -1)} disabled={i === 0}>
-                                    <ArrowUp size={14} />
+                                    <ArrowUp size={16} />
                                 </Button>
                                 <Button
                                     type="button"
                                     aria-label="Move down"
                                     onClick={() => move(i, 1)}
                                     disabled={i === value.length - 1}>
-                                    <ArrowDown size={14} />
+                                    <ArrowDown size={16} />
                                 </Button>
                                 <Button
                                     type="button"
                                     variant="danger"
                                     aria-label="Delete"
                                     onClick={() => onChange(value.filter((_, n) => n !== i))}>
-                                    <Trash2 size={14} />
+                                    <Trash2 size={16} />
                                 </Button>
                             </div>
                         </div>
@@ -174,7 +174,7 @@ const ListEditor = ({ field, value, onChange, upload }) => {
                 ))}
             </div>
             <Button type="button" className="mt-3" onClick={() => onChange([...value, blankItem(field.fields)])}>
-                <Plus size={14} /> {field.addLabel ?? 'Add'}
+                <Plus size={16} /> {field.addLabel ?? 'Add'}
             </Button>
         </div>
     )
@@ -269,7 +269,7 @@ const SiteContent = () => {
                         <button
                             key={s.key}
                             onClick={() => setActive(s.key)}
-                            className={`shrink-0 rounded border px-3 py-2 text-left text-sm transition-colors ${
+                            className={`shrink-0 rounded-lg border px-3 py-2 text-left text-sm transition-colors ${
                                 active === s.key
                                     ? 'border-[#D4AF57] bg-[#132320] text-[#D4AF57]'
                                     : 'border-[#1E322C] text-[#EFE9DA] hover:bg-[#132320]'

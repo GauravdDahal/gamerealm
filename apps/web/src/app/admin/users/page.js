@@ -130,7 +130,7 @@ const AdminUsers = () => {
                     </p>
                 </div>
                 <Button variant="primary" onClick={openCreate}>
-                    <Plus size={15} />
+                    <Plus size={16} />
                     Add admin
                 </Button>
             </div>
@@ -186,8 +186,8 @@ const AdminUsers = () => {
                                                     : 'Edit'
                                             }
                                             aria-label={`Edit ${u.name}`}
-                                            className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:cursor-not-allowed disabled:opacity-30">
-                                            <Pencil size={15} />
+                                            className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA] disabled:cursor-not-allowed disabled:opacity-30">
+                                            <Pencil size={16} />
                                         </button>
                                         <button
                                             onClick={() => setConfirming(u)}
@@ -198,8 +198,8 @@ const AdminUsers = () => {
                                                     : 'Delete'
                                             }
                                             aria-label={`Delete ${u.name}`}
-                                            className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45] disabled:cursor-not-allowed disabled:opacity-30">
-                                            <Trash2 size={15} />
+                                            className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45] disabled:cursor-not-allowed disabled:opacity-30">
+                                            <Trash2 size={16} />
                                         </button>
                                     </span>
                                 </Cell>
@@ -284,7 +284,7 @@ const AdminUsers = () => {
                     Give these sign-in details to {invite?.email}. This password
                     is shown only once.
                 </p>
-                <p className="mt-3 select-all rounded border border-[#1E322C] bg-[#0C1714] px-3 py-2 font-mono text-sm">
+                <p className="mt-3 select-all rounded-lg border border-[#1E322C] bg-[#0C1714] px-3 py-2 font-mono text-sm">
                     {invite?.password}
                 </p>
             </Modal>

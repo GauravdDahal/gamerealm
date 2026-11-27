@@ -138,9 +138,9 @@ export const notify = async (title, body, url = '/') => {
 
 /** What a message looks like in a notification. */
 export const previewOf = m => {
-    if (m.voice_path) return '🎤 Voice message'
+    if (m.voice_path) return 'Voice message'
     if (m.title) return m.title
     if (m.message) return m.message.slice(0, 120)
     const n = m.attachments?.length ?? 0
-    return n ? `📎 ${n} file${n === 1 ? '' : 's'}` : 'New message'
+    return n ? `${n} file${n === 1 ? '' : 's'}` : 'New message'
 }

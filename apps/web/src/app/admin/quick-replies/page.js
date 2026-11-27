@@ -31,8 +31,8 @@ const Preview = ({ title, body, style }) => {
             className="space-y-2 rounded-lg border border-[#1E322C] px-3 py-2 text-sm text-[#EFE9DA]">
             <p
                 style={{ color: hl.bar }}
-                className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide">
-                <Icon size={14} />
+                className="flex items-center gap-2 text-xs font-semibold">
+                <Icon size={16} />
                 {title || hl.label}
             </p>
             <p className="whitespace-pre-wrap break-words">{body || 'Your message appears here.'}</p>
@@ -117,7 +117,7 @@ const QuickReplies = () => {
                 title={`${items.length} saved repl${items.length === 1 ? 'y' : 'ies'}`}
                 action={
                     <Button variant="primary" onClick={() => setForm(blank)}>
-                        <Plus size={14} className="mr-1 inline" />
+                        <Plus size={16} className="mr-1 inline" />
                         New reply
                     </Button>
                 }>
@@ -143,14 +143,14 @@ const QuickReplies = () => {
                                     <button
                                         onClick={() => setForm(q)}
                                         aria-label={`Edit ${q.title}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
-                                        <Pencil size={15} />
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#EFE9DA]">
+                                        <Pencil size={16} />
                                     </button>
                                     <button
                                         onClick={() => setConfirming(q)}
                                         aria-label={`Delete ${q.title}`}
-                                        className="rounded p-1.5 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
-                                        <Trash2 size={15} />
+                                        className="rounded-lg p-2 text-[#7E938B] hover:bg-[#1E322C] hover:text-[#C25B45]">
+                                        <Trash2 size={16} />
                                     </button>
                                 </div>
                             </li>
@@ -177,15 +177,15 @@ const QuickReplies = () => {
                         </Field>
                         <Field label="Message">
                             <textarea
-                                className={`${inputClass} min-h-[110px]`}
+                                className={`${inputClass} min-h-[112px]`}
                                 value={form.body}
                                 onChange={e => setForm(f => ({ ...f, body: e.target.value }))}
-                                placeholder="What the player will read"
+                                placeholder="Message to the player"
                                 required
                             />
                         </Field>
                         <div>
-                            <span className="mb-1.5 block text-sm text-[#EFE9DA]">Highlight colour</span>
+                            <span className="mb-2 block text-sm text-[#EFE9DA]">Highlight colour</span>
                             <div className="flex flex-wrap gap-2">
                                 {Object.entries(HIGHLIGHT_STYLES).map(([key, v]) => (
                                     <button
@@ -193,18 +193,18 @@ const QuickReplies = () => {
                                         key={key}
                                         onClick={() => setForm(f => ({ ...f, style: key }))}
                                         style={form.style === key ? { borderColor: v.bar, color: v.bar } : undefined}
-                                        className={`flex items-center gap-1.5 rounded border px-3 py-1.5 text-sm ${
+                                        className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm ${
                                             form.style === key
                                                 ? 'bg-[#0C1714]'
                                                 : 'border-[#1E322C] text-[#7E938B] hover:text-[#EFE9DA]'
                                         }`}>
-                                        <v.icon size={14} /> {v.label}
+                                        <v.icon size={16} /> {v.label}
                                     </button>
                                 ))}
                             </div>
                         </div>
                         <div>
-                            <span className="mb-1.5 block text-xs text-[#7E938B]">Preview</span>
+                            <span className="mb-2 block text-xs text-[#7E938B]">Preview</span>
                             <Preview title={form.title} body={form.body} style={form.style} />
                         </div>
                         <Button type="submit" variant="primary" disabled={saving}>

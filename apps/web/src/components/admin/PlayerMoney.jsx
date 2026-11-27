@@ -21,10 +21,10 @@ const QUICK = [10, 20, 50, 100]
 const NOT_CONNECTED = 'This needs the game provider API, which is not connected yet.'
 
 const Chips = ({ value, onChange, options, render }) => (
-    <div className="flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-2">
         {options.map(o => (
             <button key={o} type="button" onClick={() => onChange(o)}
-                className={`rounded-full border px-3 py-1 text-xs ${value === o ? 'border-[#D4AF57] bg-[#D4AF57] font-bold text-[#0C1714]' : 'border-[#1E322C] text-[#7E938B] hover:text-[#EFE9DA]'}`}>
+                className={`rounded-lg border px-3 py-1 text-xs ${value === o ? 'border-[#D4AF57] bg-[#D4AF57] font-bold text-[#0C1714]' : 'border-[#1E322C] text-[#7E938B] hover:text-[#EFE9DA]'}`}>
                 {render(o)}
             </button>
         ))}
@@ -36,7 +36,7 @@ const BigAmount = ({ value, onChange, autoFocus }) => (
         <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xl text-[#7E938B]">$</span>
         <input type="number" inputMode="decimal" min="0" step="0.01" value={value} autoFocus={autoFocus}
             onChange={e => onChange(e.target.value)}
-            className="w-full rounded border border-[#1E322C] bg-[#0C1714] py-3 pl-8 pr-3 text-2xl text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none" />
+            className="w-full rounded-lg border border-[#1E322C] bg-[#0C1714] py-3 pl-8 pr-3 text-2xl text-[#EFE9DA] focus:border-[#D4AF57] focus:outline-none" />
     </div>
 )
 
@@ -70,7 +70,7 @@ const DepositDialog = ({ supabase, player, accounts, open, onClose, onDone }) =>
             footer={<>
                 <Button onClick={onClose} disabled={busy}>Cancel</Button>
                 <Button variant="primary" onClick={save} disabled={busy || amt <= 0} className="!border-emerald-500 !bg-emerald-600 !text-white">
-                    {busy && <Loader2 size={14} className="animate-spin" />} Confirm
+                    {busy && <Loader2 size={16} className="animate-spin" />} Confirm
                 </Button>
             </>}>
             <div className="space-y-4">
@@ -123,7 +123,7 @@ const WalletDialog = ({ supabase, player, wallet, open, onClose, onDone }) => {
             footer={<>
                 <Button onClick={onClose} disabled={busy}>Cancel</Button>
                 <Button variant="primary" onClick={save} disabled={busy || amt <= 0} className={`${colour} !text-white`}>
-                    {busy && <Loader2 size={14} className="animate-spin" />}
+                    {busy && <Loader2 size={16} className="animate-spin" />}
                     {tab === 'add' ? 'Add to wallet' : tab === 'out' ? 'Take out' : 'Unlock bonus'}
                 </Button>
             </>}>
@@ -132,10 +132,10 @@ const WalletDialog = ({ supabase, player, wallet, open, onClose, onDone }) => {
                     Holds <b className="text-emerald-400">{money(wallet?.balance)}</b>
                     {Number(wallet?.locked) > 0 && <span className="text-[#7E938B]"> · {money(wallet.locked)} locked bonus</span>}
                 </p>
-                <div className="grid grid-cols-3 gap-1.5">
+                <div className="grid grid-cols-3 gap-2">
                     {tabs.map(([k, l]) => (
                         <button key={k} type="button" onClick={() => setTab(k)}
-                            className={`rounded border px-2 py-2 text-xs font-semibold ${tab === k ? 'border-[#D4AF57] bg-[#D4AF57]/15 text-[#EFE9DA]' : 'border-[#1E322C] text-[#7E938B]'}`}>{l}</button>
+                            className={`rounded-lg border px-2 py-2 text-xs font-semibold ${tab === k ? 'border-[#D4AF57] bg-[#D4AF57]/15 text-[#EFE9DA]' : 'border-[#1E322C] text-[#7E938B]'}`}>{l}</button>
                     ))}
                 </div>
                 <Field label="Amount ($)">
@@ -198,7 +198,7 @@ const WithdrawDialog = ({ supabase, player, accounts, open, onClose, onDone }) =
             footer={<>
                 <Button onClick={onClose} disabled={busy}>Cancel</Button>
                 <Button variant="primary" onClick={save} disabled={busy || !ok} className="!border-red-500 !bg-red-600 !text-white">
-                    {busy && <Loader2 size={14} className="animate-spin" />} Confirm withdrawal
+                    {busy && <Loader2 size={16} className="animate-spin" />} Confirm withdrawal
                 </Button>
             </>}>
             <div className="space-y-4">
@@ -210,47 +210,47 @@ const WithdrawDialog = ({ supabase, player, accounts, open, onClose, onDone }) =
                 </Field>
                 <Field label="Total ($)"><BigAmount value={total} onChange={setTotal} autoFocus /></Field>
                 <div>
-                    <p className="mb-2 text-xs uppercase tracking-wide text-[#7E938B]">Where it goes</p>
+                    <p className="mb-2 text-xs text-[#7E938B]">Where it goes</p>
                     <ul className="space-y-2">
                         {parts.map((p, i) => (
-                            <li key={i} className="flex flex-wrap items-center gap-2 rounded border border-[#1E322C] bg-[#0C1714] p-2">
+                            <li key={i} className="flex flex-wrap items-center gap-2 rounded-lg border border-[#1E322C] bg-[#0C1714] p-2">
                                 <select value={p.type} onChange={e => set(i, { type: e.target.value })}
-                                    className="rounded border border-[#1E322C] bg-[#132320] px-2 py-1.5 text-sm text-[#EFE9DA]">
+                                    className="rounded-lg border border-[#1E322C] bg-[#132320] px-2 py-2 text-sm text-[#EFE9DA]">
                                     <option value="payout">Pay out</option>
                                     <option value="game">Load a game</option>
                                     <option value="wallet">Site wallet</option>
                                 </select>
                                 {p.type === 'payout' && (
                                     <input value={p.method} onChange={e => set(i, { method: e.target.value })} placeholder="Cash App"
-                                        className="min-w-0 flex-1 rounded border border-[#1E322C] bg-[#132320] px-2 py-1.5 text-sm text-[#EFE9DA]" />
+                                        className="min-w-0 flex-1 rounded-lg border border-[#1E322C] bg-[#132320] px-2 py-2 text-sm text-[#EFE9DA]" />
                                 )}
                                 {p.type === 'game' && (
                                     <select value={p.account_id || ''} onChange={e => set(i, { account_id: e.target.value })}
-                                        className="min-w-0 flex-1 rounded border border-[#1E322C] bg-[#132320] px-2 py-1.5 text-sm text-[#EFE9DA]">
+                                        className="min-w-0 flex-1 rounded-lg border border-[#1E322C] bg-[#132320] px-2 py-2 text-sm text-[#EFE9DA]">
                                         <option value="">Choose game account</option>
                                         {accounts.map(a => <option key={a.id} value={a.id}>{a.game_title} · {a.username}</option>)}
                                     </select>
                                 )}
                                 {p.type === 'wallet' && <span className="flex-1 text-sm text-[#7E938B]">Adds to their site wallet</span>}
                                 <input type="number" min="0" step="0.01" value={p.amount} onChange={e => set(i, { amount: e.target.value })} placeholder="$"
-                                    className="w-24 rounded border border-[#1E322C] bg-[#132320] px-2 py-1.5 text-sm text-[#EFE9DA]" />
+                                    className="w-24 rounded-lg border border-[#1E322C] bg-[#132320] px-2 py-2 text-sm text-[#EFE9DA]" />
                                 {parts.length > 1 && (
                                     <button type="button" onClick={() => setParts(ps => ps.filter((_, n) => n !== i))} aria-label="Remove"
-                                        className="rounded p-1 text-[#7E938B] hover:text-[#C25B45]"><X size={15} /></button>
+                                        className="rounded-lg p-1 text-[#7E938B] hover:text-[#C25B45]"><X size={16} /></button>
                                 )}
                             </li>
                         ))}
                     </ul>
                     <div className="mt-2 flex items-center justify-between text-xs">
                         <button type="button" onClick={() => setParts(ps => [...ps, { type: 'payout', method: 'Cash App', amount: left > 0 ? String(left) : '' }])}
-                            className="inline-flex items-center gap-1 text-[#D4AF57] hover:underline"><Plus size={13} /> Split into another part</button>
+                            className="inline-flex items-center gap-1 text-[#D4AF57] hover:underline"><Plus size={16} /> Split into another part</button>
                         <span className={left === 0 ? 'text-emerald-400' : 'text-[#C25B45]'}>
-                            {t > 0 ? (left === 0 ? 'Parts add up ✓' : `${money(Math.abs(left))} ${left > 0 ? 'left to assign' : 'too much'}`) : ''}
+                            {t > 0 ? (left === 0 ? 'Parts add up' : `${money(Math.abs(left))} ${left > 0 ? 'left to assign' : 'too much'}`) : ''}
                         </span>
                     </div>
                 </div>
                 <Field label="Note (optional)"><Input value={note} onChange={e => setNote(e.target.value)} maxLength={200} placeholder="Paid by Cash App" /></Field>
-                <p className="text-[11px] text-[#7E938B]">Taking the money out of the game and loading other games happens automatically once the provider API is connected. For now this records it.</p>
+                <p className="text-xs text-[#7E938B]">Taking the money out of the game and loading other games happens automatically once the provider API is connected. For now this records it.</p>
             </div>
         </Modal>
     )
@@ -264,30 +264,30 @@ const AccountCard = ({ a, onEdit, onDelete }) => {
         try { await navigator.clipboard.writeText(v); toast(`${what} copied.`) } catch { toast('Could not copy.', 'error') }
     }
     return (
-        <li className="rounded border border-[#1E322C] bg-[#0C1714] p-3">
+        <li className="rounded-lg border border-[#1E322C] bg-[#0C1714] p-3">
             <div className="flex items-center gap-2">
                 <p className="flex-1 font-semibold text-[#EFE9DA]">{a.game_title}</p>
-                {a.verified && <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-emerald-300">Verified</span>}
-                <button onClick={() => onEdit(a)} aria-label="Edit" className="rounded p-1 text-[#7E938B] hover:text-[#EFE9DA]"><Pencil size={14} /></button>
-                <button onClick={() => onDelete(a)} aria-label="Delete" className="rounded p-1 text-[#7E938B] hover:text-[#C25B45]"><Trash2 size={14} /></button>
+                {a.verified && <span className="rounded-md bg-emerald-500/15 px-2 py-1 text-xs font-bold text-emerald-300">Verified</span>}
+                <button onClick={() => onEdit(a)} aria-label="Edit" className="rounded-lg p-1 text-[#7E938B] hover:text-[#EFE9DA]"><Pencil size={16} /></button>
+                <button onClick={() => onDelete(a)} aria-label="Delete" className="rounded-lg p-1 text-[#7E938B] hover:text-[#C25B45]"><Trash2 size={16} /></button>
             </div>
-            <dl className="mt-2 space-y-1.5 text-sm">
+            <dl className="mt-2 space-y-2 text-sm">
                 <div className="flex items-center gap-2">
-                    <dt className="w-20 text-[10px] uppercase tracking-wide text-[#7E938B]">Username</dt>
+                    <dt className="w-20 text-xs text-[#7E938B]">Username</dt>
                     <dd className="flex-1 truncate font-mono text-[#EFE9DA]">{a.username}</dd>
-                    <button onClick={() => copy(a.username, 'Username')} aria-label="Copy username" className="text-[#7E938B] hover:text-[#D4AF57]"><Copy size={14} /></button>
+                    <button onClick={() => copy(a.username, 'Username')} aria-label="Copy username" className="text-[#7E938B] hover:text-[#D4AF57]"><Copy size={16} /></button>
                 </div>
                 <div className="flex items-center gap-2">
-                    <dt className="w-20 text-[10px] uppercase tracking-wide text-[#7E938B]">Password</dt>
+                    <dt className="w-20 text-xs text-[#7E938B]">Password</dt>
                     <dd className="flex-1 truncate font-mono text-[#EFE9DA]">{show ? a.password : '••••••••'}</dd>
-                    <button onClick={() => setShow(s => !s)} aria-label={show ? 'Hide password' : 'Show password'} className="text-[#7E938B] hover:text-[#EFE9DA]">{show ? <EyeOff size={14} /> : <Eye size={14} />}</button>
-                    <button onClick={() => copy(a.password, 'Password')} aria-label="Copy password" className="text-[#7E938B] hover:text-[#D4AF57]"><Copy size={14} /></button>
+                    <button onClick={() => setShow(s => !s)} aria-label={show ? 'Hide password' : 'Show password'} className="text-[#7E938B] hover:text-[#EFE9DA]">{show ? <EyeOff size={16} /> : <Eye size={16} />}</button>
+                    <button onClick={() => copy(a.password, 'Password')} aria-label="Copy password" className="text-[#7E938B] hover:text-[#D4AF57]"><Copy size={16} /></button>
                 </div>
                 <div className="flex items-center gap-2">
-                    <dt className="w-20 text-[10px] uppercase tracking-wide text-[#7E938B]">Balance</dt>
+                    <dt className="w-20 text-xs text-[#7E938B]">Balance</dt>
                     <dd className="flex-1 text-[#7E938B]">{a.balance != null ? <span className="text-emerald-400">{money(a.balance)}</span> : 'Balance not checked yet'}</dd>
-                    <button onClick={() => toast(NOT_CONNECTED, 'error')} className="inline-flex items-center gap-1 rounded border border-[#1E322C] px-2 py-0.5 text-[11px] text-[#EFE9DA] hover:border-[#D4AF57]">
-                        <RefreshCw size={11} /> Check
+                    <button onClick={() => toast(NOT_CONNECTED, 'error')} className="inline-flex items-center gap-1 rounded-lg border border-[#1E322C] px-2 py-1 text-xs text-[#EFE9DA] hover:border-[#D4AF57]">
+                        <RefreshCw size={16} /> Check
                     </button>
                 </div>
             </dl>
@@ -336,27 +336,27 @@ const GameAccountsDialog = ({ supabase, player, accounts, open, onClose, onDone 
                     </Field>
                     <div className="flex gap-2">
                         <Button type="button" onClick={() => setForm(null)}>Back</Button>
-                        <Button type="submit" variant="primary" disabled={busy}>{busy && <Loader2 size={14} className="animate-spin" />}<Check size={14} /> Save account</Button>
+                        <Button type="submit" variant="primary" disabled={busy}>{busy && <Loader2 size={16} className="animate-spin" />}<Check size={16} /> Save account</Button>
                     </div>
                 </form>
             ) : (
                 <div className="space-y-3">
                     {accounts.length === 0 ? (
-                        <p className="rounded border border-dashed border-[#1E322C] p-5 text-center text-sm text-[#7E938B]">No game accounts linked yet.</p>
+                        <p className="rounded-xl border border-dashed border-[#1E322C] p-5 text-center text-sm text-[#7E938B]">No game accounts linked yet.</p>
                     ) : (
                         <ul className="space-y-2">{accounts.map(a => <AccountCard key={a.id} a={a} onEdit={x => setForm({ ...x })} onDelete={remove} />)}</ul>
                     )}
                     <div className="grid gap-2 sm:grid-cols-2">
                         {['Juwa', 'Fire Kirin'].map(g => (
                             <button key={g} type="button" onClick={() => toast(NOT_CONNECTED, 'error')}
-                                className="inline-flex items-center justify-center gap-1.5 rounded border border-[#D4AF57]/50 bg-[#D4AF57]/10 px-3 py-2 text-xs font-bold uppercase tracking-wide text-[#D4AF57] hover:bg-[#D4AF57]/20">
-                                <Plus size={13} /> Create {g} account
+                                className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#D4AF57]/50 bg-[#D4AF57]/10 px-3 py-2 text-xs font-bold text-[#D4AF57] hover:bg-[#D4AF57]/20">
+                                <Plus size={16} /> Create {g} account
                             </button>
                         ))}
                     </div>
                     <button type="button" onClick={() => setForm({ game_title: '', username: '', password: '' })}
-                        className="inline-flex w-full items-center justify-center gap-1.5 rounded border border-[#1E322C] px-3 py-2 text-xs font-bold uppercase tracking-wide text-[#EFE9DA] hover:border-[#D4AF57]">
-                        <Link2 size={13} /> Link existing account
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[#1E322C] px-3 py-2 text-xs font-bold text-[#EFE9DA] hover:border-[#D4AF57]">
+                        <Link2 size={16} /> Link existing account
                     </button>
                 </div>
             )}
@@ -401,7 +401,7 @@ export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip
     )
 
     if (variant === 'header') {
-        const pill = 'inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold uppercase tracking-wide transition disabled:opacity-40'
+        const pill = 'inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold transition disabled:opacity-40'
         const item = 'flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[#EFE9DA] hover:bg-[#0C1714] disabled:opacity-40'
         return (
             <div className="flex flex-wrap items-center gap-3 border-b border-[#1E322C] px-4 py-3 sm:px-5">
@@ -418,17 +418,17 @@ export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip
                         </span>
                     </p>
                     {chat.referrer_name && (
-                        <span className="mt-1 inline-block max-w-full truncate rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-0.5 align-top text-[11px] text-[#D4AF57]">
-                            <UserPlus size={11} className="mr-1 inline" />Referred by <b>{chat.referrer_name}</b>{chat.referrer_code ? ` · code ${chat.referrer_code}` : ''}
+                        <span className="mt-1 inline-block max-w-full truncate rounded-md border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-1 align-top text-xs text-[#D4AF57]">
+                            <UserPlus size={16} className="mr-1 inline" />Referred by <b>{chat.referrer_name}</b>{chat.referrer_code ? ` · code ${chat.referrer_code}` : ''}
                         </span>
                     )}
                 </div>
                 <div className="flex w-full items-center gap-2 md:w-auto">
                     <button disabled={!ready} onClick={() => setDialog('deposit')} className={`${pill} flex-1 justify-center md:flex-none border-emerald-500/60 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20`}>
-                        <ArrowDownToLine size={14} /> Deposit
+                        <ArrowDownToLine size={16} /> Deposit
                     </button>
                     <button disabled={!ready} onClick={() => setDialog('withdraw')} className={`${pill} flex-1 justify-center md:flex-none border-red-500/60 bg-red-500/10 text-red-300 hover:bg-red-500/20`}>
-                        <ArrowUpFromLine size={14} /> Withdraw
+                        <ArrowUpFromLine size={16} /> Withdraw
                     </button>
                     <div className="relative">
                         <button onClick={() => setMenu(m => !m)} aria-label="More actions" aria-expanded={menu}
@@ -439,38 +439,38 @@ export default function PlayerMoney({ supabase, chat, onChange, variant = 'strip
                             <>
                                 <div className="fixed inset-0 z-20" onClick={() => setMenu(false)} aria-hidden />
                                 <div className="absolute right-0 top-full z-30 mt-2 w-52 overflow-hidden rounded-lg border border-[#1E322C] bg-[#132320] py-1 shadow-xl">
-                                    <button disabled={!ready} onClick={() => { setMenu(false); setDialog('wallet') }} className={item}><Wallet size={15} className="text-[#D4AF57]" /> Site wallet</button>
-                                    <button disabled={!ready} onClick={() => { setMenu(false); setDialog('accounts') }} className={item}><Gamepad2 size={15} className="text-[#D4AF57]" /> Game accounts</button>
-                                    {onQr && <button onClick={() => { setMenu(false); onQr() }} className={item}><QrCode size={15} className="text-[#D4AF57]" /> Send payment QR</button>}
+                                    <button disabled={!ready} onClick={() => { setMenu(false); setDialog('wallet') }} className={item}><Wallet size={16} className="text-[#D4AF57]" /> Site wallet</button>
+                                    <button disabled={!ready} onClick={() => { setMenu(false); setDialog('accounts') }} className={item}><Gamepad2 size={16} className="text-[#D4AF57]" /> Game accounts</button>
+                                    {onQr && <button onClick={() => { setMenu(false); onQr() }} className={item}><QrCode size={16} className="text-[#D4AF57]" /> Send payment QR</button>}
                                 </div>
                             </>
                         )}
                     </div>
                 </div>
-                {!ready && <span className="w-full text-[11px] text-[#C25B45]">Money tools need the latest database update.</span>}
+                {!ready && <span className="w-full text-xs text-[#C25B45]">Money tools need the latest database update.</span>}
                 {dialogs}
             </div>
         )
     }
 
-    const btn = 'inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] sm:px-2.5 font-bold uppercase tracking-wide text-white disabled:opacity-40'
+    const btn = 'inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs sm:px-3 font-bold text-white disabled:opacity-40'
     return (
         <div className="flex flex-wrap items-center gap-2 border-b border-[#1E322C] bg-[#0C1714]/60 px-4 py-2">
             <span className="flex min-w-0 basis-full flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                 <span className="text-[#7E938B]">wallet <b className="text-emerald-400">{ready ? money(wallet?.balance) : '—'}</b>
                     {Number(wallet?.locked) > 0 && <span> · {money(wallet.locked)} locked</span>}</span>
                 {chat.referrer_name && (
-                    <span className="rounded-full border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-0.5 text-[#D4AF57]">
+                    <span className="rounded-md border border-[#D4AF57]/40 bg-[#D4AF57]/10 px-2 py-1 text-[#D4AF57]">
                         Referred by {chat.referrer_name}{chat.referrer_code ? ` · code ${chat.referrer_code}` : ''}
                     </span>
                 )}
             </span>
-            <button disabled={!ready} onClick={() => setDialog('deposit')} className={`${btn} bg-emerald-600 hover:bg-emerald-500`}><ArrowDownToLine size={12} /> Deposit</button>
-            <button disabled={!ready} onClick={() => setDialog('wallet')} className={`${btn} bg-[#B8922F] hover:bg-[#D4AF57]`}><Wallet size={12} /> Wallet</button>
-            <button disabled={!ready} onClick={() => setDialog('withdraw')} className={`${btn} bg-red-600 hover:bg-red-500`}><ArrowUpFromLine size={12} /> Withdraw</button>
+            <button disabled={!ready} onClick={() => setDialog('deposit')} className={`${btn} bg-emerald-600 hover:bg-emerald-500`}><ArrowDownToLine size={16} /> Deposit</button>
+            <button disabled={!ready} onClick={() => setDialog('wallet')} className={`${btn} bg-[#B8922F] hover:bg-[#D4AF57]`}><Wallet size={16} /> Wallet</button>
+            <button disabled={!ready} onClick={() => setDialog('withdraw')} className={`${btn} bg-red-600 hover:bg-red-500`}><ArrowUpFromLine size={16} /> Withdraw</button>
             <button disabled={!ready} onClick={() => setDialog('accounts')} title="Game accounts" aria-label="Game accounts"
-                className="rounded border border-[#1E322C] p-1.5 text-[#7E938B] hover:border-[#D4AF57] hover:text-[#D4AF57] disabled:opacity-40"><Gamepad2 size={15} /></button>
-            {!ready && <span className="w-full text-[11px] text-[#C25B45]">Money tools need the latest database update (0017).</span>}
+                className="rounded-lg border border-[#1E322C] p-2 text-[#7E938B] hover:border-[#D4AF57] hover:text-[#D4AF57] disabled:opacity-40"><Gamepad2 size={16} /></button>
+            {!ready && <span className="w-full text-xs text-[#C25B45]">Money tools need the latest database update (0017).</span>}
 
             {dialogs}
         </div>
