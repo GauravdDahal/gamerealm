@@ -27,6 +27,8 @@ const SignIn = () => {
         const q = new URLSearchParams(window.location.search)
         if (q.get('reset')) setFlash('Your password was changed. Sign in with your new password.')
         if (q.get('oauth')) setErrors({ email: ['Google sign-in did not finish. Please try again.'] })
+        // Already signed in (checked with the server, not just a stored token): go home.
+        if (!q.get('reset')) supabase.rpc('my_access').then(({ data }) => data?.profile && router.replace('/'))
     }, [])
 
     const submit = async event => {

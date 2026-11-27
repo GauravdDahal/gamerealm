@@ -61,7 +61,7 @@ export default function SupportPage() {
                         </p>
                         <div className="mt-8 flex flex-wrap gap-3">
                             <button onClick={openChat} className="btn btn-primary btn-lg">
-                                <MessageCircle aria-hidden="true" /> {user ? 'Start live chat' : 'Sign in to chat'}
+                                <MessageCircle aria-hidden="true" /> {user === null ? 'Sign in to chat' : 'Start live chat'}
                             </button>
                             <a href="#answers" className="btn btn-secondary btn-lg">
                                 Browse answers <ChevronDown aria-hidden="true" />

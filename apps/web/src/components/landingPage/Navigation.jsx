@@ -137,11 +137,11 @@ export default function Navigation({ isScrolled }) {
                                     </div>
                                 )}
                             </div>
-                        ) : (
+                        ) : user === null ? (
                             <button onClick={() => router.push('/users')} className="btn btn-primary hidden md:inline-flex">
                                 {brand.join_label}
                             </button>
-                        )}
+                        ) : null}
                     </div>
                 </div>
 
@@ -179,11 +179,11 @@ export default function Navigation({ isScrolled }) {
                                         <LogOut /> Log out
                                     </button>
                                 </>
-                            ) : (
+                            ) : user === null ? (
                                 <button onClick={() => router.push('/users')} className="btn btn-primary btn-block">
                                     {brand.join_label}
                                 </button>
-                            )}
+                            ) : null}
                         </div>
                     </div>
                 )}

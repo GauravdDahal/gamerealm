@@ -51,11 +51,10 @@ export default function BonusesSection({ bare = false }) {
                     </div>
                 )}
 
-                <div className={`${bare ? '' : 'mt-12 '}grid gap-4 md:grid-cols-2 md:gap-6`}>
+                <div className={`${bare ? '' : 'mt-12 '}grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6`}>
                     {c.cards.map((card, i) => (
                         <div
                             key={i}
-                            data-aos="fade"
                             className={`card flex flex-col ${odd && i === c.cards.length - 1 ? 'md:col-span-2' : ''}`}>
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-6">
                                 <p className="w-20 shrink-0 font-display text-4xl leading-none text-accent">{card.badge}</p>
@@ -71,7 +70,7 @@ export default function BonusesSection({ bare = false }) {
                             </div>
                             <div className="mt-auto pt-6">
                                 <button onClick={() => claim(card)} className="btn btn-primary w-full sm:w-auto">
-                                    {user ? c.claim_label : c.signin_label}
+                                    {user === null ? c.signin_label : c.claim_label}
                                 </button>
                             </div>
                         </div>

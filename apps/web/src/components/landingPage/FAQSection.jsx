@@ -4,9 +4,7 @@ import { ChevronDown } from 'lucide-react'
 import { useSiteContent } from '@/lib/useSiteContent'
 
 const AccordionItem = ({ question, answer, isOpen, onToggle }) => (
-    <div
-        data-aos="fade"
-        className={`h-fit overflow-hidden rounded-xl border bg-surface transition-colors ${isOpen ? 'border-accent/60' : 'border-line'}`}>
+    <div className={`h-fit overflow-hidden rounded-xl border bg-surface transition-colors ${isOpen ? 'border-accent/60' : 'border-line'}`}>
         <button className="flex min-h-[56px] w-full items-center justify-between gap-4 px-6 py-4 text-left" onClick={onToggle} aria-expanded={isOpen}>
             <span className="text-base font-bold text-ink md:text-lg">{question}</span>
             <ChevronDown className={`h-[18px] w-[18px] shrink-0 text-muted transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />

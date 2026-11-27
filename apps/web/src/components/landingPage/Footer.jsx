@@ -11,6 +11,7 @@ import Link from 'next/link'
 import { useSiteContent } from '@/lib/useSiteContent'
 import ContactLine from '@/components/common/ContactLine'
 import { safeUrl } from '@/lib/safeUrl'
+import { useAuth } from '@/hooks/auth'
 
 const socialIcons = {
     twitch: Twitch,
@@ -29,6 +30,9 @@ const socialNames = {
 export default function Footer() {
     const c = useSiteContent('footer')
     const brand = useSiteContent('brand')
+    const { user } = useAuth()
+    // "Sign in or join" and similar links only make sense to signed-out visitors.
+    const shown = link => user === null || !/^\/(users|login|register)\b/.test(link.url || '')
 
     // Only show icons that have a link.
     const social = c.social.filter(s => s.url && socialIcons[s.platform])
@@ -78,7 +82,7 @@ export default function Footer() {
                         <div key={index}>
                             <h2 className="mb-2 text-sm font-bold text-ink">{column.title}</h2>
                             <ul className="space-y-1">
-                                {column.links.map((link, i) => (
+                                {column.links.filter(shown).map((link, i) => (
                                     <li key={i}>
                                         {link.url ? (
                                             <Link

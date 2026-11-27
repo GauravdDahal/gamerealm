@@ -105,7 +105,7 @@ export default function ReferralSection({ bare = false }) {
                 )}
 
                 {/* Wide personal panel next to a narrow level list. */}
-                <div className={`${bare ? '' : 'mt-12 '}grid gap-4 md:gap-6 lg:grid-cols-5`}>
+                <div className={`${bare ? '' : 'mt-12 '}grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-5`}>
                     <div className="card lg:col-span-3">
                         {loading ? null : !user ? (
                             <div className="flex h-full flex-col items-start justify-center gap-4">
@@ -123,15 +123,16 @@ export default function ReferralSection({ bare = false }) {
                             <div className="space-y-8">
                                 <div>
                                     <H className="text-lg font-bold text-ink">Your referral link</H>
+                                    {/* Phones: link on its own line, the two buttons share the next one. */}
                                     <div className="mt-4 flex flex-wrap items-center gap-2">
-                                        <code className="flex h-10 min-w-0 flex-1 items-center truncate rounded-lg border border-line bg-night px-4 text-sm text-ink">
-                                            {link}
+                                        <code className="flex h-10 w-full min-w-0 items-center rounded-lg border border-line bg-night px-4 text-sm text-ink sm:w-auto sm:flex-1">
+                                            <span className="truncate">{link}</span>
                                         </code>
-                                        <button onClick={copy} className="btn btn-primary">
+                                        <button onClick={copy} className="btn btn-primary flex-1 sm:flex-none">
                                             {copied ? <Check /> : <Copy />}
                                             {copied ? 'Copied' : 'Copy'}
                                         </button>
-                                        <button onClick={share} className="btn btn-secondary">
+                                        <button onClick={share} className="btn btn-secondary flex-1 sm:flex-none">
                                             <Share2 /> Share
                                         </button>
                                     </div>

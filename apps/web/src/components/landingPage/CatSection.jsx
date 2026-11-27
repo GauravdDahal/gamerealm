@@ -45,7 +45,7 @@ function App() {
     fetchBanner();
   }, []);
 
-  if (user) return null;
+  if (user !== null) return null;
 
   return (
     <section className="bg-gray-900 pt-16 md:pt-24">
